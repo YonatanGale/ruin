@@ -1,28 +1,33 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Ticle</title>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'lib/bootstrap-4.4.1-dist/css/bootstrap.min.css' %}">
+  <script src="{% static 'lib/bootstrap-4.4.1-dist/js/jquery-3.4.slim.min.js' %}"></script>
+  <script src="{% static 'lib/bootstrap-4.4.1-dist/js/popper.min.js' %}"></script>
+  <script src="{% static 'lib/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js' %}"></script>
 </head>
 <body>
-<h1>
-    {% if categories %}
-        Si hay datos
-    {% else %}
-        No hay
-    {% endif %}
-</h1>
+  
+<div class="container">
+  <h1>My First Bootstrap Page</h1>
+  <p>This part is inside a .container class.</p> 
+  <p>The .container class provides a responsive fixed width container.</p>           
+</div>
+<button type="button" class="btn">Basic</button>
+<button type="button" class="btn btn-primary">Primary</button>
+<button type="button" class="btn btn-secondary">Secondary</button>
+<button type="button" class="btn btn-success">Success</button>
+<button type="button" class="btn btn-info">Info</button>
+<button type="button" class="btn btn-warning">Warning</button>
+<button type="button" class="btn btn-danger">Danger</button>
+<button type="button" class="btn btn-dark">Dark</button>
+<button type="button" class="btn btn-light">Light</button>
+<button type="button" class="btn btn-link">Link</button>
 
-<url>
-    {% for category in categories %}
-      <li>{{ category.id }} / {{category.name }}</li>]
-    {% endfor %}
+<img src="{% static 'img/user.png' %}"
 
-</url>
-
-
-<p>{{ name }}</p>
 </body>
-
-
-</html>
