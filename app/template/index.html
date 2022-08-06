@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticle</title>
+</head>
+<body>
+<h1>
+    {% if categories %}
+        Si hay datos
+    {% else %}
+        No hay
+    {% endif %}
+</h1>
+
+<url>
+    {% for category in categories %}
+      <li>{{ category.id }} / {{category.name }}</li>]
+    {% endfor %}
+
+</url>
+
+
+<p>{{ name }}</p>
+</body>
+
+
+</html>
