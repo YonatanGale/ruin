@@ -1,7 +1,7 @@
 {% extends 'body.html' %}
 
 {% block content %}
-<form>
+<form method="post" action=".">
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">
@@ -14,7 +14,7 @@
             {{ form }}
         </div>
         <div class="card-footer">
-            <button class="btn btn-primary btn-flat">
+            <button type="submit" class="btn btn-primary btn-flat">
                 <i class="fas fa-save"></i>Guardar registro
             </button>
         </div>
