@@ -1,5 +1,5 @@
 from core.erp.models import Category
-from django.forms import ModelForm
+from django.forms import *
 
 class CategoryForm(ModelForm):
     class Meta:

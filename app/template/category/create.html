@@ -11,7 +11,10 @@
         </div>
         <div class="card-body">
             {% csrf_token %}
-            {{ form }}
+            <div class="form-group">
+                <label for="email">{{ form.name.label }}:</label>
+                {{ form.name }}
+            </div>
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-primary btn-flat">
