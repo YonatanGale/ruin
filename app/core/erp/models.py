@@ -15,7 +15,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
-    cate = models.ForeignKey(Category, on_delete=models.CASCADE)
+    cate = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Categoria')
 
 
     def __str__(self):
