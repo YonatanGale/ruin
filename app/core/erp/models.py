@@ -16,6 +16,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     cate = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Categoria')
+    price = models.IntegerField(default=0, verbose_name='Precio')
 
 
     def __str__(self):

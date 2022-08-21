@@ -20,5 +20,5 @@ from core.login.views import loginformView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('erp/', include('core.erp.urls')),
-    path('login/', loginformView.as_view())
+    path('', include('core.login.urls'))
 ]
