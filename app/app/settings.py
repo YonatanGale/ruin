@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Apps
     'core.erp',
+    'core.login',
 ]
 
 MIDDLEWARE = [
