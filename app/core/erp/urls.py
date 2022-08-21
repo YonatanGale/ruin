@@ -6,5 +6,7 @@ app_name = 'erp'
 
 urlpatterns = [
     path('category/list/', categoryListView.as_view(), name='category_list'),
-    path('category/create/', categoryCreateView.as_view(), name='category_create')
+    path('category/create/', categoryCreateView.as_view(), name='category_create'),
+    path('category/edit/<int:pk>/', categoryUpdateView.as_view(), name='category_update'),
+    path('category/delete/<int:pk>/', categoryDeleteView.as_view(), name='category_delete'),
 ]
