@@ -11,7 +11,7 @@ from django.urls import reverse_lazy
 
 class categoryListView(ListView):
     model = Category
-    template_name = 'category/list.html'
+    template_name = 'template/category/list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -23,7 +23,7 @@ class categoryListView(ListView):
 class categoryCreateView(CreateView):
     model = Category
     form_class = CategoryForm
-    template_name = 'category/create.html'
+    template_name = 'template/category/create.html'
     success_url = reverse_lazy('erp:category_list')
 
     def get_context_data(self, **kwargs):
@@ -35,7 +35,7 @@ class categoryCreateView(CreateView):
 class categoryUpdateView(UpdateView):
     model = Category
     form_class = CategoryForm
-    template_name = 'Category/create.html'
+    template_name = 'template/Category/create.html'
     success_url = reverse_lazy('erp:category_list')
 
     def get_context_data(self, **kwargs):
@@ -46,7 +46,7 @@ class categoryUpdateView(UpdateView):
 
 class categoryDeleteView(DeleteView):
     model = Category
-    template_name = 'category/delete.html'
+    template_name = 'template/category/delete.html'
     success_url = reverse_lazy('erp:category_list')
 
     def get_context_data(self, **kwargs):

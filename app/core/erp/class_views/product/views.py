@@ -11,7 +11,7 @@ from django.urls import reverse_lazy
 
 class productListView(ListView):
     model = Product
-    template_name = 'product/list.html'
+    template_name = 'template/product/list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -23,7 +23,7 @@ class productListView(ListView):
 class productCreateView(CreateView):
     model = Product
     form_class = ProductForm
-    template_name = 'product/create.html'
+    template_name = 'template/product/create.html'
     success_url = reverse_lazy('erp:product_list')
 
     def get_context_data(self, **kwargs):
@@ -35,7 +35,7 @@ class productCreateView(CreateView):
 class productUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
-    template_name = 'product/create.html'
+    template_name = 'template/product/create.html'
     success_url = reverse_lazy('erp:product_list')
 
     def get_context_data(self, **kwargs):
@@ -46,7 +46,7 @@ class productUpdateView(UpdateView):
 
 class productDeleteView(DeleteView):
     model = Product
-    template_name = 'product/delete.html'
+    template_name = 'template/product/delete.html'
     success_url = reverse_lazy('erp:product_list')
 
     def get_context_data(self, **kwargs):
