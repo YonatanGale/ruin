@@ -98,3 +98,9 @@ class employee(models.Model):
         verbose_name_plural = 'Empleados'
         db_table = 'empleado'
         ordering = ['id']
+
+class buy(models.Model):
+    mot = models.CharField(max_length=150, verbose_name='Motivo')
+    cost = models.IntegerField(default=0, verbose_name='Costo')
+    prov_name = models.CharField(max_length=150, verbose_name='Nombre de proveedor')
+    
