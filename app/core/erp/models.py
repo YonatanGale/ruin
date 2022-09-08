@@ -103,4 +103,13 @@ class buy(models.Model):
     mot = models.CharField(max_length=150, verbose_name='Motivo')
     cost = models.IntegerField(default=0, verbose_name='Costo')
     prov_name = models.CharField(max_length=150, verbose_name='Nombre de proveedor')
+    descrip = models.CharField(max_length=150, verbose_name='Descripcion de compra')
+    date_joined = models.DateTimeField(default=datetime.now, verbose_name= 'Fecha de registro')
     
+    def __str__(self):
+        return self.mot
+
+    class Meta: 
+        verbose_name = 'Compra'
+        verbose_name_plural = 'Compras'
+        ordering = ['id']
