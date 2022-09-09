@@ -8,7 +8,7 @@
     <th scope="col">Nombre proveedor</th>
     <th scope="col">Descripcion</th>
     <th scope="col">Fecha de registro</th>
-    <th scope="col">Opciones</th>
+    <!-- <th scope="col">Opciones</th> -->
   </tr>
 {% endblock %}
 {% block rows %}
@@ -20,12 +20,12 @@
     <td>{{ c.prov_name }}</td>
     <td>{{ c.descrip }}</td>
     <td>{{ c.date_joined }}</td>
-    <td>
+    <!-- <td>
         <a href="#" class="btn btn-warning btn-xs">
             <i class="far fa-edit"></i>
         </a>
         <a href="{% url 'erp:buy_delete' c.id %}" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>
-    </td>
+    </td> -->
 </tr>
 {% endfor %}
 {% endblock %}
