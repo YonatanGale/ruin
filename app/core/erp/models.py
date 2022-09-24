@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import datetime
 from core.models import BaseModel
+from django.forms import model_to_dict
+from crum import get_current_user
 
 # Create your models here.
 class Category(BaseModel):
@@ -8,6 +10,15 @@ class Category(BaseModel):
 
     def __str__(self):
         return self.name
+
+    def save(self, force_insert=False, force_update=False, Using=None, update_fields=None):
+        user = get_current_user()
+        if user is not None:
+            if not self.pk:
+                self.user_creation = user
+            else:
+                self.user_update = user
+        super(Category, self).save()
 
     class Meta:
         verbose_name = 'Categoria'

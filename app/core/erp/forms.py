@@ -17,6 +17,7 @@ class CategoryForm(ModelForm):
             )
 
         }
+        exclude = ['user_update', 'user_creation']
 
 class ProductForm(ModelForm):
     def __init__(self, *args, **kwargs):
