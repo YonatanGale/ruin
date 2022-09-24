@@ -1,8 +1,9 @@
 from django.db import models
 from datetime import datetime
+from core.models import BaseModel
 
 # Create your models here.
-class Category(models.Model):
+class Category(BaseModel):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
 
     def __str__(self):
