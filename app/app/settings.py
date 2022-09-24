@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'core.erp',
     'core.login',
     'widget_tweaks',
+    'core.user',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,5 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = '/erp/dashboard/'
 
 LOGIN_URL = '/login/'
+
+AUTH_USER_MODEL = 'user.User'

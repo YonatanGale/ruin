@@ -100,14 +100,15 @@ class employee(models.Model):
         ordering = ['id']
 
 class buy(models.Model):
-    mot = models.CharField(max_length=150, verbose_name='Motivo')
+    name = models.CharField(max_length=150, verbose_name='Nombre')
+    cant = models.IntegerField(default=0, verbose_name='Cantidad')
     cost = models.IntegerField(default=0, verbose_name='Costo')
     prov_name = models.CharField(max_length=150, verbose_name='Nombre de proveedor')
     descrip = models.CharField(max_length=150, verbose_name='Descripcion de compra')
     date_joined = models.DateTimeField(default=datetime.now, verbose_name= 'Fecha de registro')
     
     def __str__(self):
-        return self.mot
+        return self.name
 
     class Meta: 
         verbose_name = 'Compra'

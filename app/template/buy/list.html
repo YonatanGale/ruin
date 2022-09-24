@@ -3,7 +3,7 @@
 {% block columns %}
 <tr>
     <th scope="col">Nro</th>
-    <th scope="col">Motivo</th>
+    <th scope="col">Nombre</th>
     <th scope="col">Costo</th>
     <th scope="col">Nombre proveedor</th>
     <th scope="col">Descripcion</th>
@@ -15,17 +15,17 @@
 {% for c in object_list %}
 <tr>
     <td>{{ c.id }}</td>
-    <td>{{ c.mot }}</td>
+    <td>{{ c.name }}</td>
     <td>{{ c.cost }}</td>
     <td>{{ c.prov_name }}</td>
     <td>{{ c.descrip }}</td>
     <td>{{ c.date_joined }}</td>
-    <!-- <td>
+    <td>
         <a href="#" class="btn btn-warning btn-xs">
             <i class="far fa-edit"></i>
         </a>
         <a href="{% url 'erp:buy_delete' c.id %}" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>
-    </td> -->
+    </td>
 </tr>
 {% endfor %}
 {% endblock %}
