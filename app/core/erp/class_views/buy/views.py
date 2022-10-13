@@ -33,7 +33,7 @@ class buyCreateView(CreateView):
     model = buy
     form_class = buyForm
     template_name = 'template/buy/create.html'
-    success_url = reverse_lazy('erp:buy_list')
+    success_url = reverse_lazy('erp:buy_list2')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

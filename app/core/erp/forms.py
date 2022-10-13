@@ -46,7 +46,7 @@ class buyForm(ModelForm):
         for form in self.visible_fields():
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
-        self.fields['mot'].widget.attrs['autofocus'] = True
+        self.fields['name'].widget.attrs['autofocus'] = True
     
     class Meta:
         model = buy

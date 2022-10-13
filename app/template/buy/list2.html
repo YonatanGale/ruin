@@ -24,12 +24,14 @@
                 <tr>
                   <th>Nro.</th>
                   <th>Nombre</th>
+                  <th>Cantidad en kg, Ls o unidad</th>
                 </tr>
                 </thead>
                 <tbody>
                     {% for a in object_list %}
                     <td>{{ a.id }}</td>
                     <td>{{ a.name }}</td>
+                    <td>{{ a.uni }}</td>
                     {% endfor %}
                 </tbody>
 

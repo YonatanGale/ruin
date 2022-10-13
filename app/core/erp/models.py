@@ -113,8 +113,8 @@ class employee(models.Model):
 
 class buy(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre')
-    cant = models.IntegerField(default=0, verbose_name='Cantidad')
-    uni = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    cant = models.IntegerField(default=0, verbose_name='Unidades')
+    uni = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Cantidad en Litros, kg o unidad')
     cost = models.IntegerField(default=0, verbose_name='Costo')
     prov_name = models.CharField(max_length=150, verbose_name='Nombre de proveedor')
     descrip = models.CharField(max_length=150, verbose_name='Descripcion de compra')
