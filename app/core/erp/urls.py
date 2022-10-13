@@ -21,6 +21,7 @@ urlpatterns = [
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     #buy
     path('buy/list/', buyListView.as_view(), name='buy_list'),
+    path('buy/list2/', buyListView2.as_view(), name='buy_list2'),
     path('buy/create/', buyCreateView.as_view(), name='buy_create'),
     path('buy/delete/<int:pk>/', buyDeleteView.as_view(), name='buy_delete'),
 ]

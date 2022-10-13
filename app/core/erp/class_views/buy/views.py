@@ -18,6 +18,17 @@ class buyListView(ListView):
         context['entity'] = 'Compras'
         return context
 
+class buyListView2(ListView):
+    model = buy
+    template_name = 'template/buy/list2.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Lista de compras'
+        context['create_url'] = reverse_lazy('erp:buy_create')
+        context['entity'] = 'Compras'
+        return context
+
 class buyCreateView(CreateView):
     model = buy
     form_class = buyForm
