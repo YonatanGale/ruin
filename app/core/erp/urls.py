@@ -3,6 +3,7 @@ from django.urls import path
 from core.erp.class_views.category.views import *
 from core.erp.class_views.product.views import *
 from core.erp.class_views.buy.views import *
+from core.erp.class_views.client.views import *
 
 app_name = 'erp'
 
@@ -21,7 +22,11 @@ urlpatterns = [
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     #buy
     path('buy/list/', buyListView.as_view(), name='buy_list'),
-    path('buy/list2/', buyListView2.as_view(), name='buy_list2'),
     path('buy/create/', buyCreateView.as_view(), name='buy_create'),
     path('buy/delete/<int:pk>/', buyDeleteView.as_view(), name='buy_delete'),
+    #Client
+    path('client/list/', clientListView.as_view(), name='client_list'),
+    path('client/create/', clientCreateView.as_view(), name='client_create'),
+    path('client/edit/<int:pk>/', clientUpdateView.as_view(), name='client_update'),
+    path('client/delete/<int:pk>/', clientDeleteView.as_view(), name='client_delete'),
 ]
