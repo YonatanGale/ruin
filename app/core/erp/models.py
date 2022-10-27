@@ -11,6 +11,10 @@ class Category(BaseModel):
     def __str__(self):
         return self.name
 
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
+
     def save(self, force_insert=False, force_update=False, Using=None, update_fields=None):
         user = get_current_user()
         if user is not None:
