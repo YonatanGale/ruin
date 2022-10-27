@@ -1,7 +1,7 @@
 {% extends 'template/list.html' %}
 {% load static %}
 {% block head_list %}
-    <script src="{% static 'category/js/list.js' %}"></script>
+    <script src="{% static 'category/list.js' %}"></script>
 {% endblock %}
 
 {% block columns %}
@@ -16,12 +16,5 @@
 {% endblock %}
 
 {% block javascript %}
-<script type="application/javascript">
-    $(function (){
-        $('#data').DataTable({
-                responsive: true,
-                autoWidth: false
-            });
-        });
-</script>
+
 {% endblock %}

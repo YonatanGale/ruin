@@ -2,24 +2,21 @@ $(function (){
     $('#data').DataTable({
         responsive: true,
         autoWidth: false,
-        destroy: true,
-        deferRender: true,
         ajax: {
             url: window.location.pathname,
             type: 'POST',
             data: {
-                'action':'searhdata'
-            }, // parametros
+                'action':'searchdata'
+            },
             dataSrc: ""
         },
         columns: [
             { "data": "id"},
             { "data": "name"},
-            { "data": "name"},
         ],
         columnDefs: [
             {
-                targets: [2],
+                targets: [-1],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
@@ -33,4 +30,6 @@ $(function (){
         
           }
         });
+
+
 });
