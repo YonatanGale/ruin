@@ -12,9 +12,16 @@
   </tr>
 {% endblock %}
 {% block rows %}
-
-{% endblock %}
-
-{% block javascript %}
-
+{% for c in object_list %}
+<tr>
+    <td>{{ c.id }}</td>
+    <td>{{ c.name }}</td>
+    <td>
+        <a href="{% url 'erp:category_update' c.id %}" class="btn btn-warning btn-xs">
+            <i class="far fa-edit"></i>
+        </a>
+        <a href="{% url 'erp:category_delete' c.id %}" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>
+    </td>
+</tr>
+{% endfor %}
 {% endblock %}
