@@ -1,7 +1,9 @@
 $(function (){
-    $('#data').DataTable({
+    $('#data').DataTable( {
         responsive: true,
         autoWidth: false,
+        destroy: true,
+        deferRender: true,
         ajax: {
             url: window.location.pathname,
             type: 'POST',
@@ -12,7 +14,12 @@ $(function (){
         },
         columns: [
             { "data": "id"},
-            { "data": "name"},
+            { "data": "names"},
+            { "data": "surnames"},
+            { "data": "ci"},
+            { "data": "Birthday"},
+            { "data": "addres"},
+            { "data": "id"},
         ],
         columnDefs: [
             {
@@ -20,8 +27,8 @@ $(function (){
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/erp/category/edit/'+row.id+'/" class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
-                    buttons += '<a href="/erp/category/delete/'+row.id+'/" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
+                    var buttons = '<a href="/erp/client/edit/'+row.id+'/" class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
+                    buttons += '<a href="/erp/client/delete/'+row.id+'/" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
                     return buttons
                 }
             },
@@ -31,5 +38,5 @@ $(function (){
           }
         });
 
-
+    $('#myModalClient').modal('show');
 });

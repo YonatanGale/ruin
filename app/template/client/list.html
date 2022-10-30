@@ -1,5 +1,8 @@
 {% extends 'template/list.html' %}
-
+{% load static %}
+{% block head_list %}
+    <script src="{% static '/client/js/list.js' %}"></script>
+{% endblock %}
 {% block columns %}
 <tr>
     <th scope="col">Nro</th>
@@ -12,20 +15,36 @@
   </tr>
 {% endblock %}
 {% block rows %}
-{% for c in object_list %}
-<tr>
-    <td>{{ c.id }}</td>
-    <td>{{ c.names }}</td>
-    <td>{{ c.surnames }}</td>
-    <td>{{ c.ci }}</td>
-    <td>{{ c.Birthday }}</td>
-    <td>{{ c.addres }}</td>
-    <td>
-        <a href="{% url 'erp:client_update' c.id %}" class="btn btn-warning btn-xs">
-            <i class="far fa-edit"></i>
-        </a>
-        <a href="{% url 'erp:client_delete' c.id %}" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>
-    </td>
-</tr>
-{% endfor %}
+
+
+{% endblock %}
+
+{% block javascript %}
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModalClient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" action=".">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                {% for field in form.visible_fields %}
+                <div class="form-group">
+                    <label for="email">{{ field.label }}:</label>
+                    {{ field}}
+                </div>
+                {% endfor %}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+    </form>
+
+  </div>
 {% endblock %}

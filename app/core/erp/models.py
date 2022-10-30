@@ -11,9 +11,6 @@ class Category(BaseModel):
     def __str__(self):
         return self.name
 
-    def toJSON(self):
-        item = model_to_dict(self)
-        return item
 
     def save(self, force_insert=False, force_update=False, Using=None, update_fields=None):
         user = get_current_user()
@@ -23,6 +20,10 @@ class Category(BaseModel):
             else:
                 self.user_update = user
         super(Category, self).save()
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
 
     class Meta:
         verbose_name = 'Categoria'
@@ -52,6 +53,11 @@ class Client(models.Model):
 
     def __str__(self):
         return self.names
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['Birthday'] = self.Birthday.strftime('%Y-%m-%d')
+        return item
 
     class Meta:
         verbose_name = 'Cliente'
