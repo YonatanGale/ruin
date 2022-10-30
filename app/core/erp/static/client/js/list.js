@@ -1,4 +1,4 @@
-$(function (){
+function getData(){
     $('#data').DataTable( {
         responsive: true,
         autoWidth: false,
@@ -37,11 +37,16 @@ $(function (){
         
           }
         });
+}
 
+$(function (){
 
+    $('.btnAdd').on('click', function(){
+        $('input[name="action"]').val('add');
+        $('#myModalClient').modal('show');
+    });
         
-    $('#myModalClient').modal('show');
-
+    
     // $('form').on('submit', function (e){
     //     e.preventDefault();
     //     var parameters = new FormData(this);
