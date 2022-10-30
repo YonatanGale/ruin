@@ -28,8 +28,8 @@ class categoryListView(ListView):
                 data = []
                 for i in Category.objects.all():
                     data.append(i.toJSON())
-                else:
-                    data['error'] = 'Ha ocurrido un error'
+            else:
+                data['error'] = 'Ha ocurrido un error'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)    

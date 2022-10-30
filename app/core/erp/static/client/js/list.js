@@ -38,5 +38,15 @@ $(function (){
           }
         });
 
+
+        
     $('#myModalClient').modal('show');
+
+    // $('form').on('submit', function (e){
+    //     e.preventDefault();
+    //     var parameters = new FormData(this);
+    //     submit_with_ajax(window.location.pathname, title: 'Notificacion', content: 'Estas seguro de realizar la siguiente accion?', parameters, callback: function(){
+    //         location.reload();
+    //     });
+    // });
 });

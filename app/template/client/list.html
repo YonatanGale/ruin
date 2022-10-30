@@ -19,32 +19,43 @@
 
 {% endblock %}
 
+{% block buttons_list %}
+<a class="btn btn-primary btn-flat btnAdd">
+    <i class="fas fa-plus"></i>Nuevo registro
+</a>
+<a href="{{ list_url }}" class="btn btn-success btn-flat">
+    <i class="fas fa-sync"></i> Actualizar
+</a>
+{% endblock %}
 {% block javascript %}
 
   <!-- Modal -->
-  <div class="modal fade" id="myModalClient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModalClient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <form method="post" action=".">
         <div class="modal-dialog">
             <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                {% for field in form.visible_fields %}
-                <div class="form-group">
-                    <label for="email">{{ field.label }}:</label>
-                    {{ field}}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                {% endfor %}
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <input name="action" type="hidden" value="add">
+                        {% for field in form.visible_fields %}
+                        <div class="form-group">
+                            <label for="email">{{ field.label }}:</label>
+                            {{ field}}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
             </div>
-          </div>
+        </div>
     </form>
 
-  </div>
+</div>
 {% endblock %}

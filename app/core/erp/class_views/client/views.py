@@ -24,10 +24,18 @@ class clientListView(ListView):
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                for i in Category.objects.all():
+                for i in Client.objects.all():
                     data.append(i.toJSON())
-                else:
-                    data['error'] = 'Ha ocurrido un error'
+            elif action == 'add':    
+                cli= Client()
+                cli.names = request.POST['names']
+                cli.surnames = request.POST['surnames']
+                cli.ci = request.POST['ci']
+                cli.Birthday = request.POST['Birthday']
+                cli.addres = request.POST['addres']
+                cli.save()
+            else:
+                data['error'] = 'Ha ocurrido un error'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)   
