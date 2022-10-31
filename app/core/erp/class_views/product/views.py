@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
 
 
 class productListView(ListView):
@@ -25,6 +26,11 @@ class productCreateView(CreateView):
     form_class = ProductForm
     template_name = 'template/product/create.html'
     success_url = reverse_lazy('erp:product_list')
+
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -11,6 +11,7 @@
             </div>
             <div class="card-body">
                 {% csrf_token %}
+                <input type="hidden" name="action" value="{{ action }}"
                 {% for field in form.visible_fields %}
                 <div class="form-group">
                     <label for="email">{{ field.label }}:</label>
@@ -40,7 +41,27 @@
                 });
             {% endif %}
 
-            alert_jqueryconfirm();
+
+            // $('form').on('submit', function (e) {
+            //     e.preventDefault();
+            //     var parameters = $(this).serializeArray();
+            //     $.ajax({
+            //         url: '{% url 'erp:category_create' %}',
+            //         type: 'POST',
+            //         date: parameters,
+            //         dataType: 'json'
+            //     }).done(function (data) {
+            //         console.log(data);
+            //         if(!data.hasOwnProperty('error')){
+            //             location.href = '{{ list_url }}'
+            //         }
+            //         message_error(data.error)
+            //     }).fail(function (jqXHR, textStatus, errorThrown) {
+            //         alert(textStatus + ': ' + errorThrown);
+            //     }).always(function (data) {
+
+            //     });
+            // });
 
     </script>
 {% endblock %}
