@@ -10,23 +10,23 @@ app_name = 'erp'
 urlpatterns = [
     #categoria
     path('category/list/', categoryListView.as_view(), name='category_list'),
-    path('category/create/', categoryCreateView.as_view(), name='category_create'),
+    path('category/add/', categoryCreateView.as_view(), name='category_create'),
     path('category/edit/<int:pk>/', categoryUpdateView.as_view(), name='category_update'),
     path('category/delete/<int:pk>/', categoryDeleteView.as_view(), name='category_delete'),
     #producto
     path('product/list/', productListView.as_view(), name='product_list'),
-    path('product/create/', productCreateView.as_view(), name='product_create'),
+    path('product/add/', productCreateView.as_view(), name='product_create'),
     path('product/edit/<int:pk>/', productUpdateView.as_view(), name='product_update'),
     path('product/delete/<int:pk>/', productDeleteView.as_view(), name='product_delete'),
     #dashboard
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     #buy
     path('buy/list/', buyListView.as_view(), name='buy_list'),
-    path('buy/create/', buyCreateView.as_view(), name='buy_create'),
+    path('buy/add/', buyCreateView.as_view(), name='buy_create'),
     path('buy/delete/<int:pk>/', buyDeleteView.as_view(), name='buy_delete'),
     #Client
     path('client/list/', clientListView.as_view(), name='client_list'),
-    path('client/create/', clientCreateView.as_view(), name='client_create'),
+    path('client/add/', clientCreateView.as_view(), name='client_create'),
     path('client/edit/<int:pk>/', clientUpdateView.as_view(), name='client_update'),
     path('client/delete/<int:pk>/', clientDeleteView.as_view(), name='client_delete'),
 ]

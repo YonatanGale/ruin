@@ -1,33 +1,3 @@
-function alert_jqueryconfirm(){
-    $.confirm({
-        theme: 'material',
-        title: 'Confirmación',
-        icon: 'fa fa-info',
-        content: '¿Estas seguro de realizar la siguiente accion?',
-        columnClass: 'small',
-        typeAnimated: true,
-        cancelButtonClass: 'btn-primary',
-        draggable: true,
-        dragWindowBorder: false,
-        buttons: {
-            info: {
-                text: "Si",
-                btnClass: 'btn-primary',
-                action: function () {
-                    
-                }
-            },
-            danger: {
-                text: "No",
-                btnClass: 'btn-red',
-                action: function () {
-                    
-                }
-            },
-        }
-    })
-
-}
 function message_error(obj) {
     var html ='';
     if(typeof (obj) === 'object'){
@@ -45,4 +15,52 @@ function message_error(obj) {
         html: html,
         icon: 'error'
     });
+}
+
+
+function alert_jqueryconfirm(url, parameters, callback){
+    $.confirm({
+        theme: 'material',
+        title: 'Confirmación',
+        icon: 'fa fa-info',
+        content: '¿Estas seguro de realizar la siguiente accion?',
+        columnClass: 'small',
+        typeAnimated: true,
+        cancelButtonClass: 'btn-primary',
+        draggable: true,
+        dragWindowBorder: false,
+        buttons: {
+            info: {
+                text: "Si",
+                btnClass: 'btn-primary',
+                action: function () {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: parameters,
+                        dataType: 'json'
+                    }).done(function (data) {
+                        console.log(data);
+                        if (!data.hasOwnProperty('error')) {
+                            callback();
+                            return false;
+                        }
+                        message_error(data.error);
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + ': ' + errorThrown);
+                    }).always(function (data) {
+        
+                    });
+                }
+            },
+            danger: {
+                text: "No",
+                btnClass: 'btn-red',
+                action: function () {
+                    
+                }
+            },
+        }
+    })
+
 }

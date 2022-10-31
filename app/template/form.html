@@ -1,21 +1,25 @@
 {% extends 'template/body.html' %}
-
+{% load widget_tweaks %}
 {% block content %}
     <form method="post" action=".">
         <div class="card card-default">
             <div class="card-header">
                 <h3 class="card-title">
+                    {% if action == 'add' %}
                     <i class="fas fa-plus"></i>
+                    {% else %}
+                    <i class="fas fa-save"></i>
+                    {% endif %}
                     {{ title }}
                 </h3>
             </div>
             <div class="card-body">
                 {% csrf_token %}
-                <input type="hidden" name="action" value="{{ action }}"
+                <input type="hidden" name="action" value="{{ action }}">
                 {% for field in form.visible_fields %}
                 <div class="form-group">
                     <label for="email">{{ field.label }}:</label>
-                    {{ field}}
+                    {{ field|add_class:'form-control'|attr:'autocomplete:off'}}
                 </div>
                 {% endfor %}
             </div>
@@ -27,42 +31,15 @@
         </div>
     </form>
     <script>
-            {% if form.errors %}
-                var errors = '';
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        errors += '{{ error }}\n';
-                    {% endfor %}
-                {% endfor %}
-                Swal.fire({
-                    title: 'Error!',
-                    text: errors,
-                    icon: 'error'
-                });
-            {% endif %}
 
-
-            $('form').on('submit', function (e) {
-                e.preventDefault();
-                var parameters = $(this).serializeArray();
-                $.ajax({
-                    url: '{% url 'erp:category_create' %}',
-                    type: 'POST',
-                    date: parameters,
-                    dataType: 'json'
-                }).done(function (data) {
-                    console.log(data);
-                    if(!data.hasOwnProperty('error')){
-                        location.href = '{{ list_url }}'
-                    }
-                    message_error(data.error)
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    alert(textStatus + ': ' + errorThrown);
-                }).always(function (data) {
-
-                });
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var parameters = $(this).serializeArray();
+            alert_jqueryconfirm(window.location.pathname, parameters, function () {
+                location.href = '{{ list_url }}';
             });
+        });
 
-            // alert_jqueryconfirm();
+
     </script>
 {% endblock %}
