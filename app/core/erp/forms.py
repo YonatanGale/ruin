@@ -1,3 +1,4 @@
+from select import select
 from turtle import textinput
 from core.erp.models import *
 from django.forms import *
@@ -87,6 +88,8 @@ class buyForm(ModelForm):
             ),
 
         }
+
+
 
 
 class clientForm(ModelForm):
