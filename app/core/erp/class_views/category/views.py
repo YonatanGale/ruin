@@ -5,6 +5,7 @@ from django.shortcuts import render
 from core.erp.models import Category
 from core.erp.mixins import IsSuperuserMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -12,12 +13,11 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 
 
-class categoryListView(IsSuperuserMixin, ListView):
+class categoryListView(LoginRequiredMixin, IsSuperuserMixin, ListView):
     model = Category
     template_name = 'template/category/list.html'
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -43,7 +43,7 @@ class categoryListView(IsSuperuserMixin, ListView):
         context['entity'] = 'Categorias'
         return context
 
-class categoryCreateView(CreateView):
+class categoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
     form_class = CategoryForm
     template_name = 'template/category/create.html'
@@ -74,13 +74,13 @@ class categoryCreateView(CreateView):
         context['list_url'] = reverse_lazy('erp:category_list')
         return context
 
-class categoryUpdateView(UpdateView):
+class categoryUpdateView(LoginRequiredMixin,UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = 'template/Category/create.html'
     success_url = reverse_lazy('erp:category_list')
 
-    @method_decorator(login_required)
+
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
