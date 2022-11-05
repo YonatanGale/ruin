@@ -3,6 +3,7 @@ from urllib import request
 from core.erp.forms import CategoryForm
 from django.shortcuts import render
 from core.erp.models import Category
+from core.erp.mixins import IsSuperuserMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -11,7 +12,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 
 
-class categoryListView(ListView):
+class categoryListView(IsSuperuserMixin, ListView):
     model = Category
     template_name = 'template/category/list.html'
 
