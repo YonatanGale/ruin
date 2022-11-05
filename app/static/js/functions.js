@@ -38,7 +38,7 @@ function alert_jqueryconfirm(url, parameters, callback){
                         url: url,
                         type: 'POST',
                         data: parameters,
-                        dataType: 'json'
+                        dataType: 'json',
                     }).done(function (data) {
                         if (!data.hasOwnProperty('error')) {
                             callback();

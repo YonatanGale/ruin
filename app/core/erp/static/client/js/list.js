@@ -31,7 +31,7 @@ function getData(){
                 orderable: false,
                 render: function (data, type, row) {
                     var buttons = '<a href="#" rel="edit" class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
-                    buttons += '<a href="#" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
+                    buttons += '<a href="/erp/client/delete/'+row.id+'/" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
                     return buttons
                 }
             },
@@ -57,7 +57,8 @@ $(function () {
         $('#myModalClient').modal('show');
     });
 
-    $('#data tbody').on('click', 'a[rel="edit"]', function () {
+    $('#data tbody')
+    .on('click', 'a[rel="edit"]', function () {
         modal_title.find('span').html('Edición de un cliente');
         modal_title.find('i').removeClass().addClass('fas fa-edit');
         var tr = tblClient.cell($(this).closest('td, li')).index();
