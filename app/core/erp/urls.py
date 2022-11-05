@@ -1,3 +1,4 @@
+from core.erp.class_views.sale.views import SaleCreateView
 from core.erp.class_views.dashboard.dashboard import DashboardView
 from django.urls import path
 from core.erp.class_views.category.views import *
@@ -27,4 +28,7 @@ urlpatterns = [
     #Client
     path('client/list/', ClientListView.as_view(), name='client_list'),
     path('client/delete/<int:pk>/', clientDeleteView.as_view(), name='client_delete'),
+    #Sale
+    path('sale/add/', SaleCreateView.as_view(), name='sale_create'),
+
 ]

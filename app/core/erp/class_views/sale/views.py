@@ -1,25 +1,24 @@
 from unicodedata import category
 from urllib import request
-from core.erp.forms import CategoryForm
+from core.erp.forms import CategoryForm, SaleForm
 from django.shortcuts import render
-from core.erp.models import Category, Sale
+from core.erp.models import  Sale
 from core.erp.mixins import IsSuperuserMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 
 
 class SaleCreateView(LoginRequiredMixin, CreateView):
     model = Sale
-    form_class = CategoryForm
-    template_name = 'template/category/create.html'
-    success_url = reverse_lazy('erp:category_list')
+    form_class = SaleForm
+    template_name = 'template/sale/create.html'
+    success_url = reverse_lazy('erp:dashboard')
 
-    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -38,8 +37,8 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Creacion de categorias'
-        context['entity'] = 'Categorias'
+        context['title'] = 'Creacion de una venta'
+        context['entity'] = 'Ventas'
         context['action'] = 'add'
         context['list_url'] = reverse_lazy('erp:category_list')
         return context
