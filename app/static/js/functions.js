@@ -40,7 +40,6 @@ function alert_jqueryconfirm(url, parameters, callback){
                         data: parameters,
                         dataType: 'json'
                     }).done(function (data) {
-                        console.log(data);
                         if (!data.hasOwnProperty('error')) {
                             callback();
                             return false;

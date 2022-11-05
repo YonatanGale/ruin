@@ -1,5 +1,8 @@
+var tblClient;
+var modal_title;
+
 function getData(){
-    $('#data').DataTable( {
+    tblClient = $('#data').DataTable( {
         responsive: true,
         autoWidth: false,
         destroy: true,
@@ -19,7 +22,7 @@ function getData(){
             { "data": "ci"},
             { "data": "Birthday"},
             { "data": "addres"},
-            { "data": "id"},
+            { "data": "addres"},
         ],
         columnDefs: [
             {
@@ -39,19 +42,31 @@ function getData(){
         });
 }
 
-$(function (){
+$(function () {
+    
+    modal_title = $('.modal-title');
 
-    $('.btnAdd').on('click', function(){
+    getData();
+
+    $('.btnAdd').on('click', function () {
         $('input[name="action"]').val('add');
+        modal_title.find('span').html('Creación de un cliente');
+        console.log(modal_title.find('i'));
+        modal_title.find('i').removeClass().addClass('fas fa-plus');
+        $('form')[0].reset();
         $('#myModalClient').modal('show');
     });
-        
-    
-    // $('form').on('submit', function (e){
-    //     e.preventDefault();
-    //     var parameters = new FormData(this);
-    //     submit_with_ajax(window.location.pathname, title: 'Notificacion', content: 'Estas seguro de realizar la siguiente accion?', parameters, callback: function(){
-    //         location.reload();
-    //     });
-    // });
+
+    $('#myModalClient').on('shown.bs.modal', function () {
+        $('form')[0].reset();
+    });
+
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        var parameters = $(this).serializeArray();
+        alert_jqueryconfirm(window.location.pathname, parameters, function () {
+            $('#myModalClient').modal('hide');
+            tblClient.ajax.reload();
+        });
+    });
 });

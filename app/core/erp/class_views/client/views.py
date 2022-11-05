@@ -8,9 +8,9 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.views.generic import TemplateView
 
-class clientListView(ListView):
-    model = Client
+class ClientListView(TemplateView):
     template_name = 'template/client/list.html'
 
     @method_decorator(csrf_exempt)
@@ -18,7 +18,7 @@ class clientListView(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, *arg, **kwargs):
+    def post(self, request, *args, **kwargs):
         data = {}
         try:
             action = request.POST['action']
@@ -26,8 +26,8 @@ class clientListView(ListView):
                 data = []
                 for i in Client.objects.all():
                     data.append(i.toJSON())
-            elif action == 'add':    
-                cli= Client()
+            elif action == 'add':
+                cli = Client()
                 cli.names = request.POST['names']
                 cli.surnames = request.POST['surnames']
                 cli.ci = request.POST['ci']
@@ -38,48 +38,50 @@ class clientListView(ListView):
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data, safe=False)   
+        return JsonResponse(data, safe=False)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Lista de clientes'
-        context['create_url'] = reverse_lazy('erp:client_create')
+        context['title'] = 'Listado de Clientes'
+        context['list_url'] = reverse_lazy('erp:client_list')
         context['entity'] = 'Clientes'
+        context['action'] = 'add'
         context['form'] = clientForm()
         return context
 
-class clientCreateView(CreateView):
-    model = Client
-    form_class = clientForm
-    template_name = 'template/client/create.html'
-    success_url = reverse_lazy('erp:client_list')
+# class clientCreateView(CreateView):
+#     model = Client
+#     form_class = clientForm
+#     template_name = 'template/client/create.html'
+#     success_url = reverse_lazy('erp:client_list')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Creacion de clientes'
-        context['entity'] = 'Clientes'
-        return context
 
-class clientUpdateView(UpdateView):
-    model = Client
-    form_class = clientForm
-    template_name = 'template/client/create.html'
-    success_url = reverse_lazy('erp:client_list')
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = 'Creacion de clientes'
+#         context['entity'] = 'Clientes'
+#         return context
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'edicion de clientes'
-        context['entity'] = 'Clientes'
-        return context
+# class clientUpdateView(UpdateView):
+#     model = Client
+#     form_class = clientForm
+#     template_name = 'template/client/create.html'
+#     success_url = reverse_lazy('erp:client_list')
 
-class clientDeleteView(DeleteView):
-    model = Client
-    template_name = 'template/client/delete.html'
-    success_url = reverse_lazy('erp:client_list')
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = 'edicion de clientes'
+#         context['entity'] = 'Clientes'
+#         return context
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'eliminacion de clientes'
-        context['entity'] = 'Clientes'
-        context['list_url'] = reverse_lazy('erp:client_list')
-        return context
+# class clientDeleteView(DeleteView):
+#     model = Client
+#     template_name = 'template/client/delete.html'
+#     success_url = reverse_lazy('erp:client_list')
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = 'eliminacion de clientes'
+#         context['entity'] = 'Clientes'
+#         context['list_url'] = reverse_lazy('erp:client_list')
+#         return context

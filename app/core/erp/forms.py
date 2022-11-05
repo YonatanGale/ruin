@@ -111,6 +111,23 @@ class clientForm(ModelForm):
                 attrs={
                     'placeholder' : 'Ingrese apellido del cliente'
                 }
-            )
+            ),
+            'Birthday': DateInput(format='%Y-%m-%d',
+                attrs={
+                    'value': datetime.now().strftime('%Y-%m-%d'),
+                }
+            ),
 
         }
+
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data

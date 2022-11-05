@@ -25,8 +25,8 @@ urlpatterns = [
     path('buy/add/', buyCreateView.as_view(), name='buy_create'),
     path('buy/delete/<int:pk>/', buyDeleteView.as_view(), name='buy_delete'),
     #Client
-    path('client/list/', clientListView.as_view(), name='client_list'),
-    path('client/add/', clientCreateView.as_view(), name='client_create'),
-    path('client/edit/<int:pk>/', clientUpdateView.as_view(), name='client_update'),
-    path('client/delete/<int:pk>/', clientDeleteView.as_view(), name='client_delete'),
+    path('client/list/', ClientListView.as_view(), name='client_list'),
+    # path('client/add/', clientCreateView.as_view(), name='client_create'),
+    # path('client/edit/<int:pk>/', clientUpdateView.as_view(), name='client_update'),
+    # path('client/delete/<int:pk>/', clientDeleteView.as_view(), name='client_delete'),
 ]
