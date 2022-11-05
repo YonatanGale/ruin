@@ -30,8 +30,8 @@ function getData(){
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/erp/client/edit/'+row.id+'/" class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
-                    buttons += '<a href="/erp/client/delete/'+row.id+'/" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
+                    var buttons = '<a href="#" rel="edit" class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
+                    buttons += '<a href="#" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
                     return buttons
                 }
             },
@@ -57,8 +57,24 @@ $(function () {
         $('#myModalClient').modal('show');
     });
 
+    $('#data tbody').on('click', 'a[rel="edit"]', function () {
+        modal_title.find('span').html('Edición de un cliente');
+        modal_title.find('i').removeClass().addClass('fas fa-edit');
+        var tr = tblClient.cell($(this).closest('td, li')).index();
+        var data = tblClient.row(tr.row).data();
+        $('input[name="action"]').val('edit');
+        $('input[name="id"]').val(data.id);
+        $('input[name="names"]').val(data.names);
+        $('input[name="surnames"]').val(data.surnames);
+        $('input[name="ci"]').val(data.ci);
+        $('input[name="Birthday"]').val(data.Birthday);
+        $('input[name="addres"]').val(data.addres);
+        $('#myModalClient').modal('show');
+    });
+
+
     $('#myModalClient').on('shown.bs.modal', function () {
-        $('form')[0].reset();
+        // $('form')[0].reset();
     });
 
     $('form').on('submit', function (e) {

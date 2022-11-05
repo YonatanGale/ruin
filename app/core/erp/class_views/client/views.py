@@ -34,6 +34,14 @@ class ClientListView(TemplateView):
                 cli.Birthday = request.POST['Birthday']
                 cli.addres = request.POST['addres']
                 cli.save()
+            elif action == 'edit':
+                cli = Client.objects.get(pk=request.POST['id'])
+                cli.names = request.POST['names']
+                cli.surnames = request.POST['surnames']
+                cli.ci = request.POST['ci']
+                cli.Birthday = request.POST['Birthday']
+                cli.addres = request.POST['addres']
+                cli.save()
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
