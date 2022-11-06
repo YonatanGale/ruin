@@ -5,6 +5,14 @@
     <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}">
     <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
     <script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+
+    <script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css' %}">
+    <script src="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.js' %}"></script>
+
     <script src="{% static '/sale/js/form.js' %}"></script>
 
 {% endblock %}
@@ -89,10 +97,10 @@
     </div>
     <div class="card-footer">
             <a href="#" class="btn btn-primary btn-flat">
-                <i class="fas fa-plus"></i>Nuevo registro
+                <i class="fas fa-save"></i>Guardar Registro
             </a>
-            <a href="#" class="btn btn-success btn-flat">
-                <i class="fas fa-sync"></i> Actualizar
+            <a href="#" class="btn btn-danger btn-flat">
+                <i class="fas fa-times"></i> Cancelar
             </a>
     </div>
     </div>

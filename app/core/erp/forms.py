@@ -96,9 +96,28 @@ class SaleForm(ModelForm):
         for form in self.visible_fields():
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
+
         self.fields['cli'].widget.attrs['autofocus'] = True
         self.fields['cli'].widget.attrs['class'] = 'form-control select2'
         self.fields['cli'].widget.attrs['style'] = 'width: 100%'
+
+        self.fields['date_joined'].widget.attrs = {
+            'autocomplete': 'off',
+            'class': 'form-control datetimepicker-input',
+            'id': 'date_joined',
+            'data-target': '#date_joined',
+            'data-toggle': 'datetimepicker',
+        }
+
+        self.fields['subtotal'].widget.attrs = {
+            'readonly': True,
+            'class': 'form-control'
+        }
+
+        self.fields['total'].widget.attrs = {
+            'readonly': True,
+            'class': 'form-control'
+        }
     
     class Meta:
         model = Sale
@@ -113,6 +132,7 @@ class SaleForm(ModelForm):
                                          'value': datetime.now().strftime('%Y-%m-%d'),
                                      }
                                      ),
+            'iva': TextInput()
         }
 
 class clientForm(ModelForm):
