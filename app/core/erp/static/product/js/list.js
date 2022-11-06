@@ -15,7 +15,10 @@ $(function (){
         columns: [
             { "data": "id"},
             { "data": "name"},
-            { "data": "id"},
+            { "data": "cate.name"},
+            { "data": "price"},
+            { "data": "cant"},
+            { "data": "cant"},
         ],
         columnDefs: [
             {
@@ -23,8 +26,8 @@ $(function (){
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/erp/category/edit/'+row.id+'/" class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
-                    buttons += '<a href="/erp/category/delete/'+row.id+'/" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
+                    var buttons = '<a href="/erp/product/edit/'+row.id+'/" class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
+                    buttons += '<a href="/erp/product/delete/'+row.id+'/" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
                     return buttons
                 }
             },
@@ -33,4 +36,6 @@ $(function (){
         
           }
         });
+
+
 });

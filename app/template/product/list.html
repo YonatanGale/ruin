@@ -1,4 +1,8 @@
 {% extends 'template/list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static '/product/js/list.js' %}"></script>
+{% endblock %}
 
 {% block columns %}
 <tr>
@@ -11,19 +15,9 @@
   </tr>
 {% endblock %}
 {% block rows %}
-{% for c in object_list %}
-<tr>
-    <td>{{ c.id }}</td>
-    <td>{{ c.name }}</td>
-    <td>{{ c.cate }}</td>
-    <td>{{ c.cant }}</td>
-    <td>{{ c.price }}</td>
-    <td>
-        <a href="{% url 'erp:product_update' c.id %}" class="btn btn-warning btn-xs">
-            <i class="far fa-edit"></i>
-        </a>
-        <a href="{% url 'erp:product_delete' c.id %}" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>
-    </td>
-</tr>
-{% endfor %}
+
+{% endblock %}
+
+{% block javascript %}
+
 {% endblock %}
