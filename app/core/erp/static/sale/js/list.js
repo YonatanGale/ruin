@@ -36,7 +36,7 @@ $(function () {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/erp/sale/delete/' + row.id + '/" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a> ';
+                    var buttons = '<a rel="delete" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a> ';
                     buttons += '<a rel="details" class="btn btn-success btn-xs btn-flat"><i class="fas fa-search"></i></a> ';
                     //var buttons = '<a href="/erp/sale/update/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
                     return buttons;
@@ -96,5 +96,15 @@ $(function () {
         });
         $('#myModalDet').modal('show');
 
-    });
+    })
+    .on('click', 'a[rel="delete"]', function () {
+        var tr = tblSale.cell($(this).closest('td, li')).index();
+        var data = tblSale.row(tr.row).data();
+            var parameters = new FormData();
+            parameters.append('action', 'delete');
+            parameters.append('id', data.id);
+            submit_with_ajax(window.location.pathname, parameters, function () {
+                tblSale.ajax.reload();
+            });
+        });
 });

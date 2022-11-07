@@ -192,7 +192,7 @@ $(function () {
         parameters.append('action', $('input[name="action"]').val());
         parameters.append('vents', JSON.stringify(vents.items));
         submit_with_ajax(window.location.pathname, parameters, function () {
-            location.href = '/erp/dashboard/';
+            location.href = '/erp/sale/list/';
         });
     });
 

@@ -36,6 +36,9 @@ class SaleListView(LoginRequiredMixin, ListView):
                 data = []
                 for i in DetSale.objects.filter(sale_id=request.POST['id']):
                     data.append(i.toJSON())
+            elif action == 'delete':
+                cli = Sale.objects.get(pk=request.POST['id'])
+                cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
