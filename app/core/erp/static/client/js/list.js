@@ -31,7 +31,7 @@ function getData(){
                 orderable: false,
                 render: function (data, type, row) {
                     var buttons = '<a href="#" rel="edit" class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
-                    buttons += '<a href="/erp/client/delete/'+row.id+'/" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
+                    buttons += '<a href="#" rel="delete" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
                     return buttons
                 }
             },
@@ -71,7 +71,17 @@ $(function () {
         $('input[name="Birthday"]').val(data.Birthday);
         $('input[name="addres"]').val(data.addres);
         $('#myModalClient').modal('show');
-    });
+    })
+    .on('click', 'a[rel="delete"]', function () {
+        var tr = tblClient.cell($(this).closest('td, li')).index();
+        var data = tblClient.row(tr.row).data();
+            var parameters = new FormData();
+            parameters.append('action', 'delete');
+            parameters.append('id', data.id);
+            submit_with_ajax(window.location.pathname, parameters, function () {
+                tblClient.ajax.reload();
+            });
+        });
 
 
     $('#myModalClient').on('shown.bs.modal', function () {

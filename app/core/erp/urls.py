@@ -27,7 +27,6 @@ urlpatterns = [
     path('buy/delete/<int:pk>/', buyDeleteView.as_view(), name='buy_delete'),
     #Client
     path('client/list/', ClientListView.as_view(), name='client_list'),
-    path('client/delete/<int:pk>/', clientDeleteView.as_view(), name='client_delete'),
     #Sale
     path('sale/add/', SaleCreateView.as_view(), name='sale_create'),
 

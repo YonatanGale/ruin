@@ -42,6 +42,9 @@ class ClientListView(LoginRequiredMixin, TemplateView):
                 cli.Birthday = request.POST['Birthday']
                 cli.addres = request.POST['addres']
                 cli.save()
+            elif action == 'delete':
+                cli = Client.objects.get(pk=request.POST['id'])
+                cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -54,16 +57,4 @@ class ClientListView(LoginRequiredMixin, TemplateView):
         context['list_url'] = reverse_lazy('erp:client_list')
         context['entity'] = 'Clientes'
         context['form'] = clientForm()
-        return context
-
-class clientDeleteView(DeleteView):
-    model = Client
-    template_name = 'template/client/delete.html'
-    success_url = reverse_lazy('erp:client_list')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'eliminacion de clientes'
-        context['entity'] = 'Clientes'
-        context['list_url'] = reverse_lazy('erp:client_list')
         return context
