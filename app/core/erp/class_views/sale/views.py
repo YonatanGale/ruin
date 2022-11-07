@@ -1,8 +1,10 @@
+import json
+from django.db import transaction
 from unicodedata import category
 from urllib import request
 from core.erp.forms import CategoryForm, SaleForm
 from django.shortcuts import render
-from core.erp.models import  Product, Sale
+from core.erp.models import  DetSale, Product, Sale
 from core.erp.mixins import IsSuperuserMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -34,6 +36,24 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                     item = i.toJSON()
                     item['value'] = i.name
                     data.append(item)
+            elif action == 'add':
+                vents = json.loads(request.POST['vents'])
+                sale = Sale()
+                sale.date_joined = vents['date_joined']
+                sale.cli_id = vents['cli']
+                sale.subtotal = float(vents['subtotal'])
+                sale.iva = float(vents['iva'])
+                sale.total = float(vents['total'])
+                sale.save()
+
+                for i in vents['products']:
+                    det = DetSale()
+                    det.sale_id = sale.id
+                    det.prod_id = i['id']
+                    det.cant = int(i['cant'])
+                    det.price = float(i['price'])
+                    det.subtotal = float(i['subtotal'])
+                    det.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
         except Exception as e:

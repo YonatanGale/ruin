@@ -116,6 +116,7 @@ $(function () {
         vents.calculate_invoice();
     }).val(0.05);
 
+    //buscador de productos
     $('input[name="search"]').autocomplete({
         source: function (request, response) {
             $.ajax({
@@ -155,6 +156,7 @@ $(function () {
         });
     });
 
+    //event cantidad
     $('#tblProducts tbody')
         .on('click', 'a[rel="remove"]', function () {
             var tr = tblProducts.cell($(this).closest('td, li')).index();
@@ -169,5 +171,18 @@ $(function () {
         vents.calculate_invoice();
         $('td:eq(5)',tblProducts.row(tr.row).node()).html( '$'+vents.items.products[tr.row].subtotal.toFixed(2));
 
+    });
+
+    //event submit
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        vents.items.date_joined = $('input[name="date_joined"]').val();
+        vents.items.cli = $('select[name="cli"]').val();
+        var parameters = new FormData();
+        parameters.append('action', $('input[name="action"]').val());
+        parameters.append('vents', JSON.stringify(vents.items));
+        submit_with_ajax(window.location.pathname, parameters, function () {
+            location.href = '/erp/dashboard/';
+        });
     });
 });
