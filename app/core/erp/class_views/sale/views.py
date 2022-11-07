@@ -37,7 +37,7 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                     item['value'] = i.name
                     data.append(item)
             elif action == 'add':
-                with json.transaction.atomic():
+                with transaction.atomic():
                     vents = json.loads(request.POST['vents'])
                     sale = Sale()
                     sale.date_joined = vents['date_joined']
