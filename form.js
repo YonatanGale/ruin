@@ -8,40 +8,40 @@ var vents = {
         total: 0.00,
         products: []
     },
-    calculate_invoice: function(){
+    calculate_invoice: function () {
         var subtotal = 0.00;
         var iva = $('input[name="iva"]').val();
-        $.each(this.items.products, function(pos, dict){
-            dict.subtotal = dict.cant * parseFloat(dict.price)
-            subtotal+=dict.subtotal;
+        $.each(this.items.products, function (pos, dict) {
+            dict.pos = pos;
+            dict.subtotal = dict.cant * parseFloat(dict.pvp);
+            subtotal += dict.subtotal;
         });
         this.items.subtotal = subtotal;
         this.items.iva = this.items.subtotal * iva;
         this.items.total = this.items.subtotal + this.items.iva;
 
         $('input[name="subtotal"]').val(this.items.subtotal.toFixed(2));
-        $('input[name="ivacal"]').val(this.items.iva.toFixed(2));
+        $('input[name="ivacalc"]').val(this.items.iva.toFixed(2));
         $('input[name="total"]').val(this.items.total.toFixed(2));
     },
-    add: function(item){
+    add: function (item) {
         this.items.products.push(item);
         this.list();
     },
-    list: function (){
+    list: function () {
         this.calculate_invoice();
-
-        tblProducts = $('#tblProducts').DataTable( {
+        tblProducts = $('#tblProducts').DataTable({
             responsive: true,
             autoWidth: false,
             destroy: true,
             data: this.items.products,
             columns: [
-                { "data": "id"},
-                { "data": "name"},
-                { "data": "cate.name"},
-                { "data": "price"},
-                { "data": "cant"},
-                { "data": "subtotal"},
+                {"data": "id"},
+                {"data": "name"},
+                {"data": "cat.name"},
+                {"data": "pvp"},
+                {"data": "cant"},
+                {"data": "subtotal"},
             ],
             columnDefs: [
                 {
@@ -49,7 +49,7 @@ var vents = {
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
-                        return '<a rel="remove" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
+                        return '<a rel="remove" class="btn btn-danger btn-xs btn-flat" style="color: white;"><i class="fas fa-trash-alt"></i></a>';
                     }
                 },
                 {
@@ -57,7 +57,7 @@ var vents = {
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
-                        return '$'+parseFloat(data).toFixed(2);
+                        return '$' + parseFloat(data).toFixed(2);
                     }
                 },
                 {
@@ -65,7 +65,7 @@ var vents = {
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
-                        return '<input type="text" name="cant" class="form-control form-control-sm input-sm" autocomplete="off" value="'+row.cant+'">';
+                        return '<input type="text" name="cant" class="form-control form-control-sm input-sm" autocomplete="off" value="' + row.cant + '">';
                     }
                 },
                 {
@@ -73,35 +73,38 @@ var vents = {
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
-                        return '$'+parseFloat(data).toFixed(2);
+                        return '$' + parseFloat(data).toFixed(2);
                     }
                 },
             ],
-            rowCallback( row, data, displayNum, displayIndex, dataIndex ){
-                
+            rowCallback(row, data, displayNum, displayIndex, dataIndex) {
+
                 $(row).find('input[name="cant"]').TouchSpin({
-                    min: -1,
+                    min: 1,
                     max: 1000000000,
                     step: 1
-                })
+                });
+
             },
-            initComplete: function(settings, json) {
-            
-              }
-            });
+            initComplete: function (settings, json) {
+
+            }
+        });
     },
 };
 
 $(function () {
+
     $('.select2').select2({
         theme: "bootstrap4",
-        lenguaje: 'es'
+        language: 'es'
     });
 
     $('#date_joined').datetimepicker({
         format: 'YYYY-MM-DD',
         date: moment().format("YYYY-MM-DD"),
         locale: 'es',
+        //minDate: moment().format("YYYY-MM-DD")
     });
 
     $("input[name='iva']").TouchSpin({
@@ -114,9 +117,11 @@ $(function () {
         postfix: '%'
     }).on('change', function () {
         vents.calculate_invoice();
-    }).val(0.05);
+    })
+        .val(0.12);
 
-    //buscador de productos
+    // search products
+
     $('input[name="search"]').autocomplete({
         source: function (request, response) {
             $.ajax({
@@ -149,35 +154,36 @@ $(function () {
     });
 
     $('.btnRemoveAll').on('click', function () {
-        if(vents.items.products == 0) return false;
-        alert_action( function () {
+        if (vents.items.products.length === 0) return false;
+        alert_action('Notificación', '¿Estas seguro de eliminar todos los items de tu detalle?', function () {
             vents.items.products = [];
             vents.list();
         });
     });
 
-    //event cantidad
+    // event cant
     $('#tblProducts tbody')
         .on('click', 'a[rel="remove"]', function () {
             var tr = tblProducts.cell($(this).closest('td, li')).index();
-            vents.items.products.splice(tr.row, 1);
-            vents.list();
+            alert_action('Notificación', '¿Estas seguro de eliminar el producto de tu detalle?', function () {
+                vents.items.products.splice(tr.row, 1);
+                vents.list();
+            });
         })
         .on('change', 'input[name="cant"]', function () {
-        console.clear();
-        var cant = parseInt($(this).val());
-        var tr = tblProducts.cell($(this).closest('td, li')).index();
-        vents.items.products[tr.row].cant = cant;
-        vents.calculate_invoice();
-        $('td:eq(5)',tblProducts.row(tr.row).node()).html( '$'+vents.items.products[tr.row].subtotal.toFixed(2));
-
-    });
+            console.clear();
+            var cant = parseInt($(this).val());
+            var tr = tblProducts.cell($(this).closest('td, li')).index();
+            vents.items.products[tr.row].cant = cant;
+            vents.calculate_invoice();
+            $('td:eq(5)', tblProducts.row(tr.row).node()).html('$' + vents.items.products[tr.row].subtotal.toFixed(2));
+        });
 
     $('.btnClearSearch').on('click', function () {
         $('input[name="search"]').val('').focus();
     });
 
-    //event submit
+    // event submit
     $('form').on('submit', function (e) {
         e.preventDefault();
 
@@ -191,8 +197,8 @@ $(function () {
         var parameters = new FormData();
         parameters.append('action', $('input[name="action"]').val());
         parameters.append('vents', JSON.stringify(vents.items));
-        submit_with_ajax(window.location.pathname, parameters, function () {
-            location.href = '/erp/dashboard/';
+        submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar la siguiente acción?', parameters, function () {
+            location.href = '/erp/sale/list/';
         });
     });
 
