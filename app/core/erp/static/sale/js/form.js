@@ -147,7 +147,21 @@ $(function () {
         }
     });
 
-    $('#tblProducts tbody').on('change', 'input[name="cant"]', function () {
+    $('.btnRemoveAll').on('click', function () {
+        if(vents.items.products == 0) return false;
+        alert_action( function () {
+            vents.items.products = [];
+            vents.list();
+        });
+    });
+
+    $('#tblProducts tbody')
+        .on('click', 'a[rel="remove"]', function () {
+            var tr = tblProducts.cell($(this).closest('td, li')).index();
+            vents.items.products.splice(tr.row, 1);
+            vents.list();
+        })
+        .on('change', 'input[name="cant"]', function () {
         console.clear();
         var cant = parseInt($(this).val());
         var tr = tblProducts.cell($(this).closest('td, li')).index();

@@ -63,3 +63,34 @@ function alert_jqueryconfirm(url, parameters, callback){
     })
 
 }
+
+function alert_action(callback){
+    $.confirm({
+        theme: 'material',
+        title: 'Confirmación',
+        icon: 'fa fa-info',
+        content: '¿Estas seguro de vaciar el carrito?',
+        columnClass: 'small',
+        typeAnimated: true,
+        cancelButtonClass: 'btn-primary',
+        draggable: true,
+        dragWindowBorder: false,
+        buttons: {
+            info: {
+                text: "Si",
+                btnClass: 'btn-primary',
+                action: function () {
+                    callback();
+                }
+            },
+            danger: {
+                text: "No",
+                btnClass: 'btn-red',
+                action: function () {
+                    
+                }
+            },
+        }
+    })
+
+}
