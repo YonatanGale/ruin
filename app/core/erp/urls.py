@@ -29,4 +29,5 @@ urlpatterns = [
     path('client/list/', ClientListView.as_view(), name='client_list'),
     #Sale
     path('sale/add/', SaleCreateView.as_view(), name='sale_create'),
+    path('sale/list/', SaleListView.as_view(), name='sale_list'),
 ]
