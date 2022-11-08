@@ -30,6 +30,6 @@ urlpatterns = [
     #Sale
     path('sale/add/', SaleCreateView.as_view(), name='sale_create'),
     path('sale/list/', SaleListView.as_view(), name='sale_list'),
-    path('sale/edit/<int:pk>/', SaleUpdateView.as_view(), name='sale_edit'),
+    #path('sale/edit/<int:pk>/', SaleUpdateView.as_view(), name='sale_edit'),
 
 ]
