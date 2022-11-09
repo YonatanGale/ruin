@@ -10,9 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, View
 from django.urls import reverse_lazy
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.generic import TemplateView
 from django.core.serializers.json import DjangoJSONEncoder
 
@@ -111,3 +111,6 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
+class SaleInvocePdfView(View):
+    def get(self, request, *args, **kwargs):
+        return HttpResponse('Hello, World!')
