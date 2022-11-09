@@ -7,6 +7,13 @@ var vents = {
         iva: 0.00,
         total: 0.00,
         products: []
+    },    
+    get_ids: function () { //para obtener el id y que el producto no se repita en el detalle de venta
+        var ids = [];
+        $.each(this.items.products, function (key, value) {
+            ids.push(value.id);
+        });
+        return ids;
     },
     calculate_invoice: function(){
         var subtotal = 0.00;
@@ -124,7 +131,8 @@ $(function () {
                 type: 'POST',
                 data: {
                     'action': 'search_products',
-                    'term': request.term
+                    'term': request.term,
+                    ids: JSON.stringify(vents.get_ids())
                 },
                 dataType: 'json',
             }).done(function (data) {

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core.login',
     'widget_tweaks',
     'core.user',
+    'core.reports',
 ]
 
 MIDDLEWARE = [
