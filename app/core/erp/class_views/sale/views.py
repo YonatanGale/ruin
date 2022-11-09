@@ -12,9 +12,16 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, ListView, UpdateView, View
 from django.urls import reverse_lazy
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.serializers.json import DjangoJSONEncoder
+
+import os
+from django.conf import settings
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
 
 
 class SaleListView(LoginRequiredMixin, ListView):
@@ -113,4 +120,15 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
 
 class SaleInvocePdfView(View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse('Hello, World!')
+        try:
+            template = get_template('template/sale/invoce.html')
+            context = {'title': 'Mi primer pdf'}
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            #response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            pisa_status = pisa.CreatePDF(
+                html, dest=response)
+            return response
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('erp:sale_list'))
