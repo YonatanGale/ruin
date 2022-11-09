@@ -102,6 +102,7 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                         det.price = float(i['price'])
                         det.subtotal = float(i['subtotal'])
                         det.save()
+                    data = {'id': sale.id}
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
         except Exception as e:
@@ -121,8 +122,11 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
 class SaleInvocePdfView(View):
     def get(self, request, *args, **kwargs):
         try:
-            template = get_template('template/sale/invoce.html')
-            context = {'title': 'Mi primer pdf'}
+            template = get_template('template/sale/invoice.html')
+            context = {
+                'sale': Sale.objects.get(pk=self.kwargs['pk']),
+                'comp': {'name': 'Dulces Mireya', 'ruc': '000000000', 'address': 'Ayolas, Misiones'}
+            }
             html = template.render(context)
             response = HttpResponse(content_type='application/pdf')
             #response['Content-Disposition'] = 'attachment; filename="report.pdf"'

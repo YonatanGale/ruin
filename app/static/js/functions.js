@@ -64,12 +64,12 @@ function alert_jqueryconfirm(url, parameters, callback){
 
 }
 
-function alert_action(callback){
+function alert_action(title, content, callback, cancel){
     $.confirm({
         theme: 'material',
-        title: 'Confirmación',
+        title: title,
         icon: 'fa fa-info',
-        content: '¿Estas seguro de vaciar el carrito?',
+        content: content,
         columnClass: 'small',
         typeAnimated: true,
         cancelButtonClass: 'btn-primary',
@@ -87,7 +87,7 @@ function alert_action(callback){
                 text: "No",
                 btnClass: 'btn-red',
                 action: function () {
-                    
+                    cancel();
                 }
             },
         }
@@ -121,7 +121,7 @@ function submit_with_ajax(url, parameters, callback) {
                     }).done(function (data) {
                         console.log(data);
                         if (!data.hasOwnProperty('error')) {
-                            callback();
+                            callback(data);
                             return false;
                         }
                         message_error(data.error);

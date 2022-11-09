@@ -30,5 +30,5 @@ urlpatterns = [
     #Sale
     path('sale/add/', SaleCreateView.as_view(), name='sale_create'),
     path('sale/list/', SaleListView.as_view(), name='sale_list'),
-    path('sale/invoce/pdf/<int:pk>/', SaleInvocePdfView.as_view(), name='sale_invoce'),
+    path('sale/invoice/pdf/<int:pk>/', SaleInvocePdfView.as_view(), name='sale_invoce'),
 ]

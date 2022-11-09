@@ -149,10 +149,12 @@ $(function () {
     });
 
     $('.btnRemoveAll').on('click', function () {
+        alert_action('Notification', '¿Desea vaciar el carrito?', function () {
         if(vents.items.products == 0) return false;
-        alert_action( function () {
             vents.items.products = [];
             vents.list();
+        }, function () {
+
         });
     });
 
@@ -191,8 +193,13 @@ $(function () {
         var parameters = new FormData();
         parameters.append('action', $('input[name="action"]').val());
         parameters.append('vents', JSON.stringify(vents.items));
-        submit_with_ajax(window.location.pathname, parameters, function () {
-            location.href = '/erp/sale/list/';
+        submit_with_ajax(window.location.pathname, parameters, function (response) {
+            alert_action('Notification', '¿Desea imprimir la factura?', function () {
+                window.open('/erp/sale/invoice/pdf/'+response.id+'/', '_blank');
+                location.href = '/erp/sale/list/';
+            }, function () {
+                location.href = '/erp/sale/list/';
+            })
         });
     });
 
