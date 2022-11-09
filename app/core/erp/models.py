@@ -34,7 +34,7 @@ class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     cate = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Categoria')
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Precio')
-    cant = models.IntegerField(default=0, verbose_name='Cantidad')
+    stock = models.IntegerField(default=0, verbose_name='Cantidad')
 
     def __str__(self):
         return self.name

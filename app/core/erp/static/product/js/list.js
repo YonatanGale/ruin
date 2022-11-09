@@ -17,8 +17,8 @@ $(function (){
             { "data": "name"},
             { "data": "cate.name"},
             { "data": "price"},
-            { "data": "cant"},
-            { "data": "cant"},
+            { "data": "stock"},
+            { "data": "stock"},
         ],
         columnDefs: [
             {

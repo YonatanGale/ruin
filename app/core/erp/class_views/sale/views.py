@@ -102,6 +102,8 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                         det.price = float(i['price'])
                         det.subtotal = float(i['subtotal'])
                         det.save()
+                        det.prod.stock -= (det.cant)
+                        det.prod.save()
                     data = {'id': sale.id}
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'

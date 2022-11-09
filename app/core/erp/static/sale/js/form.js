@@ -76,19 +76,19 @@ var vents = {
                     }
                 },
                 {
-                    targets: [-1],
+                    targets: [-1, -3],
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
-                        return '$'+parseFloat(data).toFixed(2);
+                        return 'Gs'+parseFloat(data).toFixed(2);
                     }
                 },
             ],
             rowCallback( row, data, displayNum, displayIndex, dataIndex ){
                 
                 $(row).find('input[name="cant"]').TouchSpin({
-                    min: -1,
-                    max: 1000000000,
+                    min: 0,
+                    max: data.stock,
                     step: 1
                 })
             },
