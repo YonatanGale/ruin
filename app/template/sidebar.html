@@ -18,7 +18,7 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-header">Mantenimientos</li>
+                <li class="nav-header">Modulos</li>
                 <li class="nav-item">
                     <a href="{% url 'erp:category_list' %}" class="nav-link">
                         <i class="nav-icon fas fa-truck-loading"></i>
@@ -40,6 +40,30 @@
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Clientes
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'erp:buy_list' %}" class="nav-link">
+                        <i class="nav-icon fas fa-cart-arrow-down"></i>
+                        <p>
+                            Compras
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'erp:buy_list' %}" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <p>
+                            Usuarios
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'erp:buy_list' %}" class="nav-link">
+                        <i class="fas fa-wallet"></i>
+                        <p>
+                            Fondos
                         </p>
                     </a>
                 </li>
@@ -65,30 +89,6 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'erp:buy_list' %}" class="nav-link">
-                        <i class="nav-icon fas fa-cart-arrow-down"></i>
-                        <p>
-                            Compras
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'erp:buy_list' %}" class="nav-link">
-                        <i class="fas fa-users"></i>
-                        <p>
-                            Usuarios
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'erp:buy_list' %}" class="nav-link">
-                        <i class="fas fa-wallet"></i>
-                        <p>
-                            Fondos
-                        </p>
-                    </a>
                 </li>
                 <li class="nav-item menu-is-opening menu-open">
                     <a href="#" class="nav-link">
