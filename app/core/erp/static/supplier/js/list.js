@@ -20,6 +20,7 @@ function getData(){
             { "data": "names"},
             { "data": "surnames"},
             { "data": "ci"},
+            { "data": "email"},
             { "data": "phone"},
             { "data": "address"},
             { "data": "address"},
@@ -68,9 +69,9 @@ $(function () {
         $('input[name="names"]').val(data.names);
         $('input[name="surnames"]').val(data.surnames);
         $('input[name="ci"]').val(data.ci);
+        $('input[name="email"]').val(data.email);
         $('input[name="phone"]').val(data.phone);
         $('input[name="address"]').val(data.address);
-        $('input[name="date_joined"]').val(data.date_joined);
         $('#myModalSupplier').modal('show');
     })
     .on('click', 'a[rel="delete"]', function () {

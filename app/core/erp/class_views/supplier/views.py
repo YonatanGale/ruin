@@ -32,18 +32,18 @@ class SupplierListView(LoginRequiredMixin, ListView):
                 cli.names = request.POST['names']
                 cli.surnames = request.POST['surnames']
                 cli.ci = request.POST['ci']
+                cli.email = request.POST['email']
                 cli.phone = request.POST['phone']
                 cli.address = request.POST['address']
-                cli.date_joined = request.POST['date_joined']
                 cli.save()
             elif action == 'edit':
                 cli = Supplier.objects.get(pk=request.POST['id'])
                 cli.names = request.POST['names']
                 cli.surnames = request.POST['surnames']
                 cli.ci = request.POST['ci']
+                cli.email = request.POST['email']
                 cli.phone = request.POST['phone']
                 cli.address = request.POST['address']
-                cli.date_joined = request.POST['date_joined']
                 cli.save()
             elif action == 'delete':
                 cli = Supplier.objects.get(pk=request.POST['id'])

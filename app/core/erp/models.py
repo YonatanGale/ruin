@@ -116,10 +116,10 @@ class DetSale(models.Model):
         ordering = ['id']
 
 class Unity(models.Model):
-    uname = models.CharField(max_length=150, verbose_name='Unidad', unique=True)
+    name = models.CharField(max_length=150, verbose_name='Unidad de medida', unique=True)
 
     def __str__(self):
-        return (self.uname)
+        return (self.name)
 
     def toJSON(self):
         item = model_to_dict(self)  
@@ -134,8 +134,7 @@ class ProductBrut(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     stock = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Stock")
     uni = models.ForeignKey(Unity, on_delete=models.CASCADE, verbose_name="Unidad")
-    pc = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Precio de compra")
-    date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+    price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Precio de compra")
 
     def __str__(self):
         return self.name
@@ -144,8 +143,7 @@ class ProductBrut(models.Model):
         item = model_to_dict(self)
         item['uni'] = self.uni.toJSON()
         item['stock'] = format(self.stock, '.2f')
-        item['pc'] = format(self.pc, '.2f')
-        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
+        item['price'] = format(self.price, '.2f')
         return item
 
     class Meta:
@@ -157,16 +155,15 @@ class Supplier(models.Model):
     names = models.CharField(max_length=150, verbose_name='Nombres')
     surnames = models.CharField(max_length=150, verbose_name='Apellidos')
     ci = models.CharField(max_length=10, unique=True, verbose_name='RUC')
+    email = models.CharField(max_length=150, unique=True, verbose_name='Correo electronico')
     phone = models.CharField(max_length=10, unique=True, verbose_name='Telefono')
     address = models.CharField(max_length=150, null=True, blank=True, verbose_name='Dirección')
-    date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
     def __str__(self):
         return self.names
 
     def toJSON(self):
         item = model_to_dict(self)
-        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
 
     class Meta:

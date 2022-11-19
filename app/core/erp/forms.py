@@ -66,8 +66,6 @@ class ProductForm(ModelForm):
             data['error'] = str(e)
         return data
 
-
-
 class SaleForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -114,8 +112,6 @@ class SaleForm(ModelForm):
             'iva': TextInput()
         }
 
-
-
 class clientForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -159,7 +155,6 @@ class clientForm(ModelForm):
             data['error'] = str(e)
         return data
 
-
 class SupplierForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -181,13 +176,6 @@ class SupplierForm(ModelForm):
             'surnames': TextInput(
                 attrs={
                     'placeholder' : 'Ingrese apellido del proveedor'
-                }
-            ),
-            'date_joined': DateInput(format='%Y-%m-%d',
-                attrs={
-                    'value': datetime.now().strftime('%Y-%m-%d'),
-                    'readonly': True,
-
                 }
             ),
 
