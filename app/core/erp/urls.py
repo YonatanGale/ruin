@@ -11,9 +11,9 @@ app_name = 'erp'
 urlpatterns = [
     #categoria
     path('category/list/', categoryListView.as_view(), name='category_list'),
-    path('category/add/', categoryCreateView.as_view(), name='category_create'),
-    path('category/edit/<int:pk>/', categoryUpdateView.as_view(), name='category_update'),
-    path('category/delete/<int:pk>/', categoryDeleteView.as_view(), name='category_delete'),
+    #path('category/add/', categoryCreateView.as_view(), name='category_create'),
+    #path('category/edit/<int:pk>/', categoryUpdateView.as_view(), name='category_update'),
+    #path('category/delete/<int:pk>/', categoryDeleteView.as_view(), name='category_delete'),
     #producto
     path('product/list/', productListView.as_view(), name='product_list'),
     path('product/add/', productCreateView.as_view(), name='product_create'),
