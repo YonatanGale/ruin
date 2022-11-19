@@ -15,7 +15,7 @@ class user(AbstractUser):
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
 
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            self.set_password(self.password)
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.pk is None:
+    #         self.set_password(self.password)
+    #     super().save(*args, **kwargs)

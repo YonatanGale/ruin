@@ -45,7 +45,7 @@ class UserListView(LoginRequiredMixin, IsSuperuserMixin, ListView):
         context['entity'] = 'Usuarios'
         return context
 
-class UserCreateView(LoginRequiredMixin, CreateView):
+class UserCreateView(LoginRequiredMixin, IsSuperuserMixin, CreateView):
     model = user
     form_class = UserForm
     template_name = 'core/user/template/user/create.html'
