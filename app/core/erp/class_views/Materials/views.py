@@ -2,7 +2,7 @@ from unicodedata import category
 from urllib import request
 from core.erp.forms import CategoryForm, MaterialsForm, ProductForm
 from django.shortcuts import render
-from core.erp.models import Category, Product, Materials
+from core.erp.models import Category, Product, Materials, Unity
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -57,6 +57,7 @@ class materialsListView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Lista de materiales'
         context['list_url'] = reverse_lazy('erp:materials_list')
+        context['unity_url'] = reverse_lazy('erp:unity_list')
         context['entity'] = 'Materiales'
         context['form'] = MaterialsForm()
         return context

@@ -1,5 +1,5 @@
 from urllib import request
-from core.erp.forms import CategoryForm
+from core.erp.forms import CategoryForm, UnityForm
 from django.shortcuts import render
 from core.erp.models import Unity
 from core.erp.mixins import IsSuperuserMixin
@@ -52,6 +52,6 @@ class unityListView(LoginRequiredMixin, IsSuperuserMixin, TemplateView):
         context['title'] = 'Lista de Unidades de medida'
         context['create_url'] = reverse_lazy('erp:unity_create')
         context['list_url'] = reverse_lazy('erp:unity_list')
-        context['entity'] = 'Categorias'
-        context['form'] = CategoryForm()
+        context['entity'] = 'Unidades'
+        context['form'] = UnityForm()
         return context

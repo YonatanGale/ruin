@@ -1,8 +1,7 @@
-var tblProduct;
+var tblCategory;
 var modal_title;
-
 function getData(){
-    tblProduct = $('#data').DataTable( {
+    tblCategory = $('#data').DataTable( {
         responsive: true,
         autoWidth: false,
         destroy: true,
@@ -18,10 +17,7 @@ function getData(){
         columns: [
             { "data": "id"},
             { "data": "name"},
-            { "data": "stock"},
-            { "data": "uni.name"},
-            { "data": "price"},
-            { "data": "stock"},
+            { "data": "id"},
         ],
         columnDefs: [
             {
@@ -39,8 +35,6 @@ function getData(){
         
           }
         });
-
-
 }
 
 $(function () {
@@ -49,44 +43,39 @@ $(function () {
 
     getData();
 
-
     $('.btnAdd').on('click', function () {
         $('input[name="action"]').val('add');
-        modal_title.find('span').html('Creación de un producto');
+        modal_title.find('span').html('Creación de una categoria');
         console.log(modal_title.find('i'));
         modal_title.find('i').removeClass().addClass('fas fa-plus');
         $('form')[0].reset();
-        $('#myModalProduct').modal('show');
+        $('#myModalCategory').modal('show');
     });
-
 
     $('#data tbody')
     .on('click', 'a[rel="edit"]', function () {
-        modal_title.find('span').html('Edición de un producto');
+        modal_title.find('span').html('Edición de una categoria');
         modal_title.find('i').removeClass().addClass('fas fa-edit');
-        var tr = tblProduct.cell($(this).closest('td, li')).index();
-        var data = tblProduct.row(tr.row).data();
+        var tr = tblCategory.cell($(this).closest('td, li')).index();
+        var data = tblCategory.row(tr.row).data();
         $('input[name="action"]').val('edit');
         $('input[name="id"]').val(data.id);
         $('input[name="name"]').val(data.name);
-        $('input[name="uni.name"]').val(data.uni.name);
-        $('input[name="price"]').val(data.price);
-        $('input[name="stock"]').val(data.stock);
-        $('#myModalProduct').modal('show');
+        $('#myModalCategory').modal('show');
     })
     .on('click', 'a[rel="delete"]', function () {
-        var tr = tblProduct.cell($(this).closest('td, li')).index();
-        var data = tblProduct.row(tr.row).data();
+        var tr = tblCategory.cell($(this).closest('td, li')).index();
+        var data = tblCategory.row(tr.row).data();
             var parameters = new FormData();
             parameters.append('action', 'delete');
             parameters.append('id', data.id);
             submit_with_ajax(window.location.pathname, parameters, function () {
-                tblProduct.ajax.reload();
+                tblCategory.ajax.reload();
             });
         });
 
 
-    $('#myModalProduct').on('shown.bs.modal', function () {
+    $('#myModalCategory').on('shown.bs.modal', function () {
         // $('form')[0].reset();
     });
 
@@ -94,9 +83,8 @@ $(function () {
         e.preventDefault();
         var parameters = $(this).serializeArray();
         alert_jqueryconfirm(window.location.pathname, parameters, function () {
-            $('#myModalProduct').modal('hide');
-            tblProduct.ajax.reload();
+            $('#myModalCategory').modal('hide');
+            tblCategory.ajax.reload();
         });
     });
-
 });

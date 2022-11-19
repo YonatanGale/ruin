@@ -1,3 +1,4 @@
+from core.erp.class_views.unity.views import unityListView
 from core.erp.class_views.Materials.views import materialsListView
 from core.erp.class_views.supplier.views import SupplierListView
 from core.erp.class_views.sale.views import *
@@ -13,6 +14,8 @@ app_name = 'erp'
 urlpatterns = [
     #categoria
     path('category/list/', categoryListView.as_view(), name='category_list'),
+    #Unidad
+    path('unity/list/', unityListView.as_view(), name='unity_list'),
     #producto
     path('product/list/', productListView.as_view(), name='product_list'),
     #materials

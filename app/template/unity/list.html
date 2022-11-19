@@ -2,21 +2,18 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block head_list %}
-
-<script src="{% static '/materials/js/list.js' %}"></script>
+    <script src="{% static '/unity/js/list.js' %}"></script>
 {% endblock %}
 
 {% block columns %}
 <tr>
     <th scope="col">Nro</th>
     <th scope="col">Nombre</th>
-    <th scope="col">cantidad</th>
-    <th scope="col">Unidad de medida</th>
-    <th scope="col">Precio de compra</th>
     <th scope="col">Opciones</th>
   </tr>
 {% endblock %}
 {% block rows %}
+
 
 {% endblock %}
 
@@ -27,13 +24,10 @@
 <a href="{{ list_url }}" class="btn btn-success btn-flat">
     <i class="fas fa-sync"></i> Actualizar
 </a>
-<a href="{{ unity_url }}" class="btn btn-secondary btn-flat">
-    <i class="fas fa-plus"></i>Nuevo registro de Unidad
-</a>
 {% endblock %}
 {% block javascript %}
 <!-- Modal -->
-<div class="modal fade" id="myModalProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="myModalCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
 <form method="post" action=".">
    <div class="modal-dialog" role="document">
@@ -65,4 +59,5 @@ aria-hidden="true">
    </div>
 </form>
 </div>
+
 {% endblock %}

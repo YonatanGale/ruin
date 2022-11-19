@@ -227,6 +227,33 @@ class SupplierForm(ModelForm):
             data['error'] = str(e)
         return data
 
+class UnityForm(ModelForm):
+    class Meta:
+        model = Unity
+        fields = '__all__'
+
+        widgets = {
+            'name': TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder' : 'Ingrese un nombre',
+                    'autocomplete': 'off'
+                }
+            )
+
+        }
+    
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
 
 search = CharField(widget=TextInput(attrs={
     'class': 'form-control',
