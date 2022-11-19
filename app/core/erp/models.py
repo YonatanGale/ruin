@@ -156,7 +156,7 @@ class ProductBrut(models.Model):
 class Supplier(models.Model):
     names = models.CharField(max_length=150, verbose_name='Nombres')
     surnames = models.CharField(max_length=150, verbose_name='Apellidos')
-    dni = models.CharField(max_length=10, unique=True, verbose_name='CI|RUC')
+    ci = models.CharField(max_length=10, unique=True, verbose_name='RUC')
     phone = models.CharField(max_length=10, unique=True, verbose_name='Telefono')
     address = models.CharField(max_length=150, null=True, blank=True, verbose_name='Dirección')
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')

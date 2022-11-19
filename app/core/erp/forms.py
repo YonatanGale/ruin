@@ -80,6 +80,7 @@ class SaleForm(ModelForm):
         self.fields['cli'].widget.attrs['style'] = 'width: 100%'
 
         self.fields['date_joined'].widget.attrs = {
+            'readonly': True,
             'autocomplete': 'off',
             'class': 'form-control datetimepicker-input',
             'id': 'date_joined',
@@ -141,6 +142,52 @@ class clientForm(ModelForm):
             'Birthday': DateInput(format='%Y-%m-%d',
                 attrs={
                     'value': datetime.now().strftime('%Y-%m-%d'),
+                }
+            ),
+
+        }
+
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+
+
+class SupplierForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['names'].widget.attrs['autofocus'] = True
+    
+    class Meta:
+        model = Supplier
+        fields = '__all__'
+
+        widgets = {
+            'names': TextInput(
+                attrs={
+                    'placeholder' : 'Ingrese nombre del proveedor'
+                }
+            ),
+            'surnames': TextInput(
+                attrs={
+                    'placeholder' : 'Ingrese apellido del proveedor'
+                }
+            ),
+            'date_joined': DateInput(format='%Y-%m-%d',
+                attrs={
+                    'value': datetime.now().strftime('%Y-%m-%d'),
+                    'readonly': True,
+
                 }
             ),
 

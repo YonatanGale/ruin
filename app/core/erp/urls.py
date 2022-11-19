@@ -1,3 +1,4 @@
+from core.erp.class_views.supplier.views import SupplierListView
 from core.erp.class_views.sale.views import *
 from core.erp.class_views.dashboard.dashboard import DashboardView
 from django.urls import path
@@ -19,6 +20,8 @@ urlpatterns = [
     # path('buy/list/', buyListView.as_view(), name='buy_list'),
     # path('buy/add/', buyCreateView.as_view(), name='buy_create'),
     # path('buy/delete/<int:pk>/', buyDeleteView.as_view(), name='buy_delete'),
+    #Supplier
+    path('Supplier/list/', SupplierListView.as_view(), name='supplier_list'),
     #Client
     path('client/list/', ClientListView.as_view(), name='client_list'),
     #Sale
