@@ -49,6 +49,7 @@ $(function () {
 
     getData();
 
+
     $('.btnAdd').on('click', function () {
         $('input[name="action"]').val('add');
         modal_title.find('span').html('Creación de un producto');
@@ -67,7 +68,7 @@ $(function () {
         $('input[name="action"]').val('edit');
         $('input[name="id"]').val(data.id);
         $('input[name="name"]').val(data.name);
-        $('input[name="cate_id"]').val(data.cate_id);
+        $('input[name="cate.name"]').val(data.cate.name);
         $('input[name="price"]').val(data.price);
         $('input[name="stock"]').val(data.stock);
         $('#myModalProduct').modal('show');
