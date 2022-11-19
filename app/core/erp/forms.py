@@ -66,41 +66,6 @@ class ProductForm(ModelForm):
             data['error'] = str(e)
         return data
 
-class buyForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for form in self.visible_fields():
-            form.field.widget.attrs['class'] = 'form-control'
-            form.field.widget.attrs['autocomplete'] = 'off'
-        self.fields['name'].widget.attrs['autofocus'] = True
-    
-    class Meta:
-        model = buy
-        fields = '__all__'
-
-        widgets = {
-            'mot': TextInput(
-                attrs={
-                    'placeholder' : 'Ingrese el motivo'
-                }
-            ),
-            'descrip': TextInput(
-                attrs={
-                    'placeholder' : 'Ingrese la descripcion de la compra'
-                }
-            ),
-            'prov_name': TextInput(
-                attrs={
-                    'placeholder' : 'Ingrese el nombre del proveedor'
-                }
-            ),
-            'date_joined': TextInput(
-                attrs={
-                    'readonly' : True
-                }
-            ),
-
-        }
 
 
 class SaleForm(ModelForm):

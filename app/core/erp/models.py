@@ -115,46 +115,112 @@ class DetSale(models.Model):
         verbose_name_plural = 'Detalles'
         ordering = ['id']
 
-class Type(models.Model):
-    name = models.CharField(max_length=150, verbose_name='Nombre')
+class Unity(models.Model):
+    uname = models.CharField(max_length=150, verbose_name='Unidad', unique=True)
+
+    def __str__(self):
+        return (self.uname)
+
+    def toJSON(self):
+        item = model_to_dict(self)  
+        return item
+
+    class Meta:
+        verbose_name = 'Unidad'
+        verbose_name_plural = 'Unidades'
+        ordering = ['id']
+
+class ProductBrut(models.Model):
+    name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+    stock = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Stock")
+    uni = models.ForeignKey(Unity, on_delete=models.CASCADE, verbose_name="Unidad")
+    pc = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Precio de compra")
+    date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
     def __str__(self):
         return self.name
 
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['uni'] = self.uni.toJSON()
+        item['stock'] = format(self.stock, '.2f')
+        item['pc'] = format(self.pc, '.2f')
+        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
+        return item
+
     class Meta:
-        verbose_name = 'Tipo'
-        verbose_name_plural = 'Tipos'
+        verbose_name = 'Producto'
+        verbose_name_plural = 'Productos'
         ordering = ['id']
 
-class employee(models.Model):
-    type = models.ForeignKey(Type, on_delete=models.CASCADE)
+class Supplier(models.Model):
     names = models.CharField(max_length=150, verbose_name='Nombres')
-    ci =models.CharField(max_length=150, unique=True, verbose_name='CI')
-    data_joined = models.DateField(default=datetime.now, verbose_name='Fecha de ingreso')
-    age = models.IntegerField(default=0)
+    surnames = models.CharField(max_length=150, verbose_name='Apellidos')
+    dni = models.CharField(max_length=10, unique=True, verbose_name='CI|RUC')
+    phone = models.CharField(max_length=10, unique=True, verbose_name='Telefono')
+    address = models.CharField(max_length=150, null=True, blank=True, verbose_name='Dirección')
+    date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
     def __str__(self):
         return self.names
 
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
+        return item
+
     class Meta:
-        verbose_name = 'Empleado'
-        verbose_name_plural = 'Empleados'
-        db_table = 'empleado'
+        verbose_name = 'Proveedor'
+        verbose_name_plural = 'Proveedores'
         ordering = ['id']
 
-class buy(models.Model):
-    name = models.CharField(max_length=150, verbose_name='Nombre')
-    cant = models.IntegerField(default=0, verbose_name='Unidades')
-    uni = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Cantidad en Litros, kg o unidad')
-    cost = models.IntegerField(default=0, verbose_name='Costo')
-    prov_name = models.CharField(max_length=150, verbose_name='Nombre de proveedor')
-    descrip = models.CharField(max_length=150, verbose_name='Descripcion de compra')
-    date_joined = models.DateTimeField(default=datetime.now, verbose_name= 'Fecha de registro')
-    
-    def __str__(self):
-        return self.name
+class Buy(models.Model):
+    prov = models.ForeignKey(Supplier, on_delete=models.CASCADE)
+    date_joined = models.DateField(default=datetime.now)
+    subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    iva = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
 
-    class Meta: 
+    def __str__(self):
+        return self.prov.names
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['prov'] = self.prov.toJSON()
+        item['subtotal'] = format(self.subtotal, '.2f')
+        item['iva'] = format(self.iva, '.2f')
+        item['total'] = format(self.total, '.2f')
+        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
+        return item
+
+
+    class Meta:
         verbose_name = 'Compra'
         verbose_name_plural = 'Compras'
+        ordering = ['id']
+
+
+
+class DetBuy(models.Model):
+    buy = models.ForeignKey(Buy, on_delete=models.CASCADE)
+    prodb = models.ForeignKey(ProductBrut, on_delete=models.CASCADE)
+    price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
+    subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+
+    def __str__(self):
+        return self.prod.name
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['cant'] = format(self.cant, '.2f')
+        item['buy'] = self.buy.toJSON() 
+        item['prodb'] = self.prodb.toJSON()
+        item['price'] = format(self.price, '.2f')
+        item['subtotal'] = format(self.subtotal, '.2f')
+        return item
+
+    class Meta:
+        verbose_name = 'Detalle de Compra'
+        verbose_name_plural = 'Detalle de Compras'
         ordering = ['id']

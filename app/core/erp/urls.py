@@ -16,9 +16,9 @@ urlpatterns = [
     #dashboard
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     #buy
-    path('buy/list/', buyListView.as_view(), name='buy_list'),
-    path('buy/add/', buyCreateView.as_view(), name='buy_create'),
-    path('buy/delete/<int:pk>/', buyDeleteView.as_view(), name='buy_delete'),
+    # path('buy/list/', buyListView.as_view(), name='buy_list'),
+    # path('buy/add/', buyCreateView.as_view(), name='buy_create'),
+    # path('buy/delete/<int:pk>/', buyDeleteView.as_view(), name='buy_delete'),
     #Client
     path('client/list/', ClientListView.as_view(), name='client_list'),
     #Sale
