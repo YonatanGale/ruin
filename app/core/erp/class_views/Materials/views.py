@@ -1,8 +1,8 @@
 from unicodedata import category
 from urllib import request
-from core.erp.forms import CategoryForm, ProductForm
+from core.erp.forms import CategoryForm, MaterialsForm, ProductForm
 from django.shortcuts import render
-from core.erp.models import Category, Product, ProductBrut
+from core.erp.models import Category, Product, Materials
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -14,9 +14,9 @@ from django.views.generic import TemplateView
 
 
 
-class productbrutListView(LoginRequiredMixin, TemplateView):
-    model = ProductBrut
-    template_name = 'template/productBrut/list.html'
+class materialsListView(LoginRequiredMixin, TemplateView):
+    model = Materials
+    template_name = 'template/materials/list.html'
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -28,24 +28,24 @@ class productbrutListView(LoginRequiredMixin, TemplateView):
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                for i in ProductBrut.objects.all():
+                for i in Materials.objects.all():
                     data.append(i.toJSON())
             elif action == 'add':
-                cli = ProductBrut()
+                cli = Materials()
                 cli.name = request.POST['name']
                 cli.uni_id = request.POST['uni']
                 cli.price = request.POST['price']
                 cli.stock = request.POST['stock']
                 cli.save()
             elif action == 'edit':
-                cli = ProductBrut.objects.get(pk=request.POST['id'])
+                cli = Materials.objects.get(pk=request.POST['id'])
                 cli.name = request.POST['name']
                 cli.uni_id = request.POST['uni']
                 cli.price = request.POST['price']
                 cli.stock = request.POST['stock']
                 cli.save()
             elif action == 'delete':
-                cli = ProductBrut.objects.get(pk=request.POST['id'])
+                cli = Materials.objects.get(pk=request.POST['id'])
                 cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'
@@ -55,9 +55,8 @@ class productbrutListView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Lista de productos'
-        context['create_url'] = reverse_lazy('erp:product_create')
-        context['list_url'] = reverse_lazy('erp:product_list')
-        context['entity'] = 'Productos'
-        context['form'] = ProductForm()
+        context['title'] = 'Lista de materiales'
+        context['list_url'] = reverse_lazy('erp:materials_list')
+        context['entity'] = 'Materiales'
+        context['form'] = MaterialsForm()
         return context

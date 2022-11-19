@@ -130,7 +130,7 @@ class Unity(models.Model):
         verbose_name_plural = 'Unidades'
         ordering = ['id']
 
-class ProductBrut(models.Model):
+class Materials(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     stock = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Stock")
     uni = models.ForeignKey(Unity, on_delete=models.CASCADE, verbose_name="Unidad")
@@ -196,11 +196,9 @@ class Buy(models.Model):
         verbose_name_plural = 'Compras'
         ordering = ['id']
 
-
-
 class DetBuy(models.Model):
     buy = models.ForeignKey(Buy, on_delete=models.CASCADE)
-    prodb = models.ForeignKey(ProductBrut, on_delete=models.CASCADE)
+    prodb = models.ForeignKey(Materials, on_delete=models.CASCADE)
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)

@@ -1,3 +1,4 @@
+from core.erp.class_views.Materials.views import materialsListView
 from core.erp.class_views.supplier.views import SupplierListView
 from core.erp.class_views.sale.views import *
 from core.erp.class_views.dashboard.dashboard import DashboardView
@@ -14,6 +15,8 @@ urlpatterns = [
     path('category/list/', categoryListView.as_view(), name='category_list'),
     #producto
     path('product/list/', productListView.as_view(), name='product_list'),
+    #materials
+    path('materials/list/', materialsListView.as_view(), name='materials_list'),
     #dashboard
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     #buy
