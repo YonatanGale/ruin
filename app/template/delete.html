@@ -27,12 +27,12 @@
         </div>
     </form>
     <script>
-        // $('form').on('submit', function (e) {
-        //     e.preventDefault();
-        //     var parameters = $(this).serializeArray();
-        //     alert_jqueryconfirm(window.location.pathname, parameters, function () {
-        //         location.href = '{{ list_url }}';
-        //     });
-        // });
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var parameters = $(this).serializeArray();
+            alert_jqueryconfirm(window.location.pathname, parameters, function () {
+                location.href = '{{ list_url }}';
+            });
+        });
     </script>
 {% endblock %}

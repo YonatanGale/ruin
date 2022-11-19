@@ -7,6 +7,6 @@ urlpatterns = [
     #user
     path('list/', UserListView.as_view(), name='user_list'),
     path('add/', UserCreateView.as_view(), name='user_create'),
-    #path('category/edit/<int:pk>/', categoryUpdateView.as_view(), name='category_update'),
-    #path('category/delete/<int:pk>/', categoryDeleteView.as_view(), name='category_delete'),
+    path('edit/<int:pk>/', UserUpdateView.as_view(), name='user_update'),
+    path('delete/<int:pk>/', UserDeleteView.as_view(), name='user_delete'),
 ]
