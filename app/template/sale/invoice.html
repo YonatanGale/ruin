@@ -42,7 +42,7 @@
 <p>
     <b>FACTURA:</b> {{ sale.id }}<br>
     <b>FECHA DE VENTA:</b> {{ sale.date_joined }}<br>
-    <b>CLIENTE:</b> {{ sale.cli.names|upper }}<br>
+    <b>CLIENTE:</b> {{ sale.cli.names|upper }} {{ sale.cli.surnames|upper }}<br>
     <b>CI:</b> {{ sale.cli.ci }}<br>
 </p>
 <table id="invoice">
