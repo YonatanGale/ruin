@@ -2,7 +2,7 @@ import json
 from django.db import transaction
 from unicodedata import category
 from urllib import request
-from core.erp.forms import CategoryForm, SaleForm
+from core.erp.forms import CategoryForm, SaleForm, clientForm
 from django.shortcuts import render
 from core.erp.models import  Client, DetSale, Product, Sale
 from core.erp.mixins import IsSuperuserMixin
@@ -115,6 +115,9 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                     item = i.toJSON()
                     item['text'] = i.get_full_name()
                     data.append(item)
+            elif action == 'create_client':
+                formClient = clientForm(request.POST)
+                data = formClient.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
         except Exception as e:
@@ -128,6 +131,7 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
         context['action'] = 'add'
         context['list_url'] = reverse_lazy('erp:category_list')
         context['det'] = []
+        context['formClient'] = clientForm()
         return context
 
 

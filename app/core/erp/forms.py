@@ -112,9 +112,6 @@ class SaleForm(ModelForm):
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
 
-        self.fields['cli'].widget.attrs['autofocus'] = True
-        self.fields['cli'].widget.attrs['class'] = 'form-control select2'
-        self.fields['cli'].widget.attrs['style'] = 'width: 100%'
 
         self.fields['date_joined'].widget.attrs = {
             'readonly': True,
@@ -140,8 +137,7 @@ class SaleForm(ModelForm):
         fields = '__all__'
         widgets = {
             'cli': Select(attrs={
-                'class': 'form-control select2',
-                'style': 'width: 100%'
+                'class': 'custom-select select2',
             }),
             'date_joined': DateInput(format='%Y-%m-%d',
                                      attrs={

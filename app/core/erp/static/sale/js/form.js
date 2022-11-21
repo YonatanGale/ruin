@@ -149,6 +149,23 @@ $(function () {
         minimumInputLength: 1,
     });
 
+    $('.btnAddClient').on('click', function () {
+        $('#myModalClient').modal('show');
+    });
+
+    $('#myModalClient').on('hidden.bs.modal', function (e) {
+        $('#formClient').trigger('reset');
+      })
+
+    $('#formClient').on('submit', function (e) {
+        e.preventDefault();
+        var parameters = new FormData(this);
+        parameters.append('action', 'create_client');
+        submit_with_ajax(window.location.pathname, parameters, function (response) {
+            $('#myModalClient').modal('hide');
+
+        });
+    });
 
     //buscador de productos
     $('input[name="search"]').autocomplete({
@@ -215,7 +232,7 @@ $(function () {
     });
 
     //event submit
-    $('form').on('submit', function (e) {
+    $('#formSale').on('submit', function (e) {
         e.preventDefault();
 
         if(vents.items.products.length === 0){
