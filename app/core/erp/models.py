@@ -57,7 +57,7 @@ class Client(models.Model):
     addres = models.CharField(max_length=150, null=True, blank=True, verbose_name='Direccion')
 
     def __str__(self):
-        return self.names
+        return self.get_full_name
 
     def get_full_name(self):
         return '{} {} / {}'.format(self.names, self.surnames, self.ci)
