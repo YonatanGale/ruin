@@ -46,8 +46,8 @@ var vents = {
             data: this.items.products,
             columns: [
                 { "data": "id"},
-                { "data": "name"},
-                { "data": "cate.name"},
+                { "data": "full_name"},
+                { "data": "stock"},
                 { "data": "price"},
                 { "data": "cant"},
                 { "data": "subtotal"},
@@ -59,6 +59,13 @@ var vents = {
                     orderable: false,
                     render: function (data, type, row) {
                         return '<a rel="remove" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
+                    }
+                },
+                {
+                    targets: [-4],
+                    class: 'text-center',
+                    render: function (data, type, row) {
+                        return '<span class="badge badge-secondary">'+data+'</span>'
                     }
                 },
                 {
@@ -89,7 +96,7 @@ var vents = {
             rowCallback( row, data, displayNum, displayIndex, dataIndex ){
                 
                 $(row).find('input[name="cant"]').TouchSpin({
-                    min: 0,
+                    min: 1,
                     max: data.stock,
                     step: 1
                 })
@@ -98,6 +105,9 @@ var vents = {
             
               }
             });
+        console.clear();
+        console.log(this.items);
+        console.log(this.get_ids());
     },
 };
 
@@ -116,8 +126,8 @@ function formatRepo(repo) {
         '<div class="col-lg-11 text-left shadow-sm">' +
         //'<br>' +
         '<p style="margin-bottom: 0;">' +
-        '<b>Nombre:</b> ' + repo.name + '<br>' +
-        '<b>Categoría:</b> ' + repo.cate.name + '<br>' +
+        '<b>Nombre/Categoria:</b> ' + repo.full_name + '<br>' +
+        '<b>Stock:</b> ' + repo.stock + '<br>' +
         '<b>Precio:</b> <span class="badge badge-warning">Gs.' + repo.price + '</span>' +
         '</p>' +
         '</div>' +
@@ -272,13 +282,14 @@ $(function () {
                 type: 'POST',
                 data: {
                     'action':'search_products',
+                    'ids': JSON.stringify(vents.get_ids()),
                     'term': $('select[name="search"]').val()
                 },
                 dataSrc: ""
             },
             columns: [
-                { "data": "name"},
-                { "data": "cate.name"},
+                { "data": "full_name"},
+                { "data": "stock"},
                 { "data": "price"},
                 { "data": "stock"},
             ],
@@ -290,6 +301,13 @@ $(function () {
                     render: function (data, type, row) {
                         var buttons = '<a href="#" rel="add" class="btn btn-success btn-xs btn-flat"><i class="fas fa-plus"></i></a> ';
                         return buttons
+                    }
+                },
+                {
+                    targets: [-3],
+                    class: 'text-center',
+                    render: function (data, type, row) {
+                        return '<span class="badge badge-secondary">'+data+'</span>'
                     }
                 },
             ],
@@ -307,7 +325,7 @@ $(function () {
         product.cant = 1;
         product.subtotal = 0.00;
         vents.add(product);
-
+        tblSearchProducts.row( $(this).parents('tr') ).remove().draw();
     });
 
     //event submit
@@ -345,7 +363,8 @@ $(function () {
             data: function (params) {
                 var queryParameters = {
                     term: params.term,
-                    action: 'search_autocomplete'
+                    action: 'search_autocomplete',
+                    ids: JSON.stringify(vents.get_ids())
                 }
                 return queryParameters;
             },

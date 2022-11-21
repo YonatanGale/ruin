@@ -34,13 +34,14 @@ class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     cate = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Categoria')
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Precio')
-    stock = models.IntegerField(default=0, verbose_name='Cantidad')
+    stock = models.IntegerField(default=0, verbose_name='Stock')
 
     def __str__(self):
         return self.name
 
     def toJSON(self):
         item = model_to_dict(self)
+        item['full_name'] = '{} / {}'.format(self.name, self.cate.name)
         item['cate'] = self.cate.toJSON()
         return item
 
@@ -91,6 +92,12 @@ class Sale(models.Model):
         item['total'] = format(self.total, '.2f')
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
+
+    def delete(self, using=None, keep_parements=False):
+        for det in self.detsale_set.all():
+            det.prod.stock += det.cant
+            det.prod.save()
+        super(Sale, self).delete()
 
     class Meta:
         verbose_name = 'Venta'
