@@ -46,6 +46,7 @@
                                 <label>Buscador de productos</label>
                                 <div class="input-group">
                                     <select class="form-control select2" name="search"></select>
+                                    <!-- <input type="text" class="form-control" autocomplete="off" maxlength="50" placeholder="ingrese una descripcion" name="search"> -->
                                     <div class="input-group-append">
                                         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">Opciones</button>
@@ -53,6 +54,9 @@
                                             <a class="dropdown-item btnSearchProducts">
                                                 <i class="fas fa-search"></i>Buscar productos
                                             </a>
+                                            <!-- <a class="dropdown-item btnClearSearch">
+                                                <i class="fas fa-times"></i>Limpiar busqueda
+                                            </a> -->
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +182,18 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+            <table class="table table-bordered table-hover" id="tblSearchProducts">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantegoria</th>
+                        <th>Precio</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
       </div>
     </div>

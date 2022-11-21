@@ -1,4 +1,6 @@
 var tblProducts;
+var tblSearchProducts;
+
 var vents = {
     items: {
         cli: '',
@@ -101,6 +103,10 @@ var vents = {
 
 function formatRepo(repo) {
     if (repo.loading) {
+        return repo.text;
+    }
+
+    if(!Number.isInteger(repo.id)){
         return repo.text;
     }
 
@@ -256,7 +262,52 @@ $(function () {
     });
 
     $('.btnSearchProducts').on('click', function () {
+        tblSearchProducts = $('#tblSearchProducts').DataTable( {
+            responsive: true,
+            autoWidth: false,
+            destroy: true,
+            deferRender: true,
+            ajax: {
+                url: window.location.pathname,
+                type: 'POST',
+                data: {
+                    'action':'search_products',
+                    'term': $('select[name="search"]').val()
+                },
+                dataSrc: ""
+            },
+            columns: [
+                { "data": "name"},
+                { "data": "cate.name"},
+                { "data": "price"},
+                { "data": "stock"},
+            ],
+            columnDefs: [
+                {
+                    targets: [-1],
+                    class: 'text-center',
+                    orderable: false,
+                    render: function (data, type, row) {
+                        var buttons = '<a href="#" rel="add" class="btn btn-success btn-xs btn-flat"><i class="fas fa-plus"></i></a> ';
+                        return buttons
+                    }
+                },
+            ],
+            initComplete: function(settings, json) {
+            
+              }
+            });
         $('#myModalProduct').modal('show');
+    });
+
+    $('#tblSearchProducts tbody')
+        .on('click', 'a[rel="add"]', function () {
+        var tr = tblSearchProducts.cell($(this).closest('td, li')).index();
+        var product = tblSearchProducts.row(tr.row).data();
+        product.cant = 1;
+        product.subtotal = 0.00;
+        vents.add(product);
+
     });
 
     //event submit
@@ -294,7 +345,7 @@ $(function () {
             data: function (params) {
                 var queryParameters = {
                     term: params.term,
-                    action: 'search_products'
+                    action: 'search_autocomplete'
                 }
                 return queryParameters;
             },
@@ -309,6 +360,9 @@ $(function () {
         templateResult: formatRepo,
     }).on('select2:select', function (e) {
         var data = e.params.data;
+        if(!Number.isInteger(data.id)){
+            return false;
+        }
         data.cant = 1;
         data.subtotal = 0.00;
         vents.add(data);
