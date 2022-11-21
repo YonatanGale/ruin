@@ -65,6 +65,7 @@ class Client(models.Model):
     def toJSON(self):
         item = model_to_dict(self)
         item['Birthday'] = self.Birthday.strftime('%Y-%m-%d')
+        item['full_name'] = self.get_full_name()
         return item
 
     class Meta:
