@@ -40,7 +40,7 @@
     {{ emp.address|upper }}
 </p>
 <p>
-    <b>FACTURA:</b> {{ buy.id }}<br> {# id de la venta #}
+    <b>FACTURA:</b> {{ buy.id }}<br>
     <b>FECHA DE VENTA:</b> {{ buy.date_joined }}<br>
     <b>CLIENTE:</b> {{ buy.prov.names|upper }} {{ buy.prov.surnames|upper }}<br>
     <b>CI | RUC:</b> {{ buy.prov.ci }}<br>
@@ -49,6 +49,7 @@
     <thead>
     <tr>
         <th style="width: 30%;">PRODUCTO</th>
+        <th style="width: 30%;">Categoria</th>
         <th style="width: 10%;">CANT</th>
         <th style="width: 10%;">P.UNITARIO</th>
         <th style="text-align: right; width: 30%;">TOTAL</th>
@@ -58,6 +59,7 @@
     {% for d in buy.detbuy_set.all %}
         <tr {% if forloop.first %}style="padding-top: 3px;" {% endif %}>
             <td>{{ d.prod.name }}</td>
+            <td>{{ d.prod.cate.name }}</td>
             <td>{{ d.cant }}</td>
             <td>Gs.{{ d.price }}</td>
             <td style="text-align: right;">Gs.{{ d.subtotal }}</td>
@@ -68,7 +70,7 @@
         <td style="text-align: right">Gs.{{ buy.subtotal }}</td>
     </tr>
     <tr style="padding-top: 0px;">
-        <td colspan="5"><b>IVA 11%</b></td>
+        <td colspan="5"><b>IVA 5%</b></td>
         <td style="text-align: right">Gs.{{ buy.iva }}</td>
     </tr>
     <tr style="padding-top: 0px;">

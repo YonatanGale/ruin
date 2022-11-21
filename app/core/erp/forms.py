@@ -32,6 +32,35 @@ class CategoryForm(ModelForm):
             data['error'] = str(e)
         return data
 
+class CategoryMaterialsForm(ModelForm):
+    class Meta:
+        model = CategoryMaterials
+        fields = '__all__'
+
+        widgets = {
+            'name': TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder' : 'Ingrese un nombre',
+                    'autocomplete': 'off'
+                }
+            ),
+            'unity': Select()
+
+        }
+    
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+
 class ProductForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -224,34 +253,6 @@ class SupplierForm(ModelForm):
             if form.is_valid():
                 instance = form.save()
                 data = instance.toJSON()
-            else:
-                data['error'] = form.errors
-        except Exception as e:
-            data['error'] = str(e)
-        return data
-
-class UnityForm(ModelForm):
-    class Meta:
-        model = Unity
-        fields = '__all__'
-
-        widgets = {
-            'name': TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder' : 'Ingrese un nombre',
-                    'autocomplete': 'off'
-                }
-            )
-
-        }
-    
-    def save(self, commit=True):
-        data = {}
-        form = super()
-        try:
-            if form.is_valid():
-                form.save()
             else:
                 data['error'] = form.errors
         except Exception as e:

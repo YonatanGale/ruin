@@ -4,6 +4,8 @@ from datetime import datetime
 from core.models import BaseModel
 from django.forms import model_to_dict
 from crum import get_current_user
+from core.erp.choices import unity_choices
+
 
 # Create your models here.
 class Category(BaseModel):
@@ -24,6 +26,23 @@ class Category(BaseModel):
 
     def toJSON(self):
         item = model_to_dict(self)
+        return item
+
+    class Meta:
+        verbose_name = 'Categoria'
+        verbose_name_plural = 'Categorias'
+        ordering = ['id']
+
+class CategoryMaterials(models.Model):
+    name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+    unity = models.CharField(max_length=10, choices=unity_choices, default='ls', verbose_name='Unidad de medida')
+
+    def __str__(self):
+        return self.name
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['unity'] = {'id': self.unity, 'name': self.get_unity_display()}
         return item
 
     class Meta:
@@ -127,25 +146,11 @@ class DetSale(models.Model):
         verbose_name_plural = 'Detalles'
         ordering = ['id']
 
-class Unity(models.Model):
-    name = models.CharField(max_length=150, verbose_name='Unidad de medida', unique=True)
-
-    def __str__(self):
-        return (self.name)
-
-    def toJSON(self):
-        item = model_to_dict(self)  
-        return item
-
-    class Meta:
-        verbose_name = 'Unidad'
-        verbose_name_plural = 'Unidades'
-        ordering = ['id']
 
 class Materials(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+    cate = models.ForeignKey(CategoryMaterials, on_delete=models.CASCADE, verbose_name='Categoria')    
     stock = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Stock")
-    uni = models.ForeignKey(Unity, on_delete=models.CASCADE, verbose_name="Unidad")
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Precio de compra")
 
     def __str__(self):
@@ -153,9 +158,10 @@ class Materials(models.Model):
 
     def toJSON(self):
         item = model_to_dict(self)
-        item['uni'] = self.uni.toJSON()
         item['stock'] = format(self.stock, '.2f')
         item['price'] = format(self.price, '.2f')
+        item['full_name'] = '{} / {}'.format(self.name, self.cate.name)
+        item['cate'] = self.cate.toJSON()
         return item
 
     class Meta:

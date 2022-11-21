@@ -2,7 +2,7 @@ from unicodedata import category
 from urllib import request
 from core.erp.forms import CategoryForm, MaterialsForm, ProductForm
 from django.shortcuts import render
-from core.erp.models import Category, Product, Materials, Unity
+from core.erp.models import Category, Product, Materials
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -33,14 +33,14 @@ class materialsListView(LoginRequiredMixin, TemplateView):
             elif action == 'add':
                 cli = Materials()
                 cli.name = request.POST['name']
-                cli.uni_id = request.POST['uni']
+                cli.cate_id = request.POST['cate']
                 cli.price = request.POST['price']
                 cli.stock = request.POST['stock']
                 cli.save()
             elif action == 'edit':
                 cli = Materials.objects.get(pk=request.POST['id'])
                 cli.name = request.POST['name']
-                cli.uni_id = request.POST['uni']
+                cli.cate_id = request.POST['cate']
                 cli.price = request.POST['price']
                 cli.stock = request.POST['stock']
                 cli.save()

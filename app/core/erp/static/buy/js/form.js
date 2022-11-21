@@ -47,7 +47,7 @@ var comp = {
             data: this.items.products,
             columns: [
                 {"data": "id"},
-                {"data": "name"},
+                {"data": "full_name"},
                 {"data": "stock"},
                 {"data": "price"},
                 {"data": "cant"},
@@ -132,7 +132,7 @@ function formatRepo(repo) {
         '<div class="col-lg-11 text-left shadow-sm">' +
         //'<br>' +
         '<p style="margin-bottom: 0;">' +
-        '<b>Nombre/Categoria:</b> ' + repo.name + '<br>' +
+        '<b>Nombre/Categoria:</b> ' + repo.full_name + '<br>' +
         '<b>Stock:</b> ' + repo.stock + '<br>' +
         '<b>Precio compra:</b> <span class="badge badge-warning">Gs.' + repo.price + '</span>' +
         '</p>' +
@@ -219,37 +219,6 @@ $(function () {
 
 // busqueda de productos
 
-    // $('input[name="search"]').autocomplete({
-    //     source: function (request, response) {
-    //         $.ajax({
-    //             url: window.location.pathname,
-    //             type: 'POST',
-    //             data: {
-    //                 'action': 'search_products', 
-    //                 'term': request.term,
-    //                 ids: JSON.stringify(comp.get_ids())
-    //             },
-    //             dataType: 'json',
-    //         }).done(function (data) {
-    //             response(data);
-    //         }).fail(function (jqXHR, textStatus, errorThrown) {
-    //             //alert(textStatus + ': ' + errorThrown);
-    //         }).always(function (data) {
-
-    //         });
-    //     },
-    //     delay: 250,
-    //     minLength: 1,
-    //     select: function (event, ui) {
-    //         event.preventDefault();
-    //         console.clear();
-    //         ui.item.cant = 0.00;
-    //         ui.item.subtotal = 0.00;
-    //         console.log(comp.items);
-    //         comp.add(ui.item);
-    //         $(this).val('');
-    //     }
-    // });
 
     //Remover todos los items
     $('.btnRemoveAll').on('click', function () {

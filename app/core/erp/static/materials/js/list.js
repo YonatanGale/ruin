@@ -19,7 +19,8 @@ function getData(){
             { "data": "id"},
             { "data": "name"},
             { "data": "stock"},
-            { "data": "uni.name"},
+            { "data": "cate.name"},
+            { "data": "cate.unity.name"},
             { "data": "price"},
             { "data": "stock"},
         ],
@@ -35,7 +36,7 @@ function getData(){
                 }
             },
             {
-                targets: [-4],
+                targets: [-5],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
