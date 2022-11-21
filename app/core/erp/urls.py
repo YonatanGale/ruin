@@ -23,8 +23,9 @@ urlpatterns = [
     #dashboard
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     #buy
-    # path('buy/list/', buyListView.as_view(), name='buy_list'),
-    # path('buy/add/', buyCreateView.as_view(), name='buy_create'),
+    path('buy/list/', BuyListView.as_view(), name='buy_list'),
+    path('buy/add/', BuyCreateView.as_view(), name='buy_create'),
+    path('buy/invoice/pdf/<int:pk>/', BuyInvoicePdfView.as_view(), name='buy_invoce'),
     # path('buy/delete/<int:pk>/', buyDeleteView.as_view(), name='buy_delete'),
     #Supplier
     path('Supplier/list/', SupplierListView.as_view(), name='supplier_list'),

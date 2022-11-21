@@ -222,7 +222,8 @@ class SupplierForm(ModelForm):
         form = super()
         try:
             if form.is_valid():
-                form.save()
+                instance = form.save()
+                data = instance.toJSON()
             else:
                 data['error'] = form.errors
         except Exception as e:
@@ -256,6 +257,49 @@ class UnityForm(ModelForm):
         except Exception as e:
             data['error'] = str(e)
         return data
+
+class BuyForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['prov'].queryset = Supplier.objects.none()
+
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+
+    class Meta:
+        model = Buy
+        fields = '__all__'
+        widgets = {
+            'prov': Select(attrs={
+                'class': 'custom-select select2',
+                # 'style': 'width: 100%'
+            }),
+            'date_joined': DateInput(
+                format='%Y-%m-%d',
+                attrs={
+                    'value': datetime.now().strftime('%Y-%m-%d'),
+                    'autocomplete': 'off',
+                    'class': 'form-control datetimepicker-input',
+                    'id': 'date_joined',
+                    'data-target': '#date_joined',
+                    'readonly': True,
+                    'data-toggle': 'datetimepicker'
+                }
+            ),
+            'iva': TextInput(attrs={
+                'class': 'form-control',
+            }),
+            'subtotal': TextInput(attrs={
+                'readonly': True,
+                'class': 'form-control',
+            }),
+            'total': TextInput(attrs={
+                'readonly': True,
+                'class': 'form-control',
+            })
+        }
+
 
 search = CharField(widget=TextInput(attrs={
     'class': 'form-control',

@@ -1,3 +1,4 @@
+import decimal
 from django.db import models
 from datetime import datetime
 from core.models import BaseModel
@@ -171,10 +172,14 @@ class Supplier(models.Model):
     address = models.CharField(max_length=150, null=True, blank=True, verbose_name='Dirección')
 
     def __str__(self):
-        return self.names
+        return self.get_full_name
+
+    def get_full_name(self):
+        return '{} {} / {}'.format(self.names, self.surnames, self.ci)
 
     def toJSON(self):
         item = model_to_dict(self)
+        item['full_name'] = self.get_full_name()
         return item
 
     class Meta:
@@ -201,6 +206,11 @@ class Buy(models.Model):
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
 
+    def delete(self, using=None, keep_parements=False):
+        for det in self.detbuy_set.all():
+            det.prod.stock -= (decimal.Decimal(det.cant))
+            det.prod.save()
+        super(Buy, self).delete()
 
     class Meta:
         verbose_name = 'Compra'
@@ -209,7 +219,7 @@ class Buy(models.Model):
 
 class DetBuy(models.Model):
     buy = models.ForeignKey(Buy, on_delete=models.CASCADE)
-    prodb = models.ForeignKey(Materials, on_delete=models.CASCADE)
+    prod = models.ForeignKey(Materials, on_delete=models.CASCADE)
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
@@ -221,7 +231,7 @@ class DetBuy(models.Model):
         item = model_to_dict(self)
         item['cant'] = format(self.cant, '.2f')
         item['buy'] = self.buy.toJSON() 
-        item['prodb'] = self.prodb.toJSON()
+        item['prod'] = self.prod.toJSON()
         item['price'] = format(self.price, '.2f')
         item['subtotal'] = format(self.subtotal, '.2f')
         return item

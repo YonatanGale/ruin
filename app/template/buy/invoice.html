@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+    .img-invoice {
+        width: 50px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .head {
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    #invoice thead tr th {
+        text-align: left;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+        padding-top: 4px;
+    }
+
+    #invoice thead tr {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    #invoice tbody tr {
+        padding: 0;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+</style>
+<body>
+<p class="head">
+    {{ emp.name|upper }}<br>
+    {{ emp.ruc }}<br>
+    {{ emp.address|upper }}
+</p>
+<p>
+    <b>FACTURA:</b> {{ buy.id }}<br> {# id de la venta #}
+    <b>FECHA DE VENTA:</b> {{ buy.date_joined }}<br>
+    <b>CLIENTE:</b> {{ buy.prov.names|upper }} {{ buy.prov.surnames|upper }}<br>
+    <b>CI | RUC:</b> {{ buy.prov.ci }}<br>
+</p>
+<table id="invoice">
+    <thead>
+    <tr>
+        <th style="width: 30%;">PRODUCTO</th>
+        <th style="width: 10%;">CANT</th>
+        <th style="width: 10%;">P.UNITARIO</th>
+        <th style="text-align: right; width: 30%;">TOTAL</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for d in buy.detbuy_set.all %}
+        <tr {% if forloop.first %}style="padding-top: 3px;" {% endif %}>
+            <td>{{ d.prod.name }}</td>
+            <td>{{ d.cant }}</td>
+            <td>Gs.{{ d.price }}</td>
+            <td style="text-align: right;">Gs.{{ d.subtotal }}</td>
+        </tr>
+    {% endfor %}
+    <tr style="border-top: 1px solid black; padding-top: 4px;">
+        <td colspan="5"><b>SUBTOTAL</b></td>
+        <td style="text-align: right">Gs.{{ buy.subtotal }}</td>
+    </tr>
+    <tr style="padding-top: 0px;">
+        <td colspan="5"><b>IVA 11%</b></td>
+        <td style="text-align: right">Gs.{{ buy.iva }}</td>
+    </tr>
+    <tr style="padding-top: 0px;">
+        <td colspan="5"><b>TOTAL A PAGAR</b></td>
+        <td style="text-align: right">Gs.{{ buy.total }}</td>
+    </tr>
+    </tbody>
+</table>
+<table style="margin-top: 250px;">
+    <thead>
+    <tr>
+        <th>****GRACIAS POR SU COMPRA****</th>
+    </tr>
+    <tr>
+        <th>NO SE ACEPTAN CAMBIOS NI DEVOLUCIONES</th>
+    </tr>
+    </thead>
+</table>
+</body>
+</html>

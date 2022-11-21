@@ -59,14 +59,6 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'user:user_list' %}" class="nav-link">
-                        <i class="nav-icon fas fa-cart-arrow-down"></i>
-                        <p>
-                            Compras
-                        </p>
-                    </a>
-                </li>
                 {% if user.is_superuser == 1 %}
                     <li class="nav-item">
                         <a href="{% url 'user:user_list' %}" class="nav-link">
@@ -85,6 +77,29 @@
                             Fondos
                         </p>
                     </a>
+                </li>
+                <li class="nav-item menu-is-opening menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-cart-arrow-down"></i>
+                        <p>
+                            Compras
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: block;">
+                        <li class="nav-item">
+                            <a href="{% url 'erp:buy_create' %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Comprar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'erp:buy_list' %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Lista de compras</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item menu-is-opening menu-open">
                     <a href="#" class="nav-link">
@@ -122,6 +137,12 @@
                             <a href="{% url 'sale_report' %}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Reporte ventas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'buy_report' %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Reporte compras</p>
                             </a>
                         </li>
                     </ul>
