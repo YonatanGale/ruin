@@ -67,14 +67,17 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'user:user_list' %}" class="nav-link">
-                        <i class="fas fa-user-friends"></i>
-                        <p>
-                            Usuarios
-                        </p>
-                    </a>
-                </li>
+                {% if user.is_superuser == 1 %}
+                    <li class="nav-item">
+                        <a href="{% url 'user:user_list' %}" class="nav-link">
+                            <i class="fas fa-user-friends"></i>
+                            <p>
+                                Usuarios
+                            </p>
+                        </a>
+                    </li>
+                {% else %}
+                {% endif %}
                 <li class="nav-item">
                     <a href="{% url 'user:user_list' %}" class="nav-link">
                         <i class="fas fa-wallet"></i>
