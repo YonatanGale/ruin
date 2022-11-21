@@ -123,6 +123,33 @@ $(function () {
         vents.calculate_invoice();
     }).val(0.05);
 
+    //buscador de clientes
+    $('select[name="cli"]').select2({
+        theme: "bootstrap4",
+        language: 'es',
+        allowClear: true,
+        ajax: {
+            delay: 250,
+            type: 'POST',
+            url: window.location.pathname,
+            data: function (params) {
+                var queryParameters = {
+                    term: params.term,
+                    action: 'search_clients'
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+        },
+        placeholder: 'Ingrese una descripción',
+        minimumInputLength: 1,
+    });
+
+
     //buscador de productos
     $('input[name="search"]').autocomplete({
         source: function (request, response) {

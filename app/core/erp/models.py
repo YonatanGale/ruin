@@ -59,6 +59,9 @@ class Client(models.Model):
     def __str__(self):
         return self.names
 
+    def get_full_name(self):
+        return '{} {} / {}'.format(self.names, self.surnames, self.ci)
+
     def toJSON(self):
         item = model_to_dict(self)
         item['Birthday'] = self.Birthday.strftime('%Y-%m-%d')

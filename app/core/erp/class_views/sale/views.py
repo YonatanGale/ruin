@@ -4,7 +4,7 @@ from unicodedata import category
 from urllib import request
 from core.erp.forms import CategoryForm, SaleForm
 from django.shortcuts import render
-from core.erp.models import  DetSale, Product, Sale
+from core.erp.models import  Client, DetSale, Product, Sale
 from core.erp.mixins import IsSuperuserMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,6 +15,8 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Q
+
 
 import os
 from django.conf import settings
@@ -105,6 +107,14 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                         det.prod.stock -= (det.cant)
                         det.prod.save()
                     data = {'id': sale.id}
+            elif action == 'search_clients':
+                data = []
+                term = request.POST['term']
+                clients = Client.objects.filter(Q(names__icontains=term) | Q(surnames__icontains=term) | Q(ci__icontains=term))[0:10]
+                for i in clients:
+                    item = i.toJSON()
+                    item['text'] = i.get_full_name()
+                    data.append(item)
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
         except Exception as e:
