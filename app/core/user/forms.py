@@ -45,7 +45,7 @@ class UserForm(ModelForm):
                     'placeholder' : 'Ingrese un nombre de usuario'
                 }
             ),
-            'password': PasswordInput(
+            'password': PasswordInput(render_value=True,
                 attrs={
                     'class': 'form-control',
                     'placeholder' : 'Ingrese su contraseña'

@@ -50,7 +50,11 @@ class ProductForm(ModelForm):
                 attrs={
                     'placeholder' : 'Ingrese un nombre'
                 }
-            )
+            ),
+            'cate': Select(attrs={
+                'class': 'form-control',
+                'style': 'width: 100%'
+            }),
 
         }
 
