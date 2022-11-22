@@ -24,6 +24,9 @@
 <a class="btn btn-primary btn-flat btnAdd">
     <i class="fas fa-plus"></i>Nuevo registro
 </a>
+<a class="btn btn-warning btn-flat btnRecycle">
+    <i class="fas fa-recycle"></i>Reciclar
+</a>
 <a href="{{ list_url }}" class="btn btn-success btn-flat">
     <i class="fas fa-sync"></i> Actualizar
 </a>
@@ -32,7 +35,7 @@
 <!-- Modal -->
 <div class="modal fade" id="myModalProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
-<form method="post" action=".">
+<form id="formrproduct" method="post" action=".">
    <div class="modal-dialog" role="document">
        <div class="modal-content">
            <div class="modal-header">
@@ -62,5 +65,36 @@ aria-hidden="true">
    </div>
 </form>
 </div>
-
+<div class="modal fade" id="myModalRecycle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<form id="formrecycle" method="post" action=".">
+   <div class="modal-dialog" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title">
+                   <b><i class="fas fa-search"></i> <span></span></b>
+               </h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+               </button>
+           </div>
+           <div class="modal-body">
+               <div class="container-fluid">
+                   <input name="action" type="hidden" value="recycle">
+                   <input name="id" id="id" type="hidden" value="0">
+                   {% for field in form_re.visible_fields %}
+                       <div class="form-group">
+                           <label for="email">{{ field.label }}:</label>
+                           {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                       </div>
+                   {% endfor %}
+               </div>
+           </div>
+           <div class="modal-footer">
+               <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-save"></i> Guardar</button>
+           </div>
+       </div>
+   </div>
+</form>
+</div>
 {% endblock %}

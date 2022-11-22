@@ -1,8 +1,10 @@
 from unicodedata import category
+from django.db import transaction
+
 from urllib import request
-from core.erp.forms import CategoryForm, ProductForm
+from core.erp.forms import CategoryForm, ProductForm, RecycleForm
 from django.shortcuts import render
-from core.erp.models import Category, Product
+from core.erp.models import Category, Product, Recycle
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -37,6 +39,14 @@ class productListView(LoginRequiredMixin, TemplateView):
                 cli.price = request.POST['price']
                 cli.stock = request.POST['stock']
                 cli.save()
+            elif action == 'recycle':
+                    det = Recycle()
+                    det.prod_id = request.POST['prod']
+                    det.recy = request.POST['recy']
+                    det.cant = request.POST['cant']
+                    det.save()
+                    det.prod.stock -= int(det.cant)
+                    det.prod.save()
             elif action == 'edit':
                 cli = Product.objects.get(pk=request.POST['id'])
                 cli.name = request.POST['name']
@@ -60,4 +70,7 @@ class productListView(LoginRequiredMixin, TemplateView):
         context['list_url'] = reverse_lazy('erp:product_list')
         context['entity'] = 'Productos'
         context['form'] = ProductForm()
+        context['det'] = []
+        context['form_re'] = RecycleForm()
         return context
+

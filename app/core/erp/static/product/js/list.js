@@ -70,6 +70,15 @@ $(function () {
     getData();
 
 
+    $('.btnRecycle').on('click', function () {
+        $('input[name="action"]').val('recycle');
+        modal_title.find('span').html('Retirar un producto');
+        console.log(modal_title.find('i'));
+        modal_title.find('i').removeClass().addClass('fas fa-recycle');
+        $('form')[0].reset();
+        $('#myModalRecycle').modal('show');
+    });
+
     $('.btnAdd').on('click', function () {
         $('input[name="action"]').val('add');
         modal_title.find('span').html('Creación de un producto');
@@ -88,7 +97,7 @@ $(function () {
         $('input[name="action"]').val('edit');
         $('input[name="id"]').val(data.id);
         $('input[name="name"]').val(data.name);
-        $('input[name="cate.name"]').val(data.cate.name);
+        $('input[name="cate.id"]').val(data.cate);
         $('input[name="price"]').val(data.price);
         $('input[name="stock"]').val(data.stock);
         $('#myModalProduct').modal('show');
@@ -109,11 +118,19 @@ $(function () {
         // $('form')[0].reset();
     });
 
-    $('form').on('submit', function (e) {
+    $('#formrproduct').on('submit', function (e) {
         e.preventDefault();
         var parameters = $(this).serializeArray();
         alert_jqueryconfirm(window.location.pathname, parameters, function () {
             $('#myModalProduct').modal('hide');
+            tblProduct.ajax.reload();
+        });
+    });
+    $('#formrecycle').on('submit', function (e) {
+        e.preventDefault();
+        var parameters = $(this).serializeArray();
+        alert_jqueryconfirm(window.location.pathname, parameters, function () {
+            $('#myModalRecycle').modal('hide');
             tblProduct.ajax.reload();
         });
     });

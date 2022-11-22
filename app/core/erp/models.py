@@ -4,7 +4,7 @@ from datetime import datetime
 from core.models import BaseModel
 from django.forms import model_to_dict
 from crum import get_current_user
-from core.erp.choices import unity_choices
+from core.erp.choices import unity_choices, recycle_choices
 
 
 # Create your models here.
@@ -293,4 +293,24 @@ class DetProduction(models.Model):
     class Meta:
         verbose_name = 'Detalle de produccion'
         verbose_name_plural = 'Detalle de producciones'
+        ordering = ['id']
+
+class Recycle(models.Model):
+    prod = models.ForeignKey(Product, on_delete=models.CASCADE)
+    recy = models.CharField(max_length=10, choices=recycle_choices, default='Caducidad', verbose_name='Razon de retiro')
+    cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
+
+    def __str__(self):
+        return self.prod.name
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['cant'] = format(self.cant, '.2f')
+        item['prod'] = self.prod.toJSON()
+        item['recy'] = {'id': self.recy, 'name': self.get_recy_display()}
+        return item
+
+    class Meta:
+        verbose_name = 'Reciclar'
+        verbose_name_plural = 'Reciclados'
         ordering = ['id']

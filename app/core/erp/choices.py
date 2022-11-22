@@ -3,3 +3,7 @@ unity_choices = (
     ('Kilogramo','Kilogramo'),
     ('Unidades','Unidades'),
 )
+recycle_choices = (
+    ('Caducado','Caducado'),
+    ('Estetica','Estetica'),
+)
