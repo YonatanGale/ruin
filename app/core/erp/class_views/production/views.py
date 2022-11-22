@@ -43,10 +43,6 @@ class ProductionListView(LoginRequiredMixin, ListView):
                 data = [] 
                 for i in DetProduction.objects.filter(crea_id=request.POST['id']):  
                     data.append(i.toJSON())  
-            elif action == 'search_details_prov':
-                data = []  
-                for i in DetProduction.objects.filter(crea_id=request.POST['id']): 
-                    data.append(i.toJSON())  
             elif action == 'delete':
                 cli = Production.objects.get(pk=request.POST['id'])
                 cli.delete()

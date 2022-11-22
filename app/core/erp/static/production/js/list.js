@@ -29,7 +29,6 @@ $(function () {
                 render: function (data, type, row) {
                     var buttons = '<a rel="delete" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a> ';
                     buttons += '<a rel="details" class="btn btn-success btn-xs btn-flat"><i class="fas fa-search"></i></a> ';
-                    buttons += '<a href="/erp/buy/invoice/pdf/'+row.id+'/" target="_blank" class="btn btn-info btn-xs btn-flat"><i class="fas fa-file-pdf"></i></a> ';
                     return buttons;
                 }
             },
@@ -73,14 +72,7 @@ $(function () {
                 ],
                 columnDefs: [
                     {
-                        targets: [-1, -3],
-                        class: 'text-center',
-                        render: function (data, type, row) {
-                            return 'Gs.' + parseFloat(data).toFixed(2);
-                        }
-                    },
-                    {
-                        targets: [-2],
+                        targets: [-1],
                         class: 'text-center',
                         render: function (data, type, row) {
                             return data;
