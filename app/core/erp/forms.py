@@ -301,7 +301,40 @@ class BuyForm(ModelForm):
             })
         }
 
+class ProductionForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['produc'].queryset = Product.objects.none()
 
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+
+    class Meta:
+        model = Production
+        fields = '__all__'
+        widgets = {
+            'produc': Select(attrs={
+                'class': 'custom-select select2',
+                # 'style': 'width: 100%'
+            }),
+            'date_joined': DateInput(
+                format='%Y-%m-%d',
+                attrs={
+                    'value': datetime.now().strftime('%Y-%m-%d'),
+                    'autocomplete': 'off',
+                    'class': 'form-control datetimepicker-input',
+                    'id': 'date_joined',
+                    'data-target': '#date_joined',
+                    'readonly': True,
+                    'data-toggle': 'datetimepicker'
+                }
+            ),
+            'total': TextInput(attrs={
+                'class': 'form-control',
+            })
+        }
+        
 search = CharField(widget=TextInput(attrs={
     'class': 'form-control',
     'placeholder': 'Ingrese una descripcion'

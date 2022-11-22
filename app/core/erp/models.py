@@ -58,10 +58,14 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_full_name(self):
+        return '{} / {}'.format(self.name, self.cate.name)
+
 
     def toJSON(self):
         item = model_to_dict(self)
-        item['full_name'] = '{} / {}'.format(self.name, self.cate.name)
+        item['full_name'] = self.get_full_name()
         item['cate'] = self.cate.toJSON()
         return item
 
@@ -249,12 +253,14 @@ class DetBuy(models.Model):
 class Production(models.Model):
     produc = models.ForeignKey(Product, on_delete=models.CASCADE)
     date_joined = models.DateField(default=datetime.now)
+    total = models.IntegerField(default=0)
 
     def __str__(self):
         return self.produc.names
 
     def toJSON(self):
         item = model_to_dict(self)
+        item['total'] = format(self.total, '.2f')
         item['produc'] = self.produc.toJSON()
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
@@ -271,9 +277,8 @@ class Production(models.Model):
         ordering = ['id']
 
 class DetProduction(models.Model):
-    production = models.ForeignKey(Production, on_delete=models.CASCADE)
+    crea = models.ForeignKey(Production, on_delete=models.CASCADE)
     prod = models.ForeignKey(Materials, on_delete=models.CASCADE)
-    price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
 
     def __str__(self):
@@ -282,9 +287,8 @@ class DetProduction(models.Model):
     def toJSON(self):
         item = model_to_dict(self)
         item['cant'] = format(self.cant, '.2f')
-        item['production'] = self.production.toJSON() 
+        item['crea'] = self.crea.toJSON() 
         item['prod'] = self.prod.toJSON()
-        item['price'] = format(self.price, '.2f')
         return item
 
     class Meta:

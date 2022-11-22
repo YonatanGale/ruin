@@ -1,3 +1,4 @@
+from core.erp.class_views.production.views import ProductionCreateView
 from core.erp.class_views.categoryMaterials.views import categoryMaterialsListView
 from core.erp.class_views.Materials.views import materialsListView
 from core.erp.class_views.supplier.views import SupplierListView
@@ -35,4 +36,7 @@ urlpatterns = [
     path('sale/add/', SaleCreateView.as_view(), name='sale_create'),
     path('sale/list/', SaleListView.as_view(), name='sale_list'),
     path('sale/invoice/pdf/<int:pk>/', SaleInvocePdfView.as_view(), name='sale_invoce'),
+    #production
+    path('production/add/', ProductionCreateView.as_view(), name='production_create'),
+    #path('production/list/', SaleListView.as_view(), name='sale_list'),
 ]
