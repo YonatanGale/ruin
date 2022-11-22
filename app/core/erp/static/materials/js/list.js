@@ -46,6 +46,15 @@ function getData(){
                     return '<span class="badge badge-danger">'+data+'</span>'
                 }
             },
+            {
+                targets: [-2],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    return 'Gs' + parseFloat(data).toLocaleString("es-AR");
+
+                }
+            },
         ],
         initComplete: function(settings, json) {
         

@@ -50,7 +50,7 @@ function getData(){
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    return 'Gs' + parseFloat(data).toFixed(2);
+                    return 'Gs' + parseFloat(data).toLocaleString("es-AR");
 
                 }
             },

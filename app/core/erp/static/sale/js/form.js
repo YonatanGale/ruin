@@ -263,7 +263,7 @@ $(function () {
         var tr = tblProducts.cell($(this).closest('td, li')).index();
         vents.items.products[tr.row].cant = cant;
         vents.calculate_invoice();
-        $('td:eq(5)',tblProducts.row(tr.row).node()).html( '$'+vents.items.products[tr.row].subtotal.toFixed(2));
+        $('td:eq(5)',tblProducts.row(tr.row).node()).html( 'Gs.'+vents.items.products[tr.row].subtotal.toFixed(2));
 
     });
 
