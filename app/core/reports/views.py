@@ -1,4 +1,4 @@
-from core.erp.models import Buy, Sale
+from core.erp.models import Buy, Production, Sale
 from core.reports.forms import ReportForm
 from django.shortcuts import render
 from django.views.generic import TemplateView
@@ -116,5 +116,53 @@ class RepostBuyView(TemplateView):
         context['title'] = 'Reporte de las ventas'
         context['entity'] = 'Reportes'
         context['list_url'] = reverse_lazy('buy_report')
+        context['form'] = ReportForm()
+        return context
+    
+class RepostProductionView(TemplateView):
+    template_name = 'core/reports/templates/production/report.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *arg, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_report':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = Production.objects.all()
+                if len(start_date) and len(end_date):
+                    search = search.filter(date_joined__range=[start_date, end_date])
+                for s in search:
+                    data.append([
+                        s.id,
+                        s.produc.name,
+                        s.date_joined.strftime('%Y-%m-%d'),
+                        format(s.total, '2f'),
+                    ])
+
+                total = search.aggregate(r=Coalesce(Sum('total'), 0, output_field=DecimalField())).get('r') 
+
+                data.append([
+                    '---',
+                    '---',
+                    '---',
+                    format(total, '2f'),
+                ])
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reporte de produccion'
+        context['entity'] = 'Reportes'
+        context['list_url'] = reverse_lazy('production_report')
         context['form'] = ReportForm()
         return context
