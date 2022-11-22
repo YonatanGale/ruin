@@ -7,6 +7,7 @@ from crum import get_current_user
 from core.erp.choices import unity_choices
 
 
+
 # Create your models here.
 class Category(BaseModel):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
@@ -63,6 +64,7 @@ class Product(models.Model):
         item = model_to_dict(self)
         item['full_name'] = '{} / {}'.format(self.name, self.cate.name)
         item['cate'] = self.cate.toJSON()
+        item['price'] = format(self.price, '.2f')
         return item
 
     class Meta:

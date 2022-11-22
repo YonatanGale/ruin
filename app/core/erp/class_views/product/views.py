@@ -14,6 +14,7 @@ from django.views.generic import TemplateView
 
 
 
+
 class productListView(LoginRequiredMixin, TemplateView):
     model = Product
     template_name = 'template/product/list.html'
