@@ -146,7 +146,6 @@ class DetSale(models.Model):
         verbose_name_plural = 'Detalles'
         ordering = ['id']
 
-
 class Materials(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     cate = models.ForeignKey(CategoryMaterials, on_delete=models.CASCADE, verbose_name='Categoria')    
@@ -245,4 +244,50 @@ class DetBuy(models.Model):
     class Meta:
         verbose_name = 'Detalle de Compra'
         verbose_name_plural = 'Detalle de Compras'
+        ordering = ['id']
+
+class Production(models.Model):
+    produc = models.ForeignKey(Product, on_delete=models.CASCADE)
+    date_joined = models.DateField(default=datetime.now)
+
+    def __str__(self):
+        return self.produc.names
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['produc'] = self.produc.toJSON()
+        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
+        return item
+
+    def delete(self, using=None, keep_parements=False):
+        for det in self.detproduction_set.all():
+            det.prod.stock += (decimal.Decimal(det.cant))
+            det.prod.save()
+        super(Production, self).delete()
+
+    class Meta:
+        verbose_name = 'Pruduccion'
+        verbose_name_plural = 'Producciones'
+        ordering = ['id']
+
+class DetProduction(models.Model):
+    production = models.ForeignKey(Production, on_delete=models.CASCADE)
+    prod = models.ForeignKey(Materials, on_delete=models.CASCADE)
+    price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
+
+    def __str__(self):
+        return self.prod.name
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['cant'] = format(self.cant, '.2f')
+        item['production'] = self.production.toJSON() 
+        item['prod'] = self.prod.toJSON()
+        item['price'] = format(self.price, '.2f')
+        return item
+
+    class Meta:
+        verbose_name = 'Detalle de produccion'
+        verbose_name_plural = 'Detalle de producciones'
         ordering = ['id']
