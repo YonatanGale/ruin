@@ -15,6 +15,8 @@ var comp = {
         });
         return ids;
     },
+
+
     add: function (item) {
         this.items.products.push(item);
         this.list();
@@ -119,12 +121,13 @@ $(function () {
         min: 1,
         max: 100,
         step: 1,
-        boostat: 5,
-        maxboostedstep: 10,
     }).on('change', function () {
-    })
-        .val(1); 
+        var total = $('input[name="total"]').val();
+        console.log(total);
+        $('input[name="total"]').val();
 
+    }).val(1);
+    
 //busqueda de producto
     $('select[name="produc"]').select2({
         theme: "bootstrap4",
@@ -280,7 +283,7 @@ $(function () {
             message_error('Debe al menos tener un item en su detalle de venta');
             return false;
         }
-
+        comp.items.total = $('input[name="total"]').val();
         comp.items.date_joined = $('input[name="date_joined"]').val();
         comp.items.produc = $('select[name="produc"]').val();
 
@@ -289,7 +292,7 @@ $(function () {
         parameters.append('action', $('input[name="action"]').val());
         parameters.append('comp', JSON.stringify(comp.items));
         submit_with_ajax(window.location.pathname, parameters, function () {
-                location.href = '/erp/buy/list';
+                location.href = '/erp/production/list';
             });
     });
 

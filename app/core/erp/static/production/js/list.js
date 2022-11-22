@@ -1,6 +1,6 @@
-var tblBuy;
+var tblProduction;
 $(function () {
-    tblBuy = $('#data').DataTable({
+    tblProduction = $('#data').DataTable({
         responsive: true,
         autoWidth: false,
         destroy: true,
@@ -16,22 +16,12 @@ $(function () {
 
         columns: [
             {"data": "id"},
-            {"data": "prov.full_name"},
+            {"data": "produc.full_name"},
             {"data": "date_joined"},
-            {"data": "subtotal"},
-            {"data": "iva"},
             {"data": "total"},
             {"data": "id"},
         ],
         columnDefs: [
-            {
-                targets: [-2, -3, -4],
-                class: 'text-center',
-                orderable: false,
-                render: function (data, type, row) {
-                    return 'Gs.' + parseFloat(data).toFixed(2);
-                }
-            },
             {
                 targets: [-1],
                 class: 'text-center',
@@ -54,8 +44,8 @@ $(function () {
     //Modal
     $('#data tbody')
         .on('click', 'a[rel="details"]', function () {
-            var tr = tblBuy.cell($(this).closest('td, li')).index();
-            var data = tblBuy.row(tr.row).data();
+            var tr = tblProduction.cell($(this).closest('td, li')).index();
+            var data = tblProduction.row(tr.row).data();
             console.log(data);
 
             $('#tblDet').DataTable({
@@ -79,9 +69,7 @@ $(function () {
                 searching: false,
                 columns: [
                     {"data": "prod.name"},
-                    {"data": "price"},
                     {"data": "cant"},
-                    {"data": "subtotal"},
                 ],
                 columnDefs: [
                     {
@@ -107,13 +95,13 @@ $(function () {
             $('#myModelDet').modal('show');
         })
         .on('click', 'a[rel="delete"]', function () {
-            var tr = tblBuy.cell($(this).closest('td, li')).index();
-            var data = tblBuy.row(tr.row).data();
+            var tr = tblProduction.cell($(this).closest('td, li')).index();
+            var data = tblProduction.row(tr.row).data();
                 var parameters = new FormData();
                 parameters.append('action', 'delete');
                 parameters.append('id', data.id);
                 submit_with_ajax(window.location.pathname, parameters, function () {
-                    tblBuy.ajax.reload();
+                    tblProduction.ajax.reload();
                 });
             });
 });

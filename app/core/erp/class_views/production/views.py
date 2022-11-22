@@ -23,46 +23,46 @@ from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 
 
-# class BuyListView(LoginRequiredMixin, ListView):
-#     model = Buy
-#     template_name = 'template/buy/list.html'
+class ProductionListView(LoginRequiredMixin, ListView):
+    model = Buy
+    template_name = 'template/production/list.html'
 
-#     @method_decorator(csrf_exempt)
-#     def dispatch(self, request, *args, **kwargs):
-#         return super().dispatch(request, *args, **kwargs)
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
-#     def post(self, request, *args, **kwargs):
-#         data = {}
-#         try:
-#             action = request.POST['action']
-#             if action == 'searchdata':
-#                 data = []
-#                 for i in Buy.objects.all():
-#                     data.append(i.toJSON())
-#             elif action == 'search_details_prod':
-#                 data = [] 
-#                 for i in DetBuy.objects.filter(buy_id=request.POST['id']):  
-#                     data.append(i.toJSON())  
-#             elif action == 'search_details_prov':
-#                 data = []  
-#                 for i in DetBuy.objects.filter(buy_id=request.POST['id']): 
-#                     data.append(i.toJSON())  
-#             elif action == 'delete':
-#                 cli = Buy.objects.get(pk=request.POST['id'])
-#                 cli.delete()
-#             else:
-#                 data['error'] = 'Ha ocurrido un error'
-#         except Exception as e:
-#             data['error'] = str(e)
-#         return JsonResponse(data, safe=False)
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'searchdata':
+                data = []
+                for i in Production.objects.all():
+                    data.append(i.toJSON())
+            elif action == 'search_details_prod':
+                data = [] 
+                for i in DetProduction.objects.filter(crea_id=request.POST['id']):  
+                    data.append(i.toJSON())  
+            elif action == 'search_details_prov':
+                data = []  
+                for i in DetProduction.objects.filter(crea_id=request.POST['id']): 
+                    data.append(i.toJSON())  
+            elif action == 'delete':
+                cli = Production.objects.get(pk=request.POST['id'])
+                cli.delete()
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = 'Listado de Compras'
-#         context['create_url'] = reverse_lazy('erp:buy_create')
-#         context['list_url'] = reverse_lazy('erp:buy_list')
-#         context['entity'] = 'Compras'
-#         return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Listado de produccion'
+        context['create_url'] = reverse_lazy('erp:production_create')
+        context['list_url'] = reverse_lazy('erp:production_list')
+        context['entity'] = 'Produccion'
+        return context
 
 
 class ProductionCreateView(LoginRequiredMixin, CreateView):
@@ -145,8 +145,8 @@ class ProductionCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Creación de una Compra'
-        context['entity'] = 'Compras'
+        context['title'] = 'Creación de una produccion'
+        context['entity'] = 'Produccion'
         context['list_url'] = self.success_url
         context['action'] = 'add'
         context['det'] = []

@@ -260,7 +260,6 @@ class Production(models.Model):
 
     def toJSON(self):
         item = model_to_dict(self)
-        item['total'] = format(self.total, '.2f')
         item['produc'] = self.produc.toJSON()
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item

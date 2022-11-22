@@ -330,9 +330,6 @@ class ProductionForm(ModelForm):
                     'data-toggle': 'datetimepicker'
                 }
             ),
-            'total': TextInput(attrs={
-                'class': 'form-control',
-            })
         }
         
 search = CharField(widget=TextInput(attrs={
