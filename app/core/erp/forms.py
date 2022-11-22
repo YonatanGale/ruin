@@ -80,6 +80,12 @@ class ProductForm(ModelForm):
                     'placeholder' : 'Ingrese un nombre'
                 }
             ),
+            'date_joined': DateInput(format='%Y-%m-%d',
+                attrs={
+                    'readonly': True,
+                    'value': datetime.now().strftime('%Y-%m-%d'),
+                }
+            ),
             'cate': Select(attrs={
                 'class': 'form-control',
                 'style': 'width: 100%'
@@ -197,6 +203,12 @@ class clientForm(ModelForm):
             'surnames': TextInput(
                 attrs={
                     'placeholder' : 'Ingrese apellido del cliente'
+                }
+            ),
+            'date_joined': DateInput(format='%Y-%m-%d',
+                attrs={
+                    'readonly': True,
+                    'value': datetime.now().strftime('%Y-%m-%d'),
                 }
             ),
             'Birthday': DateInput(format='%Y-%m-%d',

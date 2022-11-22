@@ -55,6 +55,8 @@ class Product(models.Model):
     cate = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Categoria')
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Precio')
     stock = models.IntegerField(default=0, verbose_name='Stock')
+    date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+
 
     def __str__(self):
         return self.name
@@ -67,6 +69,7 @@ class Product(models.Model):
         item = model_to_dict(self)
         item['full_name'] = self.get_full_name()
         item['cate'] = self.cate.toJSON()
+        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
 
     class Meta:
@@ -80,6 +83,8 @@ class Client(models.Model):
     ci = models.CharField(max_length=10, unique=True, verbose_name='Ci')
     Birthday = models.DateField(default=datetime.now, verbose_name='Fecha de nacimiento')
     addres = models.CharField(max_length=150, null=True, blank=True, verbose_name='Direccion')
+    date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+
 
     def __str__(self):
         return self.get_full_name
@@ -91,6 +96,7 @@ class Client(models.Model):
         item = model_to_dict(self)
         item['Birthday'] = self.Birthday.strftime('%Y-%m-%d')
         item['full_name'] = self.get_full_name()
+        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
 
     class Meta:
