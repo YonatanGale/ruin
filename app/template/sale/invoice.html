@@ -1,3 +1,4 @@
+{% load humanize %}
 <!DOCTYPE html>
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -61,21 +62,21 @@
             <td>{{ d.prod.cate.name }}</td>
             <td>{{ d.prod.name }}</td>
             <td class="text-center">{{ d.cant }}</td>
-            <td class="text-center">${{ d.price }}</td>
-            <td style="text-align: right;">${{ d.subtotal }}</td>
+            <td class="text-center">Gs.{{ d.price | intcomma }}</td>
+            <td style="text-align: right;">Gs.{{ d.subtotal | intcomma  }}</td>
         </tr>
     {% endfor %}
     <tr style="border-top: 1px solid black; padding-top: 4px;">
         <td colspan="4"><b>SUBTOTAL</b></td>
-        <td style="text-align: right">{{ sale.subtotal }}</td>
+        <td style="text-align: right">{{ sale.subtotal | intcomma  }}</td>
     </tr>
     <tr style="padding-top: 0px;">
         <td colspan="4"><b>IVA 5%</b></td>
-        <td style="text-align: right">{{ sale.iva }}</td>
+        <td style="text-align: right">{{ sale.iva | intcomma  }}</td>
     </tr>
     <tr style="padding-top: 0px;">
         <td colspan="4"><b>TOTAL A PAGAR</b></td>
-        <td style="text-align: right">{{ sale.total }}</td>
+        <td style="text-align: right">{{ sale.total | intcomma  }}</td>
     </tr>
     </tbody>
 </table>

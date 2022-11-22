@@ -28,7 +28,7 @@ $(function () {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    return 'Gs.' + parseFloat(data).toFixed(2).toLocaleString("es-AR");
+                    return 'Gs.' + parseFloat(data).toFixed(2);
                 }
             },
             {
@@ -79,7 +79,7 @@ $(function () {
                     targets: [-1, -3],
                     class: 'text-center',
                     render: function (data, type, row) {
-                        return 'Gs.' + parseFloat(data).toLocaleString("es-AR");
+                        return 'Gs.' + parseFloat(data).toFixed(2);
                     }
                 },
                 {
