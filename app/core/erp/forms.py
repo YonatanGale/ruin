@@ -370,7 +370,30 @@ class RecycleForm(ModelForm):
         except Exception as e:
             data['error'] = str(e)
         return data
-          
+
+class CierreCajaForm(ModelForm):
+    class Meta:
+        model = CierreCaja
+        fields = '__all__'
+
+        widgets = {
+            'caja': Select()
+
+        }
+    
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+
+
 search = CharField(widget=TextInput(attrs={
     'class': 'form-control',
     'placeholder': 'Ingrese una descripcion'

@@ -356,12 +356,12 @@ class typeFunds(models.Model):
         ordering = ['id']
 
 class CierreCaja(models.Model):
-    name = models.CharField(max_length=50, verbose_name='Nombre de accion')
+    caja = models.CharField(max_length=50, choices=caja_choices, default='Apertura', verbose_name='Nombre de accion')
     impo = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Importe')
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
     def __str__(self):
-        return self.name
+        return self.caja
 
     def toJSON(self):
         item = model_to_dict(self)

@@ -2,7 +2,7 @@ import json
 from django.db import transaction
 from unicodedata import category
 from urllib import request
-from core.erp.forms import CategoryForm, SaleForm, clientForm
+from core.erp.forms import CategoryForm, CierreCajaForm, SaleForm, clientForm
 from django.shortcuts import render
 from core.erp.models import  Client, DetSale, Fund, Product, Sale, typeFunds
 from core.erp.mixins import IsSuperuserMixin
@@ -51,5 +51,6 @@ class FundListView(LoginRequiredMixin, ListView):
         context['title'] = 'Listado de Fondos'
         context['create_url'] ='' #reverse_lazy('erp:sale_create')
         context['list_url'] =  reverse_lazy('erp:fund_list')
+        context['frmCaja'] =  CierreCajaForm()
         context['entity'] = 'Fondos'
         return context

@@ -12,3 +12,7 @@ pay_choices = (
     ('Cheque','Cheque'),
     ('Tarjeta','Tarjeta'),
 )
+caja_choices = (
+    ('Apertura','Apertura'),
+    ('Cierre','Cierre'),
+)
