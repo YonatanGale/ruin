@@ -1,0 +1,85 @@
+{% extends 'template/list.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block head_list %}
+    <script src="{% static '/fund/js/list.js' %}"></script>
+{% endblock %}
+{% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-6">
+                <div class="small-box bg-info">
+                        <div class="inner">
+                            <table class="table table-bordered table-hover" id="tblType">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo de fondo</th>
+                                        <th>Saldo actual</th>
+                                    </tr>
+                                </thead>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <section class="col-lg-12 connectedSortable ui-sortable">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-search"></i>
+                            {{ title }}
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table" id="tblfund">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nro</th>
+                                    <th scope="col">Importe</th>
+                                    <th scope="col">Tipo de movimiento</th>
+                                    <th scope="col">Metodo de cobro o pago</th>
+                                    <th scope="col">Numero de tarjeta o cheque</th>
+                                    <th scope="col">Titular de tarjeta o cheque</th>
+                                    <th scope="col">Fecha de creación</th>
+                                  </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        {% block buttons_list %}
+                        <a href="{{ list_url }}" class="btn btn-primary btn-flat">
+                            <i class="fas fa-cash-register"></i> Apertura de caja
+                        </a>
+                        <a href="{{ list_url }}" class="btn btn-danger btn-flat">
+                            <i class="fas fa-hand-holding-usd"></i> Retirar dinero
+                        </a>
+                        <a href="{{ list_url }}" class="btn btn-secondary btn-flat">
+                            <i class="fas fa-cash-register"></i> Cierre de caja
+                        </a>
+                        <a href="{{ list_url }}" class="btn btn-success btn-flat">
+                            <i class="fas fa-sync"></i> Actualizar
+                        </a>
+                        {% endblock %}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
