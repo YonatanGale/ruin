@@ -459,10 +459,6 @@ class WithdrawForm(ModelForm):
 class FundForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for form in self.visible_fields():
-            form.field.widget.attrs['class'] = 'form-control'
-            form.field.widget.attrs['autocomplete'] = 'off'
-        self.fields['payNro'].widget.attrs['autofocus'] = True
 
     class Meta:
         model = Fund
@@ -470,7 +466,6 @@ class FundForm(ModelForm):
         widgets = {
             'date_joined': DateInput(format='%Y-%m-%d',
                 attrs={
-                    'readonly': True,
                     'value': datetime.now().strftime('%Y-%m-%d'),
                 }
             ),

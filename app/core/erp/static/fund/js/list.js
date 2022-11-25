@@ -23,6 +23,7 @@
             {"data": "payNro"},
             {"data": "payowner"},
             {"data": "date_joined"},
+            {"data": "date_joined"},
         ],
         columnDefs: [
             {
@@ -31,6 +32,15 @@
                 orderable: false,
                 render: function (data, type, row) {
                     return 'Gs.' + parseFloat(data).toLocaleString("es-AR");
+                }
+            },
+            {
+                targets: [-1],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    var buttons = '<a href="/erp/funds/update/' + row.id + '/" " class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
+                    return buttons
                 }
             },
         ],
@@ -132,6 +142,7 @@ $(function () {
         $('#myModalcierre').modal('show');
         
     });
+
 
     // $('.btnCierre').on('click', function () {
     //     $('input[name="action"]').val('addcierre');
