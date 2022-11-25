@@ -261,6 +261,8 @@ class Supplier(models.Model):
 
 class Buy(models.Model):
     prov = models.ForeignKey(Supplier, on_delete=models.CASCADE)
+    methodpay = models.ForeignKey(MethodPay, on_delete=models.CASCADE, verbose_name='Metodo de pago')
+    typfund = models.ForeignKey(typeFunds, on_delete=models.CASCADE)
     date_joined = models.DateField(default=datetime.now)
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     iva = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
@@ -272,6 +274,8 @@ class Buy(models.Model):
     def toJSON(self):
         item = model_to_dict(self)
         item['prov'] = self.prov.toJSON()
+        item['typfund'] = self.typfund.toJSON()
+        item['methodpay'] = self.methodpay.toJSON()
         item['subtotal'] = format(self.subtotal, '.2f')
         item['iva'] = format(self.iva, '.2f')
         item['total'] = format(self.total, '.2f')
@@ -381,6 +385,7 @@ class Recycle(models.Model):
 class Fund(models.Model):
     typeF = models.ForeignKey(typeFunds, on_delete=models.CASCADE, verbose_name='Tipo de fondo')
     sale = models.ForeignKey(Sale, null=True, on_delete=models.CASCADE)
+    buy = models.ForeignKey(Buy, null=True, on_delete=models.CASCADE)
     closing = models.ForeignKey(CierreCaja, null=True, on_delete=models.CASCADE, verbose_name='Apertura o cierre de caja')
     amount = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Importe')
     typeMove = models.CharField(max_length=50, verbose_name='Tipo de movimiento')
@@ -394,11 +399,10 @@ class Fund(models.Model):
         return self.typeMove
 
     def toJSON(self):
-        item = model_to_dict(self)
+        item = model_to_dict(self, exclude=['buy', 'sale'])
         item['amount'] = format(self.amount, '.2f')
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         item['typeF'] = self.typeF.toJSON()
-        item['sale'] = self.sale.toJSON()
         item['methodpay'] = self.methodpay.toJSON()
         return item
 

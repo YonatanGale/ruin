@@ -133,9 +133,10 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                     fun = Fund()
                     fun.typeF_id = vents['typfund']
                     fun.sale_id = sale.id
+                    fun.methodpay_id = vents['methodpay']
+                    fun.typeMove = 'Venta'
                     fun.amount = float(vents['total'])
                     fun.date_joined = vents['date_joined']
-                    fun.PayName = vents['methodpay']
                     fun.save()
             
             elif action == 'search_methodpay':

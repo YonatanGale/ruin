@@ -21,12 +21,21 @@
             {"data": "id"},
             {"data": "amount"},
             {"data": "typeMove"},
+            {"data": "typeF.name"},
             {"data": "methodpay.pay"},
             {"data": "payNro"},
             {"data": "payowner"},
             {"data": "date_joined"},
         ],
         columnDefs: [
+            {
+                targets: [1],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    return 'Gs.' + parseFloat(data).toLocaleString("es-AR");
+                }
+            },
         ],
         initComplete: function (settings, json) {
 
@@ -53,6 +62,14 @@
                 {"data": "impo"},
             ],
             columnDefs: [
+                {
+                    targets: [1],
+                    class: 'text-center',
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return 'Gs.' + parseFloat(data).toLocaleString("es-AR");
+                    }
+                },
             ],
             initComplete: function (settings, json) {
     

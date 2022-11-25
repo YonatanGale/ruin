@@ -286,6 +286,13 @@ class BuyForm(ModelForm):
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
 
+            
+    methodpay = ModelChoiceField(queryset=MethodPay.objects.all(), widget=Select(attrs={
+            'class': 'custom-select select2',
+        }))
+    typfund = ModelChoiceField(queryset=typeFunds.objects.none(), widget=Select(attrs={
+            'class': 'custom-select select2',
+        }))
     class Meta:
         model = Buy
         fields = '__all__'

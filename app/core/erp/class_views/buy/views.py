@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from core.erp.forms import BuyForm, SupplierForm
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 
-from core.erp.models import Buy, Materials, Product, DetBuy, Supplier
+from core.erp.models import Buy, Fund, Materials, Product, DetBuy, Supplier, typeFunds
 
 # librerias xhtml2
 import os
@@ -108,10 +108,16 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                     buy = Buy()
                     buy.date_joined = comp['date_joined']
                     buy.prov_id = comp['prov']
+                    buy.methodpay_id = comp['methodpay']
+                    buy.typfund_id = comp['typfund']
                     buy.subtotal = float(comp['subtotal'])
                     buy.iva = float(comp['iva'])
                     buy.total = float(comp['total'])
                     buy.save()
+
+                    buy.typfund.impo -= (decimal.Decimal(buy.total))
+                    buy.typfund.save()
+
                     for i in comp['products']:
                         det = DetBuy()
                         det.buy_id = buy.id 
@@ -125,6 +131,18 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                         det.prod.save()
                     data = {'id': buy.id}
 
+                    fun = Fund()
+                    fun.typeF_id = comp['typfund']
+                    fun.buy_id = buy.id
+                    fun.methodpay_id = comp['methodpay']
+                    fun.typeMove = 'Compra'
+                    fun.amount = float(comp['total'])
+                    fun.date_joined = comp['date_joined']
+                    fun.save()
+            elif action == 'search_methodpay':
+                data = [{ 'id': '', 'text': '--------'}]
+                for i in typeFunds.objects.filter(methodpay_id=request.POST['id']):
+                    data.append({'id': i.id, 'text': i.name})
             elif action == 'search_supplier':
                 data = []
                 term = request.POST['term']
