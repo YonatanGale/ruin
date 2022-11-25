@@ -406,7 +406,40 @@ class CierreCajaForm(ModelForm):
             data['error'] = str(e)
         return data
 
+class WithdrawForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['typeF'].widget.attrs['autofocus'] = True
 
+    class Meta:
+        model = Withdraw
+        fields = '__all__'
+        widgets = {
+            'date_joined': DateInput(format='%Y-%m-%d',
+                attrs={
+                    'readonly': True,
+                    'value': datetime.now().strftime('%Y-%m-%d'),
+                }
+            ),
+            
+        }
+
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+    
+    
 search = CharField(widget=TextInput(attrs={
     'class': 'form-control',
     'placeholder': 'Ingrese una descripcion'

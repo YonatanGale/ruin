@@ -85,8 +85,8 @@ class typeFunds(models.Model):
         ordering = ['id']
 
 class CierreCaja(models.Model):
-    caja = models.CharField(max_length=50, choices=caja_choices, default='Apertura', verbose_name='Nombre de accion')
-    impo = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Importe')
+    caja = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Caja')
+    banco = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Banco')
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
     def __str__(self):
@@ -94,7 +94,8 @@ class CierreCaja(models.Model):
 
     def toJSON(self):
         item = model_to_dict(self)
-        item['impo'] = format(self.impo, '.2f')
+        item['caja'] = format(self.caja, '.2f')
+        item['banco'] = format(self.banco, '.2f')
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
 
@@ -390,7 +391,7 @@ class Fund(models.Model):
     amount = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Importe')
     typeMove = models.CharField(max_length=50, verbose_name='Tipo de movimiento')
     methodpay = models.ForeignKey(MethodPay, on_delete=models.CASCADE, verbose_name='Metodos aceptado')
-    payNro = models.IntegerField(default=0, null=True, verbose_name='Numero de tarjeta o cheque')
+    payNro = models.CharField(max_length=150, null=True, verbose_name='Numero de tarjeta o cheque')
     payowner = models.CharField(max_length=150,  null=True, verbose_name='Titular de tarjeta o cheque')
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
@@ -409,4 +410,26 @@ class Fund(models.Model):
     class Meta:
         verbose_name = 'Fondo'
         verbose_name_plural = 'Fondos'
+        ordering = ['id']
+
+class Withdraw(models.Model):
+    typeF = models.ForeignKey(typeFunds, on_delete=models.CASCADE, verbose_name='Tipo de fondo')
+    reason = models.CharField(max_length=150, verbose_name='Razon o motivo')
+    cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Monto")
+    date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+
+
+    def __str__(self):
+        return self.typeF.name
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['cant'] = format(self.cant, '.2f')
+        item['typeF'] = self.typeF.toJSON()
+        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
+        return item
+
+    class Meta:
+        verbose_name = 'Retiro'
+        verbose_name_plural = 'Retiros'
         ordering = ['id']
