@@ -73,6 +73,7 @@ class typeFunds(models.Model):
 
     def __str__(self):
         return self.name
+    
 
     def toJSON(self):
         item = model_to_dict(self)
@@ -85,15 +86,18 @@ class typeFunds(models.Model):
         ordering = ['id']
 
 class CierreCaja(models.Model):
-    caja = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Caja')
-    banco = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Banco')
+    typeF = models.ForeignKey(typeFunds, on_delete=models.CASCADE, verbose_name='Tipos de movimientos')
+    caja = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Importe de caja')
+    banco = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Importe de banco')
+    impor = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Importe de cierre')
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
     def __str__(self):
         return self.caja
 
     def toJSON(self):
-        item = model_to_dict(self)
+        item = model_to_dict(self, exclude=['typeF'])
+        item['impor'] = format(self.impor, '.2f')
         item['caja'] = format(self.caja, '.2f')
         item['banco'] = format(self.banco, '.2f')
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')

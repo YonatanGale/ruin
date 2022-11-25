@@ -63,12 +63,34 @@ class FundListView(LoginRequiredMixin, ListView):
                     fun.date_joined = det.date_joined
                     fun.save()
 
+            elif action == 'addCargar':
+                    det = Withdraw()
+                    det.typeF_id = request.POST['typeF']
+                    det.reason = '--------'
+                    det.cant = request.POST['cant']
+                    det.date_joined = request.POST['date_joined']
+                    det.save()
+                    det.typeF.impo += (decimal.Decimal(det.cant))
+                    det.typeF.save()
+
+                    
+                    fun = Fund()
+                    fun.typeF_id = det.typeF_id
+                    fun.typeMove = 'Carga de dinero'
+                    fun.amount = det.cant
+                    fun.payNro = '-------'
+                    fun.payowner = '-------'
+                    fun.methodpay_id = 3
+                    fun.date_joined = det.date_joined
+                    fun.save()
+
+
             elif action == 'addcierre':
                     det = CierreCaja()
                     tf = typeFunds()
-                    if tf.id == 1:
-                        det.caja = tf.impo
-                    det.banco = tf.impo
+                    det.caja = tf.impo[1]
+                    det.banco = tf.impo[2]
+                    det.impor = (decimal.Decimal(det.caja)) + (decimal.Decimal(det.banco))
                     det.date_joined = request.POST['date_joined']
                     det.save()
                     

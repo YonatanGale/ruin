@@ -64,7 +64,21 @@
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
+                        if(row.impo == 0){
+                            return '';
+                        }
                         return 'Gs.' + parseFloat(data).toLocaleString("es-AR");
+                    }
+                },
+                {
+                    targets: [0],
+                    class: 'text-center',
+                    orderable: false,
+                    render: function (data, type, row) {
+                        if(row.name == 'Caja/Banco'){
+                            return '';
+                        }
+                        return data;
                     }
                 },
             ],
@@ -83,6 +97,15 @@ $(function () {
     $('.btnwithdraw').on('click', function () {
         $('input[name="action"]').val('addwithdraw');
         modal_title.find('span').html('Retirar de caja');
+        console.log(modal_title.find('i'));
+        modal_title.find('i').removeClass().addClass('fas fa-plus');
+        $('form')[0].reset();
+        $('#myModalwithdraw').modal('show');
+    });
+
+    $('.addCargar').on('click', function () {
+        $('input[name="action"]').val('addCargar');
+        modal_title.find('span').html('Carga de caja');
         console.log(modal_title.find('i'));
         modal_title.find('i').removeClass().addClass('fas fa-plus');
         $('form')[0].reset();
