@@ -1,6 +1,7 @@
 {% extends 'template/list.html' %}
 {% load static %}
 {% load widget_tweaks %}
+
 {% block head_list %}
     <script src="{% static '/fund/js/list.js' %}"></script>
 {% endblock %}
@@ -65,11 +66,12 @@
                         <a class="btn btn-primary btn-flat btnAper">
                             <i class="fas fa-cash-register"></i> Apertura de caja
                         </a>
+
                         <a class="btn btn-danger btn-flat btnwithdraw">
-                            <i class="fas fa-hand-holding-usd"></i> Retirar dinero
+                                <i class="fas fa-hand-holding-usd"></i> Retirar dinero
                         </a>
                         <a class="btn btn-success btn-flat addCargar">
-                            <i class="fas fa-hand-holding-usd"></i> Cargar dinero
+                                <i class="fas fa-hand-holding-usd"></i> Cargar dinero
                         </a>
                         <a class="btn btn-secondary btn-flat btnCierre">
                             <i class="fas fa-cash-register"></i> Cierre de caja

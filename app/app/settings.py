@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'core.login',
     'widget_tweaks',
     'core.user',
+    'flags',
     'core.reports',
 ]
 
@@ -71,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -142,3 +144,7 @@ LOGIN_REDIRECT_URL = '/erp/dashboard/'
 LOGIN_URL = '/login/'
 
 AUTH_USER_MODEL = 'user.User'
+
+FLAGS = {
+
+}
