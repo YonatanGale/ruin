@@ -166,6 +166,12 @@ class SaleForm(ModelForm):
             'readonly': True,
             'class': 'form-control'
         }
+    methodpay = ModelChoiceField(queryset=MethodPay.objects.all(), widget=Select(attrs={
+            'class': 'custom-select select2',
+        }))
+    typfund = ModelChoiceField(queryset=typeFunds.objects.none(), widget=Select(attrs={
+            'class': 'custom-select select2',
+        }))
     
     class Meta:
         model = Sale

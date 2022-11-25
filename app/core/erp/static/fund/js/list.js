@@ -5,34 +5,28 @@
     tblfund = $('#tblfund').DataTable({
         responsive: true,
         autoWidth: false,
-        destroy: true,
-        deferRender: true,
         ajax: {
             url: window.location.pathname,
             type: 'POST',
             data: {
-                'action': 'searchdata'
+                'action': 'searchdata',
             },
-            dataSrc: ""
+            dataSrc: "",
         },
+        order: false,
+        info: false,
+        paging: false,
+        searching: false,
         columns: [
             {"data": "id"},
             {"data": "amount"},
             {"data": "typeMove"},
-            {"data": "PayName"},
+            {"data": "methodpay.pay"},
             {"data": "payNro"},
             {"data": "payowner"},
             {"data": "date_joined"},
         ],
         columnDefs: [
-            {
-                targets: [1],
-                class: 'text-center',
-                orderable: false,
-                render: function (data, type, row) {
-                    return 'Gs.' + parseFloat(data).toFixed(2);
-                }
-            },
         ],
         initComplete: function (settings, json) {
 

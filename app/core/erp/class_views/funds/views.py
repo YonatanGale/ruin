@@ -33,9 +33,9 @@ class FundListView(LoginRequiredMixin, ListView):
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                for i in Fund.objects.all():
+                fondos = Fund.objects.all()
+                for i in fondos:
                     data.append(i.toJSON())
-
             elif action == 'TypeList':
                 data = []
                 for i in typeFunds.objects.all():

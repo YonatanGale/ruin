@@ -134,7 +134,6 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                     item = i.toJSON()
                     item['text'] = i.get_full_name()
                     data.append(item)
-
             elif action == 'create_supplier':
                 with transaction.atomic():
                     frmSupplier = SupplierForm(request.POST)

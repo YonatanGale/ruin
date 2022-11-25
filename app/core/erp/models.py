@@ -51,8 +51,8 @@ class CategoryMaterials(models.Model):
         ordering = ['id']
 
 class MethodPay(models.Model):
-    pay = models.CharField(max_length=10, choices=pay_choices, default='Efectivo', verbose_name='Metodo de pago')
-    
+    pay = models.CharField(max_length=50, choices=pay_choices, default='Efectivo', verbose_name='Metodo de pago')
+
     def __str__(self):
         return self.pay
 
@@ -65,7 +65,44 @@ class MethodPay(models.Model):
         verbose_name_plural = 'Metodos de pagos'
         ordering = ['id']
 
+class typeFunds(models.Model):
+    name = models.CharField(max_length=50, unique=True, verbose_name='Nombre de fondo')
+    impo = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Fondo disponible')
+    methodpay = models.ForeignKey(MethodPay, on_delete=models.CASCADE, verbose_name='Metodos aceptado')
 
+
+    def __str__(self):
+        return self.name
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['impo'] = format(self.impo, '.2f')
+        return item
+
+    class Meta:
+        verbose_name = 'Tipo fondo'
+        verbose_name_plural = 'Tipos fondos'
+        ordering = ['id']
+
+class CierreCaja(models.Model):
+    caja = models.CharField(max_length=50, choices=caja_choices, default='Apertura', verbose_name='Nombre de accion')
+    impo = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Importe')
+    date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+
+    def __str__(self):
+        return self.caja
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['impo'] = format(self.impo, '.2f')
+        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
+        return item
+
+    class Meta:
+        verbose_name = 'Caja'
+        verbose_name_plural = 'Cajas'
+        ordering = ['id']
+        
 class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     cate = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Categoria')
@@ -122,6 +159,8 @@ class Client(models.Model):
 
 class Sale(models.Model):
     cli = models.ForeignKey(Client, on_delete=models.CASCADE)
+    methodpay = models.ForeignKey(MethodPay, on_delete=models.CASCADE, verbose_name='Metodo de pago')
+    typfund = models.ForeignKey(typeFunds, on_delete=models.CASCADE)
     date_joined = models.DateField(default=datetime.now)
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     iva = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
@@ -133,6 +172,8 @@ class Sale(models.Model):
     def toJSON(self):
         item = model_to_dict(self)
         item['cli'] = self.cli.toJSON()
+        item['typfund'] = self.typfund.toJSON()
+        item['methodpay'] = self.methodpay.toJSON()
         item['subtotal'] = format(self.subtotal, '.2f')
         item['iva'] = format(self.iva, '.2f')
         item['total'] = format(self.total, '.2f')
@@ -337,67 +378,28 @@ class Recycle(models.Model):
         verbose_name_plural = 'Reciclados'
         ordering = ['id']
 
-class typeFunds(models.Model):
-    name = models.CharField(max_length=50, unique=True, verbose_name='Nombre de fondo')
-    impo = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Fondo disponible')
-
-
-    def __str__(self):
-        return self.name
-
-    def toJSON(self):
-        item = model_to_dict(self)
-        item['impo'] = format(self.impo, '.2f')
-        return item
-
-    class Meta:
-        verbose_name = 'Tipo fondo'
-        verbose_name_plural = 'Tipos fondos'
-        ordering = ['id']
-
-class CierreCaja(models.Model):
-    caja = models.CharField(max_length=50, choices=caja_choices, default='Apertura', verbose_name='Nombre de accion')
-    impo = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Importe')
-    date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
-
-    def __str__(self):
-        return self.caja
-
-    def toJSON(self):
-        item = model_to_dict(self)
-        item['impo'] = format(self.impo, '.2f')
-        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
-        return item
-
-    class Meta:
-        verbose_name = 'Caja'
-        verbose_name_plural = 'Cajas'
-        ordering = ['id']
-
 class Fund(models.Model):
     typeF = models.ForeignKey(typeFunds, on_delete=models.CASCADE, verbose_name='Tipo de fondo')
-    closing = models.ForeignKey(CierreCaja, on_delete=models.CASCADE, verbose_name='Apertura o cierre de caja')
-    buy = models.ForeignKey(Buy, on_delete=models.CASCADE, verbose_name='Compras')
-    sale = models.ForeignKey(Sale, on_delete=models.CASCADE, verbose_name='Ventas')
+    sale = models.ForeignKey(Sale, null=True, on_delete=models.CASCADE)
+    closing = models.ForeignKey(CierreCaja, null=True, on_delete=models.CASCADE, verbose_name='Apertura o cierre de caja')
     amount = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Importe')
     typeMove = models.CharField(max_length=50, verbose_name='Tipo de movimiento')
-    PayName = models.CharField(max_length=50, verbose_name='Metodo de cobro o pago')
+    methodpay = models.ForeignKey(MethodPay, on_delete=models.CASCADE, verbose_name='Metodos aceptado')
     payNro = models.IntegerField(default=0, null=True, verbose_name='Numero de tarjeta o cheque')
     payowner = models.CharField(max_length=150,  null=True, verbose_name='Titular de tarjeta o cheque')
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
     
     def __str__(self):
-        return self.typeF.name
+        return self.typeMove
 
     def toJSON(self):
         item = model_to_dict(self)
         item['amount'] = format(self.amount, '.2f')
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
-        item['typeF'] = self.typeF.toJSON() 
-        item['closing'] = self.closing.toJSON()
-        item['buy'] = self.buy.toJSON()
+        item['typeF'] = self.typeF.toJSON()
         item['sale'] = self.sale.toJSON()
+        item['methodpay'] = self.methodpay.toJSON()
         return item
 
     class Meta:

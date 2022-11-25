@@ -1,10 +1,11 @@
+import decimal
 import json
 from django.db import transaction
 from unicodedata import category
 from urllib import request
 from core.erp.forms import CategoryForm, SaleForm, clientForm
 from django.shortcuts import render
-from core.erp.models import  Client, DetSale, Product, Sale
+from core.erp.models import  Client, DetSale, Fund, MethodPay, Product, Sale, typeFunds
 from core.erp.mixins import IsSuperuserMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -106,10 +107,16 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                     sale = Sale()
                     sale.date_joined = vents['date_joined']
                     sale.cli_id = vents['cli']
+                    sale.methodpay_id = vents['methodpay']
+                    sale.typfund_id = vents['typfund']
                     sale.subtotal = float(vents['subtotal'])
                     sale.iva = float(vents['iva'])
                     sale.total = float(vents['total'])
                     sale.save()
+
+                    sale.typfund.impo += (decimal.Decimal(sale.total))
+                    sale.typfund.save()
+                    
 
                     for i in vents['products']:
                         det = DetSale()
@@ -122,6 +129,19 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                         det.prod.stock -= (det.cant)
                         det.prod.save()
                     data = {'id': sale.id}
+
+                    fun = Fund()
+                    fun.typeF_id = vents['typfund']
+                    fun.sale_id = sale.id
+                    fun.amount = float(vents['total'])
+                    fun.date_joined = vents['date_joined']
+                    fun.PayName = vents['methodpay']
+                    fun.save()
+            
+            elif action == 'search_methodpay':
+                data = [{ 'id': '', 'text': '--------'}]
+                for i in typeFunds.objects.filter(methodpay_id=request.POST['id']):
+                    data.append({'id': i.id, 'text': i.name})
             elif action == 'search_clients':
                 data = []
                 term = request.POST['term']
