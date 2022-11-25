@@ -87,17 +87,42 @@ class FundListView(LoginRequiredMixin, ListView):
 
             elif action == 'addcierre':
                     det = CierreCaja()
-                    tf = typeFunds()
-                    det.caja = tf.impo[1]
-                    det.banco = tf.impo[2]
-                    det.impor = (decimal.Decimal(det.caja)) + (decimal.Decimal(det.banco))
+                    tyb = typeFunds.objects.get(pk=1)
+                    tyc = typeFunds.objects.get(pk=2)
+                    bank = tyc.impo
+                    caj = tyb.impo
+                    det.typeF_id = 4
+                    det.impor = request.POST['impor']
+                    det.tot =  (bank+caj)
                     det.date_joined = request.POST['date_joined']
                     det.save()
                     
                     fun = Fund()
-                    fun.typeF_id = 1
+                    fun.typeF_id = 4
                     fun.typeMove = 'Cierre caja'
-                    fun.amount = 000
+                    fun.amount = det.tot
+                    fun.payNro = '-------'
+                    fun.payowner = '-------'
+                    fun.methodpay_id = 3
+                    fun.date_joined = det.date_joined
+                    fun.save()
+
+            elif action == 'addapertura':
+                    det = CierreCaja()
+                    tyb = typeFunds.objects.get(pk=1)
+                    tyc = typeFunds.objects.get(pk=2)
+                    bank = tyc.impo
+                    caj = tyb.impo
+                    det.typeF_id = 4
+                    det.impor = request.POST['impor']
+                    det.tot =  (bank+caj)
+                    det.date_joined = request.POST['date_joined']
+                    det.save()
+                    
+                    fun = Fund()
+                    fun.typeF_id = 4
+                    fun.typeMove = 'Apertura caja'
+                    fun.amount = det.tot
                     fun.payNro = '-------'
                     fun.payowner = '-------'
                     fun.methodpay_id = 3
@@ -111,7 +136,7 @@ class FundListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Listado de Fondos'
+        context['title'] = 'Movimientos de Fondos'
         context['create_url'] ='' #reverse_lazy('erp:sale_create')
         context['list_url'] =  reverse_lazy('erp:fund_list')
         context['frmCaja'] =  CierreCajaForm()

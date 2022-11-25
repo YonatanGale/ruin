@@ -94,6 +94,7 @@ $(function () {
 
     getData();
 
+
     $('.btnwithdraw').on('click', function () {
         $('input[name="action"]').val('addwithdraw');
         modal_title.find('span').html('Retirar de caja');
@@ -110,6 +111,26 @@ $(function () {
         modal_title.find('i').removeClass().addClass('fas fa-plus');
         $('form')[0].reset();
         $('#myModalwithdraw').modal('show');
+    });
+
+    $('.btnCierre').on('click', function () {
+        $('input[name="action"]').val('addcierre');
+        modal_title.find('span').html('Cierre de caja');
+        console.log(modal_title.find('i'));
+        modal_title.find('i').removeClass().addClass('fas fa-plus');
+        $('form')[0].reset();
+        $('#myModalcierre').modal('show');
+        
+    });
+
+    $('.btnAper').on('click', function () {
+        $('input[name="action"]').val('addapertura');
+        modal_title.find('span').html('Apertura de caja');
+        console.log(modal_title.find('i'));
+        modal_title.find('i').removeClass().addClass('fas fa-plus');
+        $('form')[0].reset();
+        $('#myModalcierre').modal('show');
+        
     });
 
     // $('.btnCierre').on('click', function () {
@@ -137,5 +158,12 @@ $(function () {
         });
     });
 
+    $('#frmCaja').on('submit', function (e) {
+        e.preventDefault();
+        var parameters = $(this).serializeArray();
+        alert_jqueryconfirm(window.location.pathname, parameters, function () {
+            $('#myModalcierre').modal('hide');
+        });
+    });
    
 });

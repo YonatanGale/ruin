@@ -390,7 +390,24 @@ class CierreCajaForm(ModelForm):
         fields = '__all__'
 
         widgets = {
-            'caja': Select()
+         'tot': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),   
+            'typeF': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ), 
+            'date_joined': DateInput(format='%Y-%m-%d',
+                attrs={
+                    'readonly': True,
+                    'value': datetime.now().strftime('%Y-%m-%d'),
+                }
+            ),     
 
         }
     
@@ -439,6 +456,38 @@ class WithdrawForm(ModelForm):
             data['error'] = str(e)
         return data
     
+class FundForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['payNro'].widget.attrs['autofocus'] = True
+
+    class Meta:
+        model = Fund
+        fields = '__all__'
+        widgets = {
+            'date_joined': DateInput(format='%Y-%m-%d',
+                attrs={
+                    'readonly': True,
+                    'value': datetime.now().strftime('%Y-%m-%d'),
+                }
+            ),
+            
+        }
+
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
     
 search = CharField(widget=TextInput(attrs={
     'class': 'form-control',
