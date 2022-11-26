@@ -23,6 +23,7 @@ $(function () {
             {"data": "methodpay.pay"},
             {"data": "id"},
         ],
+        order: [[0, 'desc']],
         columnDefs: [
             {
                 targets: [-5, -3, -4],

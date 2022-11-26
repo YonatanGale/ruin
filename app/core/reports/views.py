@@ -294,8 +294,8 @@ class RepostFundView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Reporte de produccion'
+        context['title'] = 'Reporte de fondos'
         context['entity'] = 'Reportes'
-        context['list_url'] = reverse_lazy('production_report')
+        context['list_url'] = reverse_lazy('fund_report')
         context['form'] = ReportForm()
         return context
