@@ -25,6 +25,7 @@
             {"data": "date_joined"},
             {"data": "date_joined"},
         ],
+        order: [[0, 'desc']],
         columnDefs: [
             {
                 targets: [1],
