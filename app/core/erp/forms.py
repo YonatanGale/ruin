@@ -467,9 +467,53 @@ class FundForm(ModelForm):
         widgets = {
             'date_joined': DateInput(format='%Y-%m-%d',
                 attrs={
+                    'readonly': True,
+                    'type': 'hidden',
                     'value': datetime.now().strftime('%Y-%m-%d'),
                 }
             ),
+            'typeMove': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),   
+            'amount': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ), 
+            'typeF': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ), 
+            'methodpay': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'sale': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'buy': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ), 
+            'closing': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),      
             
         }
 

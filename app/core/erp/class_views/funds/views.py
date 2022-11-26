@@ -42,6 +42,12 @@ class FundListView(LoginRequiredMixin, ListView):
                 data = []
                 for i in typeFunds.objects.all():
                     data.append(i.toJSON())
+            elif action == 'edit':
+                cli = Fund.objects.get(pk=request.POST['id'])
+                cli.payNro = request.POST['payNro']
+                cli.payowner = request.POST['payowner']
+                cli.save()
+            
             elif action == 'addwithdraw':
                     det = Withdraw()
                     det.typeF_id = request.POST['typeF']
@@ -141,6 +147,7 @@ class FundListView(LoginRequiredMixin, ListView):
         context['list_url'] =  reverse_lazy('erp:fund_list')
         context['frmCaja'] =  CierreCajaForm()
         context['formwithdraw'] =  WithdrawForm()
+        context['formfund'] =  FundForm()
         context['entity'] = 'Fondos'
         return context
 

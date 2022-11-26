@@ -39,7 +39,7 @@
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/erp/funds/update/' + row.id + '/" " class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
+                    var buttons = '<a rel="edit" class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
                     return buttons
                 }
             },
@@ -177,4 +177,30 @@ $(function () {
         });
     });
    
+    $('#tblfund tbody')
+    .on('click', 'a[rel="edit"]', function () {
+        modal_title.find('span').html('Edición de fondo');
+        modal_title.find('i').removeClass().addClass('fas fa-edit');
+        var tr = tblfund.cell($(this).closest('td, li')).index();
+        var data = tblfund.row(tr.row).data();
+        $('input[name="action"]').val('edit');
+        $('input[name="id"]').val(data.id);
+        $('input[name="amount"]').val(data.amount);
+        $('input[name="typeMove"]').val(data.typeMove);
+        $('input[name="typeF.id"]').val(data.typeF);
+        $('input[name="methodpay.id"]').val(data.methodpay);
+        $('input[name="payNro"]').val(data.payNro);
+        $('input[name="payowner"]').val(data.payowner);
+        $('input[name="date_joined"]').val(data.date_joined);
+        $('#myModalEdit').modal('show');
+    })
+
+    $('#formfund').on('submit', function (e) {
+        e.preventDefault();
+        var parameters = $(this).serializeArray();
+        alert_jqueryconfirm(window.location.pathname, parameters, function () {
+            location.href = '/erp/funds/list/';
+        });
+    });
+
 });

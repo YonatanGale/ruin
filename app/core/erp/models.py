@@ -91,7 +91,7 @@ class CierreCaja(models.Model):
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
     def __str__(self):
-        return self.date_joined
+        return self.typeF.name
     
 
     def toJSON(self):
@@ -398,6 +398,7 @@ class Fund(models.Model):
     payowner = models.CharField(max_length=150,  null=True, verbose_name='Titular de tarjeta o cheque')
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
+
     
     def __str__(self):
         return self.typeMove
@@ -405,9 +406,9 @@ class Fund(models.Model):
     def toJSON(self):
         item = model_to_dict(self, exclude=['buy', 'sale'])
         item['amount'] = format(self.amount, '.2f')
-        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         item['typeF'] = self.typeF.toJSON()
         item['methodpay'] = self.methodpay.toJSON()
+        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
 
     class Meta:
