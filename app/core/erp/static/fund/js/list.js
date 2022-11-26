@@ -142,7 +142,6 @@ $(function () {
         modal_title.find('i').removeClass().addClass('fas fa-plus');
         $('form')[0].reset();
         $('#myModalcierre').modal('show');
-        
     });
 
 
@@ -175,7 +174,7 @@ $(function () {
         e.preventDefault();
         var parameters = $(this).serializeArray();
         alert_jqueryconfirm(window.location.pathname, parameters, function () {
-            $('#myModalcierre').modal('hide');
+            location.href = '/erp/funds/list/';
         });
     });
    

@@ -86,7 +86,6 @@ class typeFunds(models.Model):
 
 class CierreCaja(models.Model):
     typeF = models.ForeignKey(typeFunds, on_delete=models.CASCADE)
-    impor = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Monto informado')
     tot = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 

@@ -402,7 +402,7 @@ class CierreCajaForm(ModelForm):
                 'type': 'hidden',
                 'readonly': True,
                 }
-            ), 
+            ),
             'date_joined': DateInput(format='%Y-%m-%d',
                 attrs={
                     'readonly': True,

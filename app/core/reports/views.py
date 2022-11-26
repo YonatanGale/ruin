@@ -190,8 +190,8 @@ class RepostProductView(TemplateView):
                         s.id,
                         s.name,
                         s.cate.name,
-                        s.stock,
                         s.price,
+                        s.date_joined,
                     ])
             else:
                 data['error'] = 'Ha ocurrido un error'
@@ -232,6 +232,7 @@ class RepostClientView(TemplateView):
                             s.surnames,
                             s.Birthday,
                             s.addres,
+                            s.date_joined,
                         ])
                 else:
                     data['error'] = 'Ha ocurrido un error'
