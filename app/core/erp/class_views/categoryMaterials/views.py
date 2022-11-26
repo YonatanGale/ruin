@@ -35,11 +35,13 @@ class categoryMaterialsListView(LoginRequiredMixin, TemplateView):
                 cat = CategoryMaterials()
                 cat.name = request.POST['name']
                 cat.unity = request.POST['unity']
+                cat.user_create = request.user.username
                 cat.save()
             elif action == 'edit':
                 cat = CategoryMaterials.objects.get(pk=request.POST['id'])
                 cat.name = request.POST['name']
                 cat.unity = request.POST['unity']
+                cat.user_update = request.user.username
                 cat.save()
             elif action == 'delete':
                 cat = CategoryMaterials.objects.get(pk=request.POST['id'])

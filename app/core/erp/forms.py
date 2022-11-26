@@ -46,6 +46,18 @@ class CategoryMaterialsForm(ModelForm):
                     'autocomplete': 'off'
                 }
             ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
             'unity': Select()
 
         }

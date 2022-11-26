@@ -8,6 +8,19 @@ from core.erp.choices import *
 
 
 # Create your models here.
+class Auditoria(models.Model):
+    cod_auditoria = models.AutoField(primary_key=True)
+    tabla = models.CharField(max_length=100)
+    accion = models.CharField(max_length=1)
+    datos_viejos = models.CharField(max_length=5000)
+    datos_nuevos = models.CharField(max_length=5000)
+    usuario = models.CharField(max_length=45)
+    fecha = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.tabla
+
+
 class Category(BaseModel):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
 
@@ -36,6 +49,10 @@ class Category(BaseModel):
 class CategoryMaterials(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     unity = models.CharField(max_length=10, choices=unity_choices, default='ls', verbose_name='Unidad de medida')
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
