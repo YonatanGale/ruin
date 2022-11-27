@@ -49,6 +49,8 @@ class SaleListView(LoginRequiredMixin, ListView):
                     data.append(i.toJSON())
             elif action == 'delete':
                 cli = Sale.objects.get(pk=request.POST['id'])
+                cli.user_update = request.user.username
+                cli.save()
                 cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'
@@ -114,6 +116,7 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                         sale.subtotal = float(vents['subtotal'])
                         sale.iva = float(vents['iva'])
                         sale.total = float(vents['total'])
+                        sale.user_create = request.user.username
                         sale.save()
 
                         sale.typfund.impo += (decimal.Decimal(sale.total))
@@ -127,7 +130,10 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                             det.cant = int(i['cant'])
                             det.price = float(i['price'])
                             det.subtotal = float(i['subtotal'])
+                            det.user_create = request.user.username
                             det.save()
+
+                            det.prod.user_update = request.user.username
                             det.prod.stock -= (det.cant)
                             det.prod.save()
                         data = {'id': sale.id}
@@ -139,6 +145,7 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                         fun.typeMove = 'Venta'
                         fun.amount = float(vents['total'])
                         fun.date_joined = vents['date_joined']
+                        fun.user_create = request.user.username
                         fun.save()
                 else:
                         data['error'] = 'La caja esta cerrada'
