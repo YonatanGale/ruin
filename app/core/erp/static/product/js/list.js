@@ -107,10 +107,12 @@ $(function () {
         $('input[name="action"]').val('edit');
         $('input[name="id"]').val(data.id);
         $('input[name="name"]').val(data.name);
-        $('input[name="cate.id"]').val(data.cate);
+        $('input[name="cate.id"]').val(data.cate.id);
+        document.getElementById('id_cate').value = data.cate.id
         $('input[name="price"]').val(data.price);
         $('input[name="stock"]').val(data.stock);
         $('#myModalProduct').modal('show');
+
     })
     .on('click', 'a[rel="delete"]', function () {
         var tr = tblProduct.cell($(this).closest('td, li')).index();
