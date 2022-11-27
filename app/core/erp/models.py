@@ -29,6 +29,10 @@ class Auditoria(models.Model):
 
 class Category(BaseModel):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
@@ -75,6 +79,7 @@ class CategoryMaterials(models.Model):
 
 class MethodPay(models.Model):
     pay = models.CharField(max_length=50, choices=pay_choices, default='Efectivo', verbose_name='Metodo de pago')
+    
 
     def __str__(self):
         return self.pay
@@ -112,6 +117,10 @@ class CierreCaja(models.Model):
     tot = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     estado = models.CharField(max_length=1)
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.typeF.name
@@ -136,6 +145,10 @@ class Product(models.Model):
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Precio')
     stock = models.IntegerField(default=0, verbose_name='Stock')
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
 
     def __str__(self):
@@ -164,6 +177,10 @@ class Client(models.Model):
     Birthday = models.DateField(default=datetime.now, verbose_name='Fecha de nacimiento')
     addres = models.CharField(max_length=150, null=True, blank=True, verbose_name='Direccion')
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
 
     def __str__(self):
@@ -192,6 +209,10 @@ class Sale(models.Model):
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     iva = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.cli.names
@@ -224,6 +245,10 @@ class DetSale(models.Model):
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     cant = models.IntegerField(default=0)
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.prod.name
@@ -245,6 +270,10 @@ class Materials(models.Model):
     cate = models.ForeignKey(CategoryMaterials, on_delete=models.CASCADE, verbose_name='Categoria')    
     stock = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Stock")
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Precio de compra")
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
@@ -269,6 +298,10 @@ class Supplier(models.Model):
     email = models.CharField(max_length=150, unique=True, verbose_name='Correo electronico')
     phone = models.CharField(max_length=10, unique=True, verbose_name='Telefono')
     address = models.CharField(max_length=150, null=True, blank=True, verbose_name='Dirección')
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.get_full_name
@@ -294,6 +327,10 @@ class Buy(models.Model):
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     iva = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.prov.names
@@ -326,6 +363,10 @@ class DetBuy(models.Model):
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.prod.name
@@ -348,6 +389,10 @@ class Production(models.Model):
     produc = models.ForeignKey(Product, on_delete=models.CASCADE)
     date_joined = models.DateField(default=datetime.now)
     total = models.IntegerField(default=0)
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.produc.names
@@ -373,6 +418,10 @@ class DetProduction(models.Model):
     crea = models.ForeignKey(Production, on_delete=models.CASCADE)
     prod = models.ForeignKey(Materials, on_delete=models.CASCADE)
     cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.prod.name
@@ -393,6 +442,10 @@ class Recycle(models.Model):
     prod = models.ForeignKey(Product, on_delete=models.CASCADE)
     recy = models.CharField(max_length=10, choices=recycle_choices, default='Caducidad', verbose_name='Razon de retiro')
     cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.prod.name
@@ -420,6 +473,10 @@ class Fund(models.Model):
     payNro = models.CharField(max_length=150, null=True, verbose_name='Numero de tarjeta o cheque')
     payowner = models.CharField(max_length=150,  null=True, verbose_name='Titular de tarjeta o cheque')
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
 
     
@@ -441,9 +498,12 @@ class Fund(models.Model):
 
 class Withdraw(models.Model):
     typeF = models.ForeignKey(typeFunds, on_delete=models.CASCADE, verbose_name='Tipo de fondo')
-    reason = models.CharField(max_length=150, verbose_name='Razon o motivo')
     cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Monto")
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+    user_create = models.CharField(max_length=150, null=True)
+    date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_update = models.CharField(max_length=150, null=True)
+    date_update = models.DateTimeField(auto_now=True, null=True)
 
 
     def __str__(self):

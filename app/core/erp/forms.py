@@ -16,7 +16,19 @@ class CategoryForm(ModelForm):
                     'placeholder' : 'Ingrese un nombre',
                     'autocomplete': 'off'
                 }
-            )
+            ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
 
         }
         exclude = ['user_update', 'user_creation']
@@ -103,6 +115,18 @@ class ProductForm(ModelForm):
                 'class': 'form-control',
                 'style': 'width: 100%'
             }),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
 
         }
 
@@ -136,7 +160,19 @@ class MaterialsForm(ModelForm):
                 attrs={
                     'placeholder' : 'Ingrese un nombre'
                 }
-            )
+            ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
 
         }
 
@@ -193,6 +229,18 @@ class SaleForm(ModelForm):
             'cli': Select(attrs={
                 'class': 'custom-select select2',
             }),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
             'date_joined': DateInput(format='%Y-%m-%d',
                                      attrs={
                                          'value': datetime.now().strftime('%Y-%m-%d'),
@@ -217,6 +265,18 @@ class clientForm(ModelForm):
             'names': TextInput(
                 attrs={
                     'placeholder' : 'Ingrese nombre del cliente'
+                }
+            ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
                 }
             ),
             'surnames': TextInput(
@@ -274,6 +334,18 @@ class SupplierForm(ModelForm):
                     'placeholder' : 'Ingrese apellido del proveedor'
                 }
             ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
 
         }
 
@@ -329,6 +401,18 @@ class BuyForm(ModelForm):
             'iva': TextInput(attrs={
                 'class': 'form-control',
             }),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
             'subtotal': TextInput(attrs={
                 'readonly': True,
                 'class': 'form-control',
@@ -356,6 +440,18 @@ class ProductionForm(ModelForm):
                 'class': 'custom-select select2',
                 # 'style': 'width: 100%'
             }),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
             'date_joined': DateInput(
                 format='%Y-%m-%d',
                 attrs={
@@ -382,6 +478,18 @@ class RecycleForm(ModelForm):
         model = Recycle
         fields = '__all__'
         widgets = {
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
             'recy': Select()
         }
 
@@ -416,6 +524,18 @@ class CierreCajaForm(ModelForm):
                 }
             ),      
             'typeF': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
                 attrs={
                 'type': 'hidden',
                 'readonly': True,
@@ -458,6 +578,18 @@ class WithdrawForm(ModelForm):
                 attrs={
                     'readonly': True,
                     'value': datetime.now().strftime('%Y-%m-%d'),
+                }
+            ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
                 }
             ),
             
@@ -527,6 +659,18 @@ class FundForm(ModelForm):
                 }
             ), 
             'closing': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
                 attrs={
                 'type': 'hidden',
                 'readonly': True,

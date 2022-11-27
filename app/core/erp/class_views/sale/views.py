@@ -5,7 +5,7 @@ from unicodedata import category
 from urllib import request
 from core.erp.forms import CategoryForm, SaleForm, clientForm
 from django.shortcuts import render
-from core.erp.models import  Client, DetSale, Fund, MethodPay, Product, Sale, typeFunds
+from core.erp.models import  CierreCaja, Client, DetSale, Fund, MethodPay, Product, Sale, typeFunds
 from core.erp.mixins import IsSuperuserMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -78,6 +78,7 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         data = {}
         try:
+            auxi = CierreCaja.objects.filter(estado='a').exists()
             action = request.POST['action']
             if action == 'search_products':
                 data = []
@@ -102,42 +103,45 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                     item['text'] = i.name
                     data.append(item)
             elif action == 'add':
-                with transaction.atomic():
-                    vents = json.loads(request.POST['vents'])
-                    sale = Sale()
-                    sale.date_joined = vents['date_joined']
-                    sale.cli_id = vents['cli']
-                    sale.methodpay_id = vents['methodpay']
-                    sale.typfund_id = vents['typfund']
-                    sale.subtotal = float(vents['subtotal'])
-                    sale.iva = float(vents['iva'])
-                    sale.total = float(vents['total'])
-                    sale.save()
+                if auxi:
+                    with transaction.atomic():
+                        vents = json.loads(request.POST['vents'])
+                        sale = Sale()
+                        sale.date_joined = vents['date_joined']
+                        sale.cli_id = vents['cli']
+                        sale.methodpay_id = vents['methodpay']
+                        sale.typfund_id = vents['typfund']
+                        sale.subtotal = float(vents['subtotal'])
+                        sale.iva = float(vents['iva'])
+                        sale.total = float(vents['total'])
+                        sale.save()
 
-                    sale.typfund.impo += (decimal.Decimal(sale.total))
-                    sale.typfund.save()
-                    
+                        sale.typfund.impo += (decimal.Decimal(sale.total))
+                        sale.typfund.save()
+                        
 
-                    for i in vents['products']:
-                        det = DetSale()
-                        det.sale_id = sale.id
-                        det.prod_id = i['id']
-                        det.cant = int(i['cant'])
-                        det.price = float(i['price'])
-                        det.subtotal = float(i['subtotal'])
-                        det.save()
-                        det.prod.stock -= (det.cant)
-                        det.prod.save()
-                    data = {'id': sale.id}
+                        for i in vents['products']:
+                            det = DetSale()
+                            det.sale_id = sale.id
+                            det.prod_id = i['id']
+                            det.cant = int(i['cant'])
+                            det.price = float(i['price'])
+                            det.subtotal = float(i['subtotal'])
+                            det.save()
+                            det.prod.stock -= (det.cant)
+                            det.prod.save()
+                        data = {'id': sale.id}
 
-                    fun = Fund()
-                    fun.typeF_id = vents['typfund']
-                    fun.sale_id = sale.id
-                    fun.methodpay_id = vents['methodpay']
-                    fun.typeMove = 'Venta'
-                    fun.amount = float(vents['total'])
-                    fun.date_joined = vents['date_joined']
-                    fun.save()
+                        fun = Fund()
+                        fun.typeF_id = vents['typfund']
+                        fun.sale_id = sale.id
+                        fun.methodpay_id = vents['methodpay']
+                        fun.typeMove = 'Venta'
+                        fun.amount = float(vents['total'])
+                        fun.date_joined = vents['date_joined']
+                        fun.save()
+                else:
+                        data['error'] = 'La caja esta cerrada'
             
             elif action == 'search_methodpay':
                 data = [{ 'id': '', 'text': '--------'}]
@@ -168,6 +172,7 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
         context['list_url'] = reverse_lazy('erp:category_list')
         context['det'] = []
         context['formClient'] = clientForm()
+        context['estado'] =  CierreCaja.objects.filter(estado='a').exists()
         return context
 
 

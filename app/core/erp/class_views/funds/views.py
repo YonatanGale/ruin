@@ -32,6 +32,7 @@ class FundListView(LoginRequiredMixin, ListView):
     def post(self, request, *args, **kwargs):
         data = {}
         try:
+            auxi = CierreCaja.objects.filter(estado='a').exists()
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
@@ -48,71 +49,77 @@ class FundListView(LoginRequiredMixin, ListView):
                 cli.payowner = request.POST['payowner']
                 cli.save()
             elif action == 'addwithdraw':
-                    det = Withdraw()
-                    det.typeF_id = request.POST['typeF']
-                    det.reason = request.POST['reason']
-                    det.cant = request.POST['cant']
-                    det.date_joined = request.POST['date_joined']
-                    det.save()
-                    det.typeF.impo -= (decimal.Decimal(det.cant))
-                    det.typeF.save()
+                        if auxi:
+                            det = Withdraw()
+                            det.typeF_id = request.POST['typeF']
+                            det.cant = request.POST['cant']
+                            det.date_joined = request.POST['date_joined']
+                            det.save()
+                            det.typeF.impo -= (decimal.Decimal(det.cant))
+                            det.typeF.save()
 
-                    
-                    fun = Fund()
-                    fun.typeF_id = det.typeF_id
-                    fun.typeMove = 'Retiro de dinero'
-                    fun.amount = det.cant
-                    fun.payNro = '-------'
-                    fun.payowner = '-------'
-                    fun.methodpay_id = 3
-                    fun.date_joined = det.date_joined
-                    fun.save()
-
+                            
+                            fun = Fund()
+                            fun.typeF_id = det.typeF_id
+                            fun.typeMove = 'Retiro de dinero'
+                            fun.amount = det.cant
+                            fun.payNro = '-------'
+                            fun.payowner = '-------'
+                            fun.methodpay_id = 3
+                            fun.date_joined = det.date_joined
+                            fun.save()
+                        else:
+                            data['error'] = 'La caja esta cerrada'
             elif action == 'addCargar':
-                    det = Withdraw()
-                    det.typeF_id = request.POST['typeF']
-                    det.reason = '--------'
-                    det.cant = request.POST['cant']
-                    det.date_joined = request.POST['date_joined']
-                    det.save()
-                    det.typeF.impo += (decimal.Decimal(det.cant))
-                    det.typeF.save()
+                        if auxi:
+                            det = Withdraw()
+                            det.typeF_id = request.POST['typeF']
+                            det.reason = '--------'
+                            det.cant = request.POST['cant']
+                            det.date_joined = request.POST['date_joined']
+                            det.save()
+                            det.typeF.impo += (decimal.Decimal(det.cant))
+                            det.typeF.save()
 
-                    
-                    fun = Fund()
-                    fun.typeF_id = det.typeF_id
-                    fun.typeMove = 'Carga de dinero'
-                    fun.amount = det.cant
-                    fun.payNro = '-------'
-                    fun.payowner = '-------'
-                    fun.methodpay_id = 3
-                    fun.date_joined = det.date_joined
-                    fun.save()
-
+                            
+                            fun = Fund()
+                            fun.typeF_id = det.typeF_id
+                            fun.typeMove = 'Carga de dinero'
+                            fun.amount = det.cant
+                            fun.payNro = '-------'
+                            fun.payowner = '-------'
+                            fun.methodpay_id = 3
+                            fun.date_joined = det.date_joined
+                            fun.save()
+                        else:
+                            data['error'] = 'La caja esta cerrada'
 
             elif action == 'addcierre':
-                    aux = CierreCaja.objects.raw('select * from erp_cierrecaja where id = (select max(id) from erp_cierrecaja where estado = \'a\')')
-                    for i in aux:
-                        det = CierreCaja.objects.get(id = i.id)
-                    tyb = typeFunds.objects.get(pk=1)
-                    tyc = typeFunds.objects.get(pk=2)
-                    bank = tyc.impo
-                    caj = tyb.impo
-                    det.typeF_id = 3
-                    det.tot =  (bank+caj)
-                    det.date_joined = request.POST['date_joined']
-                    det.estado = 'c'
-                    det.save()
-                    
-                    fun = Fund()
-                    fun.typeF_id = 3
-                    fun.typeMove = 'Cierre caja'
-                    fun.amount = det.tot
-                    fun.payNro = '-------'
-                    fun.payowner = '-------'
-                    fun.methodpay_id = 3
-                    fun.date_joined = det.date_joined
-                    fun.save()
+                        if auxi:
+                            aux = CierreCaja.objects.raw('select * from erp_cierrecaja where id = (select max(id) from erp_cierrecaja where estado = \'a\')')
+                            for i in aux:
+                                det = CierreCaja.objects.get(id = i.id)
+                            tyb = typeFunds.objects.get(pk=1)
+                            tyc = typeFunds.objects.get(pk=2)
+                            bank = tyc.impo
+                            caj = tyb.impo
+                            det.typeF_id = 3
+                            det.tot =  (bank+caj)
+                            det.date_joined = request.POST['date_joined']
+                            det.estado = 'c'
+                            det.save()
+                            
+                            fun = Fund()
+                            fun.typeF_id = 3
+                            fun.typeMove = 'Cierre caja'
+                            fun.amount = det.tot
+                            fun.payNro = '-------'
+                            fun.payowner = '-------'
+                            fun.methodpay_id = 3
+                            fun.date_joined = det.date_joined
+                            fun.save()
+                        else:
+                            data['error'] = 'La caja esta cerrada'
 
             elif action == 'addapertura':
                     det = CierreCaja()

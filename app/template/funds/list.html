@@ -6,9 +6,9 @@
 {% endblock %}
 {% block content %}
 {% if estado %}
-<label>La caja se encuantra Abierta </label>
+<label class="badge badge-success">LA CAJA SE ENCUENTRA ABIERTA</label>
 {% else %}
-<label>La caja se encuantra cerrada </label>
+<label class="badge badge-danger">LA CAJA SE ENCUENTRA CERRADA </label>
 {% endif %}
 <section class="content">
     <div class="container-fluid">
@@ -66,18 +66,22 @@
                     </div>
                     <div class="card-footer">
                         {% block buttons_list %}
-                        <a class="btn btn-primary btn-flat btnAper">
-                            <i class="fas fa-cash-register"></i> Apertura de caja
-                        </a>
-                        <a class="btn btn-danger btn-flat btnwithdraw">
-                            <i class="fas fa-hand-holding-usd"></i> Retirar dinero
-                        </a>
-                        <a class="btn btn-success btn-flat addCargar">
-                            <i class="fas fa-hand-holding-usd"></i> Cargar dinero
-                        </a>
-                        <a class="btn btn-secondary btn-flat btnCierre">
-                            <i class="fas fa-cash-register"></i> Cierre de caja
-                        </a>
+                
+
+                            <a class="btn btn-danger btn-flat btnwithdraw">
+                                <i class="fas fa-hand-holding-usd"></i> Retirar dinero
+                            </a>
+                            <a class="btn btn-success btn-flat addCargar">
+                                <i class="fas fa-hand-holding-usd"></i> Cargar dinero
+                            </a>
+                            <a class="btn btn-secondary btn-flat btnCierre">
+                                <i class="fas fa-cash-register"></i> Cierre de caja
+                            </a>
+                        
+                            <a class="btn btn-primary btn-flat btnAper">
+                                <i class="fas fa-cash-register"></i> Apertura de caja
+                            </a>
+                        
                         <a href="{{ list_url }}" class="btn btn-success btn-flat">
                             <i class="fas fa-sync"></i> Actualizar
                         </a>

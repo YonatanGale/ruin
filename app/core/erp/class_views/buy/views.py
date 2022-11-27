@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from core.erp.forms import BuyForm, SupplierForm
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 
-from core.erp.models import Buy, Fund, Materials, Product, DetBuy, Supplier, typeFunds
+from core.erp.models import Buy, CierreCaja, Fund, Materials, Product, DetBuy, Supplier, typeFunds
 
 # librerias xhtml2
 import os
@@ -49,6 +49,8 @@ class BuyListView(LoginRequiredMixin, ListView):
                     data.append(i.toJSON())  
             elif action == 'delete':
                 cli = Buy.objects.get(pk=request.POST['id'])
+                cli.user_update = request.user.username
+                cli.save()
                 cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'
@@ -79,6 +81,7 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         data = {}
         try:
+            auxi = CierreCaja.objects.filter(estado='a').exists()
             action = request.POST['action']
             if action == 'search_products':
                 data = []
@@ -103,42 +106,48 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                     item['text'] = i.name
                     data.append(item)
             elif action == 'add':
-                with transaction.atomic(): 
-                    comp = json.loads(request.POST['comp']) 
-                    buy = Buy()
-                    buy.date_joined = comp['date_joined']
-                    buy.prov_id = comp['prov']
-                    buy.methodpay_id = comp['methodpay']
-                    buy.typfund_id = comp['typfund']
-                    buy.subtotal = float(comp['subtotal'])
-                    buy.iva = float(comp['iva'])
-                    buy.total = float(comp['total'])
-                    buy.save()
+                if auxi:
+                    with transaction.atomic(): 
+                        comp = json.loads(request.POST['comp']) 
+                        buy = Buy()
+                        buy.date_joined = comp['date_joined']
+                        buy.prov_id = comp['prov']
+                        buy.methodpay_id = comp['methodpay']
+                        buy.typfund_id = comp['typfund']
+                        buy.subtotal = float(comp['subtotal'])
+                        buy.iva = float(comp['iva'])
+                        buy.total = float(comp['total'])
+                        buy.user_create = request.user.username
+                        buy.save()
 
-                    buy.typfund.impo -= (decimal.Decimal(buy.total))
-                    buy.typfund.save()
+                        buy.typfund.impo -= (decimal.Decimal(buy.total))
+                        buy.typfund.save()
 
-                    for i in comp['products']:
-                        det = DetBuy()
-                        det.buy_id = buy.id 
-                        det.prod_id = i['id'] 
-                        det.cant = float(i['cant']) 
-                        det.price = float(i['price'])
-                        det.subtotal = float(i['subtotal'])
-                        det.save()
+                        for i in comp['products']:
+                            det = DetBuy()
+                            det.buy_id = buy.id 
+                            det.prod_id = i['id'] 
+                            det.cant = float(i['cant']) 
+                            det.price = float(i['price'])
+                            det.subtotal = float(i['subtotal'])
+                            det.user_create = request.user.username
+                            det.save()
 
-                        det.prod.stock += (decimal.Decimal(det.cant))
-                        det.prod.save()
-                    data = {'id': buy.id}
+                            det.prod.stock += (decimal.Decimal(det.cant))
+                            det.prod.save()
+                        data = {'id': buy.id}
 
-                    fun = Fund()
-                    fun.typeF_id = comp['typfund']
-                    fun.buy_id = buy.id
-                    fun.methodpay_id = comp['methodpay']
-                    fun.typeMove = 'Compra'
-                    fun.amount = float(comp['total'])
-                    fun.date_joined = comp['date_joined']
-                    fun.save()
+                        fun = Fund()
+                        fun.typeF_id = comp['typfund']
+                        fun.buy_id = buy.id
+                        fun.methodpay_id = comp['methodpay']
+                        fun.typeMove = 'Compra'
+                        fun.amount = float(comp['total'])
+                        fun.date_joined = comp['date_joined']
+                        fun.user_create = request.user.username
+                        fun.save()
+                else:
+                        data['error'] = 'La caja esta cerrada'
             elif action == 'search_methodpay':
                 data = [{ 'id': '', 'text': '--------'}]
                 for i in typeFunds.objects.filter(methodpay_id=request.POST['id']):
@@ -170,6 +179,7 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
         context['action'] = 'add'
         context['det'] = []
         context['frmSupplier'] = SupplierForm()
+        context['estado'] =  CierreCaja.objects.filter(estado='a').exists()
         return context
 
 class BuyInvoicePdfView(View):

@@ -23,6 +23,11 @@
 {% endblock %}
 
 {% block content %}
+{% if estado %}
+<label class="badge badge-success">LA CAJA SE ENCUENTRA ABIERTA</label>
+{% else %}
+<label class="badge badge-danger">LA CAJA SE ENCUENTRA CERRADA </label>
+{% endif %}
     <form id="frmBuy" method="post">
         <div class="card card">
             <div class="card-header">
