@@ -57,7 +57,6 @@ class FundListView(LoginRequiredMixin, ListView):
                             det.date_joined = request.POST['date_joined']
                             det.user_create = request.user.username
                             det.save()
-                            det.typeF.user_create = request.user.username
                             det.typeF.impo -= (decimal.Decimal(det.cant))
                             det.typeF.save()
 
@@ -82,9 +81,7 @@ class FundListView(LoginRequiredMixin, ListView):
                             det.cant = request.POST['cant']
                             det.date_joined = request.POST['date_joined']
                             det.user_create = request.user.username
-
                             det.save()
-                            det.typeF.user_create = request.user.username
                             det.typeF.impo += (decimal.Decimal(det.cant))
                             det.typeF.save()
 

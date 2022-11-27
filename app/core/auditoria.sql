@@ -484,3 +484,92 @@ BEGIN
 END;
 
 --AUDITORIA INSERT DETSALE
+CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_DETSALE
+AFTER INSERT ON erp_detsale
+BEGIN
+    INSERT INTO erp_auditoria (
+        tabla, 
+        accion, 
+        datos_viejos, 
+        datos_nuevos, 
+        usuario, 
+        fecha) 
+    VALUES (
+        'erp_detsale', 
+        'I', 
+        NULL, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.price, '') || ',' || IFNULL(NEW.cant, '') || ',' || IFNULL(NEW.subtotal, '') || ',' || IFNULL(NEW.prod_id, '') || ',' || IFNULL(NEW.sale_id, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_create|| ',' || IFNULL(NEW.user_update, '')  ),  
+        NEW.user_create, 
+        date('now'));
+END;
+
+--AUDITORIA INSERT FUND
+CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_fund
+AFTER INSERT ON erp_fund
+BEGIN
+    INSERT INTO erp_auditoria (
+        tabla, 
+        accion, 
+        datos_viejos, 
+        datos_nuevos, 
+        usuario, 
+        fecha) 
+    VALUES (
+        'erp_fund', 
+        'I', 
+        NULL, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.amount, '') || ',' || IFNULL(NEW.typeMove, '') || ',' || IFNULL(NEW.payNro, '') || ',' || IFNULL(NEW.payowner, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.closing_id, '') || ',' || IFNULL(NEW.typeF_id, '') || ',' || IFNULL(NEW.sale_id, '') || ',' || IFNULL(NEW.methodpay_id, '') || ',' || IFNULL(NEW.buy_id, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_create|| ',' || IFNULL(NEW.user_update, '')  ),  
+        NEW.user_create, 
+        date('now'));
+END;
+
+--AUDITORIA UPDATE FUND
+CREATE TRIGGER IF NOT EXISTS AUDUPDATE_ERP_FUND
+AFTER UPDATE ON erp_fund
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_fund', 
+    'U', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.amount, '') || ',' || IFNULL(OLD.typeMove, '') || ',' || IFNULL(OLD.payNro, '') || ',' || IFNULL(OLD.payowner, '') || ',' || IFNULL(OLD.date_joined, '') || ',' || IFNULL(OLD.closing_id, '') || ',' || IFNULL(OLD.typeF_id, '') || ',' || IFNULL(OLD.sale_id, '') || ',' || IFNULL(OLD.methodpay_id, '') || ',' || IFNULL(OLD.buy_id, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.amount, '') || ',' || IFNULL(NEW.typeMove, '') || ',' || IFNULL(NEW.payNro, '') || ',' || IFNULL(NEW.payowner, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.closing_id, '') || ',' || IFNULL(NEW.typeF_id, '') || ',' || IFNULL(NEW.sale_id, '') || ',' || IFNULL(NEW.methodpay_id, '') || ',' || IFNULL(NEW.buy_id, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_update, '')),
+    NEW.user_update, 
+    date('now')
+    );
+END;
+
+--AUDITORIA INSERT MATERIALS
+
+
+--AUDITORIA UPDATE MATERIALS
+
+
+--AUDITORIA DELETE MATERIALS
+
+
+--AUDITORIA INSERT PRODUCT
+
+
+--AUDITORIA UPDATE PRODUCT
+
+
+--AUDITORIA DELETE PRODUCT
+
+
+--AUDITORIA INSERT SUPPLIER
+
+
+--AUDITORIA UPDATE SUPPLIER
+
+
+--AUDITORIA DELETE SUPPLIER
+
+
