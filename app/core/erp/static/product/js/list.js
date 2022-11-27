@@ -23,6 +23,7 @@ function getData(){
             { "data": "stock"},
             { "data": "stock"},
         ],
+        order: [[0, 'desc']],
         columnDefs: [
             {
                 targets: [-1],

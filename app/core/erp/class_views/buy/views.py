@@ -103,7 +103,7 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                 ids_exclude = json.loads(request.POST['ids'])
                 term = request.POST['term'].strip()
                 data.append({'id': term, 'text':term})
-                products = Materials.objects.filter(name__icontains=term, stock__gt=0)
+                products = Materials.objects.filter(name__icontains=term)
                 for i in products.exclude(id__in=ids_exclude)[0:10]:
                     item = i.toJSON()
                     item['text'] = i.name
