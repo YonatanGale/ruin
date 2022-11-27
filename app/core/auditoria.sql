@@ -398,3 +398,21 @@ BEGIN
 END;
 
 --AUDITORIA INSERT DETPRODUCTIONS
+CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_DETPRODUCTION
+AFTER INSERT ON erp_detproduction
+BEGIN
+    INSERT INTO erp_auditoria (
+        tabla, 
+        accion, 
+        datos_viejos, 
+        datos_nuevos, 
+        usuario, 
+        fecha) 
+    VALUES (
+        'erp_detproduction', 
+        'I', 
+        NULL, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.cant, '') || ',' || IFNULL(NEW.prod_id, '') || ',' || IFNULL(NEW.crea_id, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_create|| ',' || IFNULL(NEW.user_update, '')  ),  
+        NEW.user_create, 
+        date('now'));
+END;
