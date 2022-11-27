@@ -35,6 +35,7 @@ class SupplierListView(LoginRequiredMixin, ListView):
                 cli.email = request.POST['email']
                 cli.phone = request.POST['phone']
                 cli.address = request.POST['address']
+                cli.user_create = request.user.username
                 cli.save()
             elif action == 'edit':
                 cli = Supplier.objects.get(pk=request.POST['id'])
@@ -44,9 +45,12 @@ class SupplierListView(LoginRequiredMixin, ListView):
                 cli.email = request.POST['email']
                 cli.phone = request.POST['phone']
                 cli.address = request.POST['address']
+                cli.user_update = request.user.username
                 cli.save()
             elif action == 'delete':
                 cli = Supplier.objects.get(pk=request.POST['id'])
+                cli.user_update = request.user.username
+                cli.save()
                 cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'

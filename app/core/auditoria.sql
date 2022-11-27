@@ -679,11 +679,68 @@ BEGIN
 END;
 
 --AUDITORIA INSERT SUPPLIER
-
+CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_SUPPLIER
+AFTER INSERT ON erp_supplier
+BEGIN
+    INSERT INTO erp_auditoria (
+        tabla, 
+        accion, 
+        datos_viejos, 
+        datos_nuevos, 
+        usuario, 
+        fecha) 
+    VALUES (
+        'erp_supplier', 
+        'I', 
+        NULL, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.phone, '') || ',' || IFNULL(NEW.address, '') || ',' || IFNULL(NEW.ci, '') || ',' || IFNULL(NEW.email, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_create|| ',' || IFNULL(NEW.user_update, '')  ),  
+        NEW.user_create, 
+        date('now'));
+END;
 
 --AUDITORIA UPDATE SUPPLIER
-
+CREATE TRIGGER IF NOT EXISTS AUDUPDATE_ERP_SUPPLIER
+AFTER UPDATE ON erp_supplier
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_supplier', 
+    'U', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.names, '') || ',' || IFNULL(OLD.surnames, '') || ',' || IFNULL(OLD.phone, '') || ',' || IFNULL(OLD.address, '') || ',' || IFNULL(OLD.ci, '') || ',' || IFNULL(OLD.email, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.phone, '') || ',' || IFNULL(NEW.address, '') || ',' || IFNULL(NEW.ci, '') || ',' || IFNULL(NEW.email, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_update, '')),
+    NEW.user_update, 
+    date('now')
+    );
+END;
 
 --AUDITORIA DELETE SUPPLIER
-
+CREATE TRIGGER IF NOT EXISTS AUDDELETE_ERP_SUPPLIER
+AFTER DELETE ON erp_supplier
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_supplier', 
+    'D', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.names, '') || ',' || IFNULL(OLD.surnames, '') || ',' || IFNULL(OLD.phone, '') || ',' || IFNULL(OLD.address, '') || ',' || IFNULL(OLD.ci, '') || ',' || IFNULL(OLD.email, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    NULL,
+    OLD.user_update, 
+    date('now')
+    );
+END;
 
