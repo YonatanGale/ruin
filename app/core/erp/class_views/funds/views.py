@@ -129,28 +129,31 @@ class FundListView(LoginRequiredMixin, ListView):
                             data['error'] = 'La caja esta cerrada'
 
             elif action == 'addapertura':
-                    det = CierreCaja()
-                    tyb = typeFunds.objects.get(pk=1)
-                    tyc = typeFunds.objects.get(pk=2)
-                    bank = tyc.impo
-                    caj = tyb.impo
-                    det.typeF_id = 3
-                    det.tot =  (bank+caj)
-                    det.date_joined = request.POST['date_joined']
-                    det.estado = 'a'
-                    det.user_create = request.user.username
-                    det.save()
-                    
-                    fun = Fund()
-                    fun.typeF_id = 3
-                    fun.typeMove = 'Apertura caja'
-                    fun.amount = det.tot
-                    fun.payNro = '-------'
-                    fun.payowner = '-------'
-                    fun.methodpay_id = 3
-                    fun.user_create = request.user.username
-                    fun.date_joined = det.date_joined
-                    fun.save()
+                    if auxi:
+                        data['error'] = 'La caja esta abierta'
+                    else:
+                        det = CierreCaja()
+                        tyb = typeFunds.objects.get(pk=1)
+                        tyc = typeFunds.objects.get(pk=2)
+                        bank = tyc.impo
+                        caj = tyb.impo
+                        det.typeF_id = 3
+                        det.tot =  (bank+caj)
+                        det.date_joined = request.POST['date_joined']
+                        det.estado = 'a'
+                        det.user_create = request.user.username
+                        det.save()
+                        
+                        fun = Fund()
+                        fun.typeF_id = 3
+                        fun.typeMove = 'Apertura caja'
+                        fun.amount = det.tot
+                        fun.payNro = '-------'
+                        fun.payowner = '-------'
+                        fun.methodpay_id = 3
+                        fun.user_create = request.user.username
+                        fun.date_joined = det.date_joined
+                        fun.save()
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
