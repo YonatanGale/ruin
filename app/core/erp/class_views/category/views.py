@@ -15,7 +15,7 @@ from django.views.generic import TemplateView
 
 
 
-class categoryListView(LoginRequiredMixin, IsSuperuserMixin, TemplateView):
+class categoryListView(LoginRequiredMixin, TemplateView):
     model = Category
     template_name = 'template/category/list.html'
 
@@ -42,10 +42,13 @@ class categoryListView(LoginRequiredMixin, IsSuperuserMixin, TemplateView):
                 cat.user_update = request.user.username
                 cat.save()
             elif action == 'delete':
-                cat = Category.objects.get(pk=request.POST['id'])
-                cat.user_update = request.user.username
-                cat.save()
-                cat.delete()
+                if request.user.is_superuser:
+                    cat = Category.objects.get(pk=request.POST['id'])
+                    cat.user_update = request.user.username
+                    cat.save()
+                    cat.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este modulo'
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:

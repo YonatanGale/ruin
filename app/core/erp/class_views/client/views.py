@@ -45,10 +45,13 @@ class ClientListView(LoginRequiredMixin, TemplateView):
                 cli.user_update = request.user.username
                 cli.save()
             elif action == 'delete':
-                cli = Client.objects.get(pk=request.POST['id'])
-                cli.user_update = request.user.username
-                cli.save()
-                cli.delete()
+                if request.user.is_superuser:
+                    cli = Client.objects.get(pk=request.POST['id'])
+                    cli.user_update = request.user.username
+                    cli.save()
+                    cli.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este modulo'
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
