@@ -43,10 +43,20 @@ class productListView(LoginRequiredMixin, TemplateView):
             elif action == 'recycle':
                     det = Recycle()
                     det.prod_id = request.POST['prod']
-                    det.recy = request.POST['recy']
                     det.cant = request.POST['cant']
+                    det.type = 'Retiro de stock'
                     det.save()
+                    det.prod.user_update = request.user.username
                     det.prod.stock -= int(det.cant)
+                    det.prod.save()
+            elif action == 'repos':
+                    det = Recycle()
+                    det.prod_id = request.POST['prod']
+                    det.cant = request.POST['cant']
+                    det.type = 'Reponer stock'
+                    det.save()
+                    det.prod.user_update = request.user.username
+                    det.prod.stock += int(det.cant)
                     det.prod.save()
             elif action == 'edit':
                 cli = Product.objects.get(pk=request.POST['id'])

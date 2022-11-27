@@ -79,6 +79,15 @@ $(function () {
         $('#myModalRecycle').modal('show');
     });
 
+    $('.btnRepos').on('click', function () {
+        $('input[name="action"]').val('repos');
+        modal_title.find('span').html('Reponer un producto');
+        console.log(modal_title.find('i'));
+        modal_title.find('i').removeClass().addClass('fas fa-recycle');
+        $('form')[0].reset();
+        $('#myModalRecycle').modal('show');
+    });
+
     $('.btnAdd').on('click', function () {
         $('input[name="action"]').val('add');
         modal_title.find('span').html('Creación de un producto');
@@ -130,8 +139,7 @@ $(function () {
         e.preventDefault();
         var parameters = $(this).serializeArray();
         alert_jqueryconfirm(window.location.pathname, parameters, function () {
-            $('#myModalRecycle').modal('hide');
-            tblProduct.ajax.reload();
+            location.href = '/erp/product/list/';
         });
     });
 });

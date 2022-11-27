@@ -469,28 +469,18 @@ class ProductionForm(ModelForm):
 class RecycleForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for form in self.visible_fields():
-            form.field.widget.attrs['class'] = 'form-control'
-            form.field.widget.attrs['autocomplete'] = 'off'
-        self.fields['prod'].widget.attrs['autofocus'] = True
+        
 
     class Meta:
         model = Recycle
         fields = '__all__'
-        widgets = {
-            'user_create': TextInput(
+        widgets = { 
+            'type': TextInput(
                 attrs={
                 'type': 'hidden',
                 'readonly': True,
                 }
             ),
-            'user_update': TextInput(
-                attrs={
-                'type': 'hidden',
-                'readonly': True,
-                }
-            ),
-            'recy': Select()
         }
 
     def save(self, commit=True):

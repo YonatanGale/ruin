@@ -431,12 +431,9 @@ class DetProduction(models.Model):
 
 class Recycle(models.Model):
     prod = models.ForeignKey(Product, on_delete=models.CASCADE)
-    recy = models.CharField(max_length=10, choices=recycle_choices, default='Caducidad', verbose_name='Razon de retiro')
     cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
-    user_create = models.CharField(max_length=150, null=True)
-    date_create = models.DateTimeField(auto_now_add=True, null=True)
-    user_update = models.CharField(max_length=150, null=True)
-    date_update = models.DateTimeField(auto_now=True, null=True)
+    type = models.CharField(max_length=50, verbose_name='Accion')
+    fecha = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.prod.name
@@ -445,7 +442,6 @@ class Recycle(models.Model):
         item = model_to_dict(self)
         item['cant'] = format(self.cant, '.2f')
         item['prod'] = self.prod.toJSON()
-        item['recy'] = {'id': self.recy, 'name': self.get_recy_display()}
         return item
 
     class Meta:
