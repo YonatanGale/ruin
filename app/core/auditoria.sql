@@ -201,4 +201,47 @@ BEGIN
 END;
 
 --AUDITORIA INSERT CIERRECAJA
+CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_CIERRECAJA
+AFTER INSERT ON erp_cierrecaja
+BEGIN
+    INSERT INTO erp_auditoria (
+        tabla, 
+        accion, 
+        datos_viejos, 
+        datos_nuevos, 
+        usuario, 
+        fecha) 
+    VALUES (
+        'erp_cierrecaja', 
+        'I', 
+        NULL, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.typeF_id, '') || ',' || IFNULL(NEW.tot, '') || ',' || IFNULL(NEW.estado, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_create|| ',' || IFNULL(NEW.user_update, '')  ),  
+        NEW.user_create, 
+        date('now'));
+END;
 
+--AUDITORIA UPDATE CIERRECAJA
+
+CREATE TRIGGER IF NOT EXISTS AUDUPDATE_ERP_CIERRECAJA
+AFTER UPDATE ON erp_cierrecaja
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_cierrecaja', 
+    'U', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.date_joined, '') || ',' || IFNULL(OLD.typeF_id, '') || ',' || IFNULL(OLD.tot, '') || ',' || IFNULL(OLD.estado, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.typeF_id, '') || ',' || IFNULL(NEW.tot, '') || ',' || IFNULL(NEW.estado, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_update, '')),
+    NEW.user_update, 
+    date('now')
+    );
+END;
+
+--AUDITORIA INSERT CLIENTE

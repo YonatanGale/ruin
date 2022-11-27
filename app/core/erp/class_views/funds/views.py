@@ -107,6 +107,7 @@ class FundListView(LoginRequiredMixin, ListView):
                             det.tot =  (bank+caj)
                             det.date_joined = request.POST['date_joined']
                             det.estado = 'c'
+                            det.user_update = request.user.username
                             det.save()
                             
                             fun = Fund()
@@ -116,6 +117,7 @@ class FundListView(LoginRequiredMixin, ListView):
                             fun.payNro = '-------'
                             fun.payowner = '-------'
                             fun.methodpay_id = 3
+                            fun.user_update = request.user.username
                             fun.date_joined = det.date_joined
                             fun.save()
                         else:
@@ -131,6 +133,7 @@ class FundListView(LoginRequiredMixin, ListView):
                     det.tot =  (bank+caj)
                     det.date_joined = request.POST['date_joined']
                     det.estado = 'a'
+                    det.user_create = request.user.username
                     det.save()
                     
                     fun = Fund()
@@ -140,6 +143,7 @@ class FundListView(LoginRequiredMixin, ListView):
                     fun.payNro = '-------'
                     fun.payowner = '-------'
                     fun.methodpay_id = 3
+                    fun.user_create = request.user.username
                     fun.date_joined = det.date_joined
                     fun.save()
             else:
