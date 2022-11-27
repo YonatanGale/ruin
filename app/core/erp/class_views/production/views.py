@@ -45,6 +45,8 @@ class ProductionListView(LoginRequiredMixin, ListView):
                     data.append(i.toJSON())  
             elif action == 'delete':
                 cli = Production.objects.get(pk=request.POST['id'])
+                cli.user_update = request.user.username
+                cli.save()
                 cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'
@@ -105,8 +107,10 @@ class ProductionCreateView(LoginRequiredMixin, CreateView):
                     buy.date_joined = comp['date_joined']
                     buy.produc_id = comp['produc']
                     buy.total = int(comp['total'])
+                    buy.user_create = request.user.username
                     buy.save()
 
+                    buy.produc.user_update = request.user.username
                     buy.produc.stock += (buy.total)
                     buy.produc.save()
 
@@ -115,8 +119,10 @@ class ProductionCreateView(LoginRequiredMixin, CreateView):
                         det.crea_id = buy.id
                         det.prod_id = i['id'] 
                         det.cant = float(i['cant']) 
+                        det.user_create = request.user.username
                         det.save()
 
+                        det.prod.user_update = request.user.username
                         det.prod.stock -= (decimal.Decimal(det.cant))
                         det.prod.save()
                     data = {'id': buy.id}
