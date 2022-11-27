@@ -5,7 +5,7 @@ from unicodedata import category
 from urllib import request
 from core.erp.forms import CategoryForm, SaleForm, clientForm
 from django.shortcuts import render
-from core.erp.models import  CierreCaja, Client, DetSale, Fund, MethodPay, Product, Sale, typeFunds
+from core.erp.models import  CierreCaja, Client, DetSale, Fund, MethodPay, Product, Recycle, Sale, typeFunds
 from core.erp.mixins import IsSuperuserMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -136,6 +136,13 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                             det.prod.user_update = request.user.username
                             det.prod.stock -= (det.cant)
                             det.prod.save()
+
+                            rep = Recycle()
+                            rep.prod_id = det.prod_id
+                            rep.cant = det.cant
+                            rep.type = 'Venta'
+                            rep.user_create = request.user.username
+                            rep.save()
                         data = {'id': sale.id}
 
                         fun = Fund()
