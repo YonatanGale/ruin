@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from core.erp.forms import BuyForm, SupplierForm
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 
-from core.erp.models import Buy, CierreCaja, Fund, Materials, Product, DetBuy, Supplier, typeFunds
+from core.erp.models import Buy, CierreCaja, Fund, Materials, Product, DetBuy, RecycleMaterials, Supplier, typeFunds
 
 # librerias xhtml2
 import os
@@ -136,6 +136,13 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                             det.prod.user_update = request.user.username
                             det.prod.stock += (decimal.Decimal(det.cant))
                             det.prod.save()
+
+                            rep = RecycleMaterials()
+                            rep.prod_id = det.prod_id
+                            rep.cant = det.cant
+                            rep.type = 'Compra'
+                            rep.user_create = request.user.username
+                            rep.save()
                         data = {'id': buy.id}
 
                         fun = Fund()
