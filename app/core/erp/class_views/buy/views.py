@@ -132,7 +132,8 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                             det.subtotal = float(i['subtotal'])
                             det.user_create = request.user.username
                             det.save()
-
+                            
+                            det.prod.user_update = request.user.username
                             det.prod.stock += (decimal.Decimal(det.cant))
                             det.prod.save()
                         data = {'id': buy.id}

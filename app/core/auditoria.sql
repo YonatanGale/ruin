@@ -310,4 +310,24 @@ BEGIN
     );
 END;
 
---AUDITORIA DELETE CLIENTE
+--AUDITORIA INSERT DETBUY
+CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_DET_BUY
+AFTER INSERT ON erp_detbuy
+BEGIN
+    INSERT INTO erp_auditoria (
+        tabla, 
+        accion, 
+        datos_viejos, 
+        datos_nuevos, 
+        usuario, 
+        fecha) 
+    VALUES (
+        'erp_detbuy', 
+        'I', 
+        NULL, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.price, '') || ',' || IFNULL(NEW.cant, '') || ',' || IFNULL(NEW.subtotal, '') || ',' || IFNULL(NEW.buy_id, '') || ',' || IFNULL(NEW.prod_id, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_create|| ',' || IFNULL(NEW.user_update, '')  ),  
+        NEW.user_create, 
+        date('now'));
+END;
+
+
