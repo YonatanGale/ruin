@@ -481,6 +481,47 @@ class RecycleForm(ModelForm):
                 'readonly': True,
                 }
             ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+        }
+
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+    
+class RecycleMaterialsForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+
+    class Meta:
+        model = RecycleMaterials
+        fields = '__all__'
+        widgets = { 
+            'type': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
         }
 
     def save(self, commit=True):

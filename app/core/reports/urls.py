@@ -10,6 +10,7 @@ urlpatterns = [
     path('buy/', RepostBuyView.as_view(), name='buy_report'),
     path('production/', RepostProductionView.as_view(), name='production_report'),
     path('product/', RepostProductView.as_view(), name='product_report'),
+    path('materials/', RepostMaterialsView.as_view(), name='materials_report'),
     path('client/', RepostClientView.as_view(), name='client_report'),
     path('fund/', RepostFundView.as_view(), name='fund_report'),
 

@@ -45,6 +45,7 @@ class productListView(LoginRequiredMixin, TemplateView):
                     det.prod_id = request.POST['prod']
                     det.cant = request.POST['cant']
                     det.type = 'Retiro de stock'
+                    det.user_create = request.user.username
                     det.save()
                     det.prod.user_update = request.user.username
                     det.prod.stock -= int(det.cant)
@@ -54,6 +55,7 @@ class productListView(LoginRequiredMixin, TemplateView):
                     det.prod_id = request.POST['prod']
                     det.cant = request.POST['cant']
                     det.type = 'Reponer stock'
+                    det.user_create = request.user.username
                     det.save()
                     det.prod.user_update = request.user.username
                     det.prod.stock += int(det.cant)
@@ -83,7 +85,7 @@ class productListView(LoginRequiredMixin, TemplateView):
         context['create_url'] = reverse_lazy('erp:product_create')
         context['list_url'] = reverse_lazy('erp:product_list')
         context['entity'] = 'Productos'
-        context['form'] = ProductForm()
+        context['formproduct'] = ProductForm()
         context['det'] = []
         context['form_re'] = RecycleForm()
         return context

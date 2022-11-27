@@ -434,6 +434,7 @@ class Recycle(models.Model):
     cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
     type = models.CharField(max_length=50, verbose_name='Accion')
     fecha = models.DateField(auto_now=True)
+    user_create = models.CharField(max_length=45)
 
     def __str__(self):
         return self.prod.name
@@ -506,4 +507,25 @@ class Withdraw(models.Model):
     class Meta:
         verbose_name = 'Retiro'
         verbose_name_plural = 'Retiros'
+        ordering = ['id']
+
+class RecycleMaterials(models.Model):
+    prod = models.ForeignKey(Materials, on_delete=models.CASCADE)
+    cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
+    type = models.CharField(max_length=50, verbose_name='Accion')
+    fecha = models.DateField(auto_now=True)
+    user_create = models.CharField(max_length=45)
+
+    def __str__(self):
+        return self.prod.name
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['cant'] = format(self.cant, '.2f')
+        item['prod'] = self.prod.toJSON()
+        return item
+
+    class Meta:
+        verbose_name = 'Reciclar'
+        verbose_name_plural = 'Reciclados'
         ordering = ['id']

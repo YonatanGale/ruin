@@ -80,6 +80,15 @@ $(function () {
         $('#myModalProduct').modal('show');
     });
 
+    $('.btnRecycle').on('click', function () {
+        $('input[name="action"]').val('recycle');
+        modal_title.find('span').html('Retirar un producto');
+        console.log(modal_title.find('i'));
+        modal_title.find('i').removeClass().addClass('fas fa-recycle');
+        $('form')[0].reset();
+        $('#myModalRecycle').modal('show');
+    });
+
 
     $('#data tbody')
     .on('click', 'a[rel="edit"]', function () {
@@ -111,11 +120,20 @@ $(function () {
         // $('form')[0].reset();
     });
 
-    $('form').on('submit', function (e) {
+    $('#formproduct').on('submit', function (e) {
         e.preventDefault();
         var parameters = $(this).serializeArray();
         alert_jqueryconfirm(window.location.pathname, parameters, function () {
             $('#myModalProduct').modal('hide');
+            tblProduct.ajax.reload();
+        });
+    });
+
+    $('#formrecycle').on('submit', function (e) {
+        e.preventDefault();
+        var parameters = $(this).serializeArray();
+        alert_jqueryconfirm(window.location.pathname, parameters, function () {
+            $('#myModalRecycle').modal('hide');
             tblProduct.ajax.reload();
         });
     });

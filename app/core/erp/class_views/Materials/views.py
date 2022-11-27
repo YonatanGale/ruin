@@ -1,8 +1,8 @@
 from unicodedata import category
 from urllib import request
-from core.erp.forms import CategoryForm, MaterialsForm, ProductForm
+from core.erp.forms import CategoryForm, MaterialsForm, ProductForm, RecycleMaterialsForm
 from django.shortcuts import render
-from core.erp.models import Category, Product, Materials
+from core.erp.models import Category, Product, Materials, RecycleMaterials
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -38,6 +38,16 @@ class materialsListView(LoginRequiredMixin, TemplateView):
                 cli.stock = request.POST['stock']
                 cli.user_create = request.user.username
                 cli.save()
+            elif action == 'recycle':
+                    det = RecycleMaterials()
+                    det.prod_id = request.POST['prod']
+                    det.cant = request.POST['cant']
+                    det.type = 'Retiro de stock'
+                    det.user_create = request.user.username
+                    det.save()
+                    det.prod.user_update = request.user.username
+                    det.prod.stock -= int(det.cant)
+                    det.prod.save()
             elif action == 'edit':
                 cli = Materials.objects.get(pk=request.POST['id'])
                 cli.name = request.POST['name']
@@ -61,7 +71,7 @@ class materialsListView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Lista de materiales'
         context['list_url'] = reverse_lazy('erp:materials_list')
-        context['unity_url'] = reverse_lazy('erp:unity_list')
         context['entity'] = 'Materiales'
         context['form'] = MaterialsForm()
+        context['form_re'] = RecycleMaterialsForm()
         return context
