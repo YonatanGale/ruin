@@ -1,4 +1,5 @@
-
+-- TRIGGERS PARA SQLITE
+-------------------/-----------------/--------------------------/------------------------/----------------
 --AUDITORIA INSERT CATEGORYMATERIALS
 CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_CATEGORYMATERIALS
 AFTER INSERT ON erp_categorymaterials
@@ -64,6 +65,8 @@ BEGIN
     date('now')
     );
 END;
+
+------------------/--------------------------------/---------------------------------/---------------------------------/---
 
 --AUDITORIA INSERT BUY
 
@@ -131,6 +134,9 @@ BEGIN
     date('now')
     );
 END;
+
+------------------/--------------------------------/---------------------------------/---------------------------------/---
+
 
 --AUDITORIA INSERT CATEGORY
 CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_CATEGORY
@@ -200,6 +206,9 @@ BEGIN
     );
 END;
 
+------------------/--------------------------------/---------------------------------/---------------------------------/---
+
+
 --AUDITORIA INSERT CIERRECAJA
 CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_CIERRECAJA
 AFTER INSERT ON erp_cierrecaja
@@ -243,6 +252,9 @@ BEGIN
     date('now')
     );
 END;
+
+------------------/--------------------------------/---------------------------------/---------------------------------/---
+
 
 --AUDITORIA INSERT CLIENTE
 CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_CLIENT
@@ -310,6 +322,9 @@ BEGIN
     );
 END;
 
+------------------/--------------------------------/---------------------------------/---------------------------------/---
+
+
 --AUDITORIA INSERT DETBUY
 CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_DET_BUY
 AFTER INSERT ON erp_detbuy
@@ -329,6 +344,8 @@ BEGIN
         NEW.user_create, 
         date('now'));
 END;
+
+------------------/--------------------------------/---------------------------------/---------------------------------/---
 
 
 --AUDITORIA INSERT PRODUCTIONS
@@ -417,6 +434,9 @@ BEGIN
         date('now'));
 END;
 
+------------------/--------------------------------/---------------------------------/---------------------------------/---
+
+
 --AUDITORIA INSERT SALE
 CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_SALE
 AFTER INSERT ON erp_sale
@@ -503,6 +523,9 @@ BEGIN
         date('now'));
 END;
 
+------------------/--------------------------------/---------------------------------/---------------------------------/---
+
+
 --AUDITORIA INSERT FUND
 CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_fund
 AFTER INSERT ON erp_fund
@@ -545,6 +568,9 @@ BEGIN
     date('now')
     );
 END;
+
+------------------/--------------------------------/---------------------------------/---------------------------------/---
+
 
 --AUDITORIA INSERT MATERIALS
 CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_MATERIALS
@@ -612,6 +638,9 @@ BEGIN
     );
 END;
 
+------------------/--------------------------------/---------------------------------/---------------------------------/---
+
+
 --AUDITORIA INSERT PRODUCT
 CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_PRODUCTS
 AFTER INSERT ON erp_product
@@ -677,6 +706,10 @@ BEGIN
     date('now')
     );
 END;
+
+
+------------------/--------------------------------/---------------------------------/---------------------------------/---
+
 
 --AUDITORIA INSERT SUPPLIER
 CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_SUPPLIER
