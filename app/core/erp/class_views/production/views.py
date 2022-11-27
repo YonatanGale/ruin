@@ -47,6 +47,9 @@ class ProductionListView(LoginRequiredMixin, ListView):
                 if request.user.is_superuser:
                     cli = Production.objects.get(pk=request.POST['id'])
                     cli.user_update = request.user.username
+                    pro = Product.objects.get(id = cli.produc_id)
+                    pro.stock -= (cli.total)
+                    pro.save()
                     cli.save()
                     cli.delete()
                 else:
