@@ -203,7 +203,7 @@ class RepostProductView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Reporte de productos'
+        context['title'] = 'Reporte de movimiento productos'
         context['entity'] = 'Reportes'
         context['list_url'] = reverse_lazy('product_report')
         context['form'] = ReportForm()
@@ -338,8 +338,91 @@ class RepostMaterialsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Reporte de materiales'
+        context['title'] = 'Reporte de movimiento de materiales'
         context['entity'] = 'Reportes'
         context['list_url'] = reverse_lazy('materials_report')
+        context['form'] = ReportForm()
+        return context
+    
+class RepostProductStockView(TemplateView):
+    template_name = 'core/reports/templates/product/reportstock.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *arg, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_report':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = Product.objects.all()
+                if len(start_date) and len(end_date):
+                    search = search.filter(date_joined__range=[start_date, end_date])
+                for s in search:
+                    data.append([
+                        s.id,
+                        s.name,
+                        s.cate.name,
+                        s.stock,
+                        s.price,
+                        s.date_joined,
+                    ])
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reporte de stock actual productos'
+        context['entity'] = 'Reportes'
+        context['list_url'] = reverse_lazy('ProductStock_report')
+        context['form'] = ReportForm()
+        return context
+    
+class RepostMaterialsStockView(TemplateView):
+    template_name = 'core/reports/templates/materials/reportstock.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *arg, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_report':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = Materials.objects.all()
+                if len(start_date) and len(end_date):
+                    search = search.filter(date_create__range=[start_date, end_date])
+                for s in search:
+                    data.append([
+                        s.id,
+                        s.name,
+                        s.cate.name,
+                        s.cate.unity,
+                        s.stock,
+                        s.price,
+                        s.date_create,
+                    ])
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reporte de stock actual materiales'
+        context['entity'] = 'Reportes'
+        context['list_url'] = reverse_lazy('materialsTock_report')
         context['form'] = ReportForm()
         return context
