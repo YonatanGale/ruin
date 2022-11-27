@@ -33,6 +33,7 @@ class ClientListView(LoginRequiredMixin, TemplateView):
                 cli.ci = request.POST['ci']
                 cli.Birthday = request.POST['Birthday']
                 cli.addres = request.POST['addres']
+                cli.user_create = request.user.username
                 cli.save()
             elif action == 'edit':
                 cli = Client.objects.get(pk=request.POST['id'])
@@ -41,9 +42,12 @@ class ClientListView(LoginRequiredMixin, TemplateView):
                 cli.ci = request.POST['ci']
                 cli.Birthday = request.POST['Birthday']
                 cli.addres = request.POST['addres']
+                cli.user_update = request.user.username
                 cli.save()
             elif action == 'delete':
                 cli = Client.objects.get(pk=request.POST['id'])
+                cli.user_update = request.user.username
+                cli.save()
                 cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'

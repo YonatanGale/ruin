@@ -245,3 +245,69 @@ BEGIN
 END;
 
 --AUDITORIA INSERT CLIENTE
+CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_CLIENT
+AFTER INSERT ON erp_client
+BEGIN
+    INSERT INTO erp_auditoria (
+        tabla, 
+        accion, 
+        datos_viejos, 
+        datos_nuevos, 
+        usuario, 
+        fecha) 
+    VALUES (
+        'erp_client', 
+        'I', 
+        NULL, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.ci, '') || ',' || IFNULL(NEW.Birthday, '') || ',' || IFNULL(NEW.addres, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_create|| ',' || IFNULL(NEW.user_update, '')  ),  
+        NEW.user_create, 
+        date('now'));
+END;
+
+--AUDITORIA UPDATE CLIENTE
+CREATE TRIGGER IF NOT EXISTS AUDUPDATE_ERP_CLIENTE
+AFTER UPDATE ON erp_client
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_client', 
+    'U', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.names, '') || ',' || IFNULL(OLD.surnames, '') || ',' || IFNULL(OLD.Birthday, '') || ',' || IFNULL(OLD.addres, '') || ',' || IFNULL(OLD.date_joined, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.Birthday, '') || ',' || IFNULL(NEW.addres, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_update, '')),
+    NEW.user_update, 
+    date('now')
+    );
+END;
+
+--AUDITORIA DELETE CLIENTE
+CREATE TRIGGER IF NOT EXISTS AUDDELETE_ERP_CLIENT
+AFTER DELETE ON erp_client
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_client', 
+    'D', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.names, '') || ',' || IFNULL(OLD.surnames, '') || ',' || IFNULL(OLD.ci, '') || ',' || IFNULL(OLD.Birthday, '') || ',' || IFNULL(OLD.addres, '') || ',' || IFNULL(OLD.date_joined, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    NULL,
+    OLD.user_update, 
+    date('now')
+    );
+END;
+
+--AUDITORIA DELETE CLIENTE

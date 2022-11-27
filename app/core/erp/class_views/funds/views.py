@@ -47,6 +47,7 @@ class FundListView(LoginRequiredMixin, ListView):
                 cli = Fund.objects.get(pk=request.POST['id'])
                 cli.payNro = request.POST['payNro']
                 cli.payowner = request.POST['payowner']
+                cli.user_update = request.user.username
                 cli.save()
             elif action == 'addwithdraw':
                         if auxi:
@@ -54,7 +55,9 @@ class FundListView(LoginRequiredMixin, ListView):
                             det.typeF_id = request.POST['typeF']
                             det.cant = request.POST['cant']
                             det.date_joined = request.POST['date_joined']
+                            det.user_create = request.user.username
                             det.save()
+                            det.typeF.user_create = request.user.username
                             det.typeF.impo -= (decimal.Decimal(det.cant))
                             det.typeF.save()
 
@@ -66,6 +69,7 @@ class FundListView(LoginRequiredMixin, ListView):
                             fun.payNro = '-------'
                             fun.payowner = '-------'
                             fun.methodpay_id = 3
+                            fun.user_create = request.user.username
                             fun.date_joined = det.date_joined
                             fun.save()
                         else:
@@ -77,7 +81,10 @@ class FundListView(LoginRequiredMixin, ListView):
                             det.reason = '--------'
                             det.cant = request.POST['cant']
                             det.date_joined = request.POST['date_joined']
+                            det.user_create = request.user.username
+
                             det.save()
+                            det.typeF.user_create = request.user.username
                             det.typeF.impo += (decimal.Decimal(det.cant))
                             det.typeF.save()
 
@@ -89,6 +96,7 @@ class FundListView(LoginRequiredMixin, ListView):
                             fun.payNro = '-------'
                             fun.payowner = '-------'
                             fun.methodpay_id = 3
+                            fun.user_create = request.user.username
                             fun.date_joined = det.date_joined
                             fun.save()
                         else:
@@ -117,7 +125,7 @@ class FundListView(LoginRequiredMixin, ListView):
                             fun.payNro = '-------'
                             fun.payowner = '-------'
                             fun.methodpay_id = 3
-                            fun.user_update = request.user.username
+                            fun.user_create = request.user.username
                             fun.date_joined = det.date_joined
                             fun.save()
                         else:
