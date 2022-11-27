@@ -113,7 +113,7 @@ class RepostBuyView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Reporte de las ventas'
+        context['title'] = 'Reporte de las compras'
         context['entity'] = 'Reportes'
         context['list_url'] = reverse_lazy('buy_report')
         context['form'] = ReportForm()
