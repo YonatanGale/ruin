@@ -12,13 +12,19 @@ class Auditoria(models.Model):
     cod_auditoria = models.AutoField(primary_key=True)
     tabla = models.CharField(max_length=100)
     accion = models.CharField(max_length=1)
-    datos_viejos = models.CharField(max_length=5000)
-    datos_nuevos = models.CharField(max_length=5000)
+    datos_viejos = models.CharField(max_length=5000, null=True)
+    datos_nuevos = models.CharField(max_length=5000, null=True)
     usuario = models.CharField(max_length=45)
     fecha = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.tabla
+    
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['fecha'] = self.fecha.strftime('%Y-%m-%d')
+        return item
+
 
 
 class Category(BaseModel):
@@ -104,6 +110,7 @@ class typeFunds(models.Model):
 class CierreCaja(models.Model):
     typeF = models.ForeignKey(typeFunds, on_delete=models.CASCADE)
     tot = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    estado = models.CharField(max_length=1)
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
 
     def __str__(self):

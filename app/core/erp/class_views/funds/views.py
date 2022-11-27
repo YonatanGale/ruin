@@ -47,7 +47,6 @@ class FundListView(LoginRequiredMixin, ListView):
                 cli.payNro = request.POST['payNro']
                 cli.payowner = request.POST['payowner']
                 cli.save()
-            
             elif action == 'addwithdraw':
                     det = Withdraw()
                     det.typeF_id = request.POST['typeF']
@@ -92,7 +91,9 @@ class FundListView(LoginRequiredMixin, ListView):
 
 
             elif action == 'addcierre':
-                    det = CierreCaja()
+                    aux = CierreCaja.objects.raw('select * from erp_cierrecaja where id = (select max(id) from erp_cierrecaja where estado = \'a\')')
+                    for i in aux:
+                        det = CierreCaja.objects.get(id = i.id)
                     tyb = typeFunds.objects.get(pk=1)
                     tyc = typeFunds.objects.get(pk=2)
                     bank = tyc.impo
@@ -100,6 +101,7 @@ class FundListView(LoginRequiredMixin, ListView):
                     det.typeF_id = 3
                     det.tot =  (bank+caj)
                     det.date_joined = request.POST['date_joined']
+                    det.estado = 'c'
                     det.save()
                     
                     fun = Fund()
@@ -121,6 +123,7 @@ class FundListView(LoginRequiredMixin, ListView):
                     det.typeF_id = 3
                     det.tot =  (bank+caj)
                     det.date_joined = request.POST['date_joined']
+                    det.estado = 'a'
                     det.save()
                     
                     fun = Fund()
@@ -138,6 +141,12 @@ class FundListView(LoginRequiredMixin, ListView):
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
 
+    # def ObtenerEstado (request):
+    #     est = CierreCaja.objects.filter(estado='a').exists()
+    #     if est:
+    #         return JsonResponse({'estado':'abierto'})
+    #     return JsonResponse({'estado':'cerrado'})
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Movimientos de Fondos'
@@ -146,6 +155,8 @@ class FundListView(LoginRequiredMixin, ListView):
         context['frmCaja'] =  CierreCajaForm()
         context['formwithdraw'] =  WithdrawForm()
         context['formfund'] =  FundForm()
+        context['estado'] =  CierreCaja.objects.filter(estado='a').exists()
         context['entity'] = 'Fondos'
         return context
 
+    

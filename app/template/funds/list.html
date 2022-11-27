@@ -5,7 +5,11 @@
     <script src="{% static '/fund/js/list.js' %}"></script>
 {% endblock %}
 {% block content %}
-
+{% if estado %}
+<label>La caja se encuantra Abierta </label>
+{% else %}
+<label>La caja se encuantra cerrada </label>
+{% endif %}
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -88,6 +92,10 @@
 
 {% endblock %}
 {% block javascript %}
+
+
+
+
 <!-- Modal -->
 
 

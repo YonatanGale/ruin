@@ -1,0 +1,29 @@
+{% extends 'template/list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static '/audi/js/list.js' %}"></script>
+{% endblock %}
+{% block columns %}
+<tr>
+    <th scope="col">Nro</th>
+    <th scope="col">tabla auditada</th>
+    <th scope="col">Accion</th>
+    <th scope="col">Datos Nuevos</th>
+    <th scope="col">Usuario</th>
+    <th scope="col">Fecha de registro</th>
+    <th scope="col">Datos Viejos</th>
+  </tr>
+{% endblock %}
+{% block rows %}
+
+
+{% endblock %}
+
+{% block buttons_list %}
+<a href="{{ list_url }}" class="btn btn-success btn-flat">
+    <i class="fas fa-sync"></i> Actualizar
+</a>
+{% endblock %}
+{% block javascript %}
+
+{% endblock %}

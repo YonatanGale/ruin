@@ -408,7 +408,13 @@ class CierreCajaForm(ModelForm):
                 'type': 'hidden',
                 'readonly': True,
                 }
-            ),   
+            ),
+            'estado': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),      
             'typeF': TextInput(
                 attrs={
                 'type': 'hidden',

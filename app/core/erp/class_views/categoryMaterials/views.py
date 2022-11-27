@@ -45,6 +45,8 @@ class categoryMaterialsListView(LoginRequiredMixin, TemplateView):
                 cat.save()
             elif action == 'delete':
                 cat = CategoryMaterials.objects.get(pk=request.POST['id'])
+                cat.user_update = request.user.username
+                cat.save()
                 cat.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'
