@@ -613,13 +613,70 @@ BEGIN
 END;
 
 --AUDITORIA INSERT PRODUCT
-
+CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_PRODUCTS
+AFTER INSERT ON erp_product
+BEGIN
+    INSERT INTO erp_auditoria (
+        tabla, 
+        accion, 
+        datos_viejos, 
+        datos_nuevos, 
+        usuario, 
+        fecha) 
+    VALUES (
+        'erp_product', 
+        'I', 
+        NULL, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.name, '') || ',' || IFNULL(NEW.cate_id, '') || ',' || IFNULL(NEW.price, '') || ',' || IFNULL(NEW.stock, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_create|| ',' || IFNULL(NEW.user_update, '')  ),  
+        NEW.user_create, 
+        date('now'));
+END;
 
 --AUDITORIA UPDATE PRODUCT
-
+CREATE TRIGGER IF NOT EXISTS AUDUPDATE_ERP_PRODUCTS
+AFTER UPDATE ON erp_product
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_product', 
+    'U', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.name, '') || ',' || IFNULL(OLD.cate_id, '') || ',' || IFNULL(OLD.price, '') || ',' || IFNULL(OLD.stock, '') || ',' || IFNULL(OLD.date_joined, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.name, '') || ',' || IFNULL(NEW.cate_id, '') || ',' || IFNULL(NEW.price, '') || ',' || IFNULL(NEW.stock, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_update, '')),
+    NEW.user_update, 
+    date('now')
+    );
+END;
 
 --AUDITORIA DELETE PRODUCT
-
+CREATE TRIGGER IF NOT EXISTS AUDDELETE_ERP_PRODUCTS
+AFTER DELETE ON erp_product
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_product', 
+    'D', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.name, '') || ',' || IFNULL(OLD.cate_id, '') || ',' || IFNULL(OLD.price, '') || ',' || IFNULL(OLD.stock, '') || ',' || IFNULL(OLD.date_joined, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    NULL,
+    OLD.user_update, 
+    date('now')
+    );
+END;
 
 --AUDITORIA INSERT SUPPLIER
 
