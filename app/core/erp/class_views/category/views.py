@@ -34,13 +34,17 @@ class categoryListView(LoginRequiredMixin, IsSuperuserMixin, TemplateView):
             elif action == 'add':
                 cat = Category()
                 cat.name = request.POST['name']
+                cat.user_create = request.user.username
                 cat.save()
             elif action == 'edit':
                 cat = Category.objects.get(pk=request.POST['id'])
                 cat.name = request.POST['name']
+                cat.user_update = request.user.username
                 cat.save()
             elif action == 'delete':
                 cat = Category.objects.get(pk=request.POST['id'])
+                cat.user_update = request.user.username
+                cat.save()
                 cat.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'

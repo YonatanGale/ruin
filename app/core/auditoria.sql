@@ -133,4 +133,72 @@ BEGIN
 END;
 
 --AUDITORIA INSERT CATEGORY
+CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_CATEGORY
+AFTER INSERT ON erp_category
+BEGIN
+    INSERT INTO erp_auditoria (
+        tabla, 
+        accion, 
+        datos_viejos, 
+        datos_nuevos, 
+        usuario, 
+        fecha) 
+    VALUES (
+        'erp_category', 
+        'I', 
+        NULL, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.name, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_create|| ',' || IFNULL(NEW.user_update, '')  ),  
+        NEW.user_create, 
+        date('now'));
+END;
+
+--AUDITORIA UPDATE CATEGORY
+
+CREATE TRIGGER IF NOT EXISTS AUDUPDATE_ERP_CATEGORY
+AFTER UPDATE ON erp_category
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_category', 
+    'U', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.name, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.name, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_update, '')),
+    NEW.user_update, 
+    date('now')
+    );
+END;
+
+--AUDITORIA DELETE CATEGORY
+
+CREATE TRIGGER IF NOT EXISTS AUDDELETE_ERP_CATEGORY
+AFTER DELETE ON erp_category
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_category', 
+    'D', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.name, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    NULL,
+    OLD.user_update, 
+    date('now')
+    );
+END;
+
+--AUDITORIA INSERT CIERRECAJA
 

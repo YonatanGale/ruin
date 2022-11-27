@@ -27,7 +27,7 @@ class Auditoria(models.Model):
 
 
 
-class Category(BaseModel):
+class Category(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     user_create = models.CharField(max_length=150, null=True)
     date_create = models.DateTimeField(auto_now_add=True, null=True)
@@ -37,15 +37,6 @@ class Category(BaseModel):
     def __str__(self):
         return self.name
 
-
-    def save(self, force_insert=False, force_update=False, Using=None, update_fields=None):
-        user = get_current_user()
-        if user is not None:
-            if not self.pk:
-                self.user_creation = user
-            else:
-                self.user_update = user
-        super(Category, self).save()
 
     def toJSON(self):
         item = model_to_dict(self)
