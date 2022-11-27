@@ -547,13 +547,70 @@ BEGIN
 END;
 
 --AUDITORIA INSERT MATERIALS
-
+CREATE TRIGGER IF NOT EXISTS AUDINSERT_ERP_MATERIALS
+AFTER INSERT ON erp_materials
+BEGIN
+    INSERT INTO erp_auditoria (
+        tabla, 
+        accion, 
+        datos_viejos, 
+        datos_nuevos, 
+        usuario, 
+        fecha) 
+    VALUES (
+        'erp_materials', 
+        'I', 
+        NULL, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.name, '') || ',' || IFNULL(NEW.stock, '') || ',' || IFNULL(NEW.price, '') || ',' || IFNULL(NEW.cate_id, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_create|| ',' || IFNULL(NEW.user_update, '')  ),  
+        NEW.user_create, 
+        date('now'));
+END;
 
 --AUDITORIA UPDATE MATERIALS
-
+CREATE TRIGGER IF NOT EXISTS AUDUPDATE_ERP_MATERIALS
+AFTER UPDATE ON erp_materials
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_materials', 
+    'U', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.name, '') || ',' || IFNULL(OLD.stock, '') || ',' || IFNULL(OLD.cate_id, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.name, '') || ',' || IFNULL(NEW.stock, '') || ',' || IFNULL(NEW.cate_id, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_update, '')),
+    NEW.user_update, 
+    date('now')
+    );
+END;
 
 --AUDITORIA DELETE MATERIALS
-
+CREATE TRIGGER IF NOT EXISTS AUDDELETE_ERP_MATERIALS
+AFTER DELETE ON erp_materials
+BEGIN
+    INSERT INTO erp_auditoria 
+    (tabla, 
+    accion, 
+    datos_viejos, 
+    datos_nuevos, 
+    usuario, 
+    fecha
+    )
+     
+    VALUES 
+    ('erp_materials', 
+    'D', 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.name, '') || ',' || IFNULL(OLD.stock, '') || ',' || IFNULL(OLD.price, '') || ',' || IFNULL(OLD.cate_id, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    NULL,
+    OLD.user_update, 
+    date('now')
+    );
+END;
 
 --AUDITORIA INSERT PRODUCT
 

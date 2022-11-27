@@ -38,6 +38,7 @@ class productListView(LoginRequiredMixin, TemplateView):
                 cli.cate_id = request.POST['cate']
                 cli.price = request.POST['price']
                 cli.stock = request.POST['stock']
+                cli.user_create = request.user.username
                 cli.save()
             elif action == 'recycle':
                     det = Recycle()
@@ -53,9 +54,12 @@ class productListView(LoginRequiredMixin, TemplateView):
                 cli.cate_id = request.POST['cate']
                 cli.price = request.POST['price']
                 cli.stock = request.POST['stock']
+                cli.user_update = request.user.username
                 cli.save()
             elif action == 'delete':
                 cli = Product.objects.get(pk=request.POST['id'])
+                cli.user_update = request.user.username
+                cli.save()
                 cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'

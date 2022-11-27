@@ -36,6 +36,7 @@ class materialsListView(LoginRequiredMixin, TemplateView):
                 cli.cate_id = request.POST['cate']
                 cli.price = request.POST['price']
                 cli.stock = request.POST['stock']
+                cli.user_create = request.user.username
                 cli.save()
             elif action == 'edit':
                 cli = Materials.objects.get(pk=request.POST['id'])
@@ -43,9 +44,12 @@ class materialsListView(LoginRequiredMixin, TemplateView):
                 cli.cate_id = request.POST['cate']
                 cli.price = request.POST['price']
                 cli.stock = request.POST['stock']
+                cli.user_update = request.user.username
                 cli.save()
             elif action == 'delete':
                 cli = Materials.objects.get(pk=request.POST['id'])
+                cli.user_update = request.user.username
+                cli.save()
                 cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'
