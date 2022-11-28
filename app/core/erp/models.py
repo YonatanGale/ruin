@@ -25,8 +25,6 @@ class Auditoria(models.Model):
         item['fecha'] = self.fecha.strftime('%Y-%m-%d')
         return item
 
-
-
 class Category(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
     user_create = models.CharField(max_length=150, null=True)
