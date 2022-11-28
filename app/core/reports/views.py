@@ -188,7 +188,6 @@ class RepostProductView(TemplateView):
                 for s in search:
                     data.append([
                         s.id,
-                        s.prod.id,
                         s.prod.name,
                         s.type,
                         s.cant,
@@ -323,13 +322,11 @@ class RepostMaterialsView(TemplateView):
                 for s in search:
                     data.append([
                         s.id,
-                        s.prod.id,
                         s.prod.name,
                         s.type,
                         s.cant,
                         s.user_create,
-                        s.fecha,
-                    ])
+                        s.fecha,                    ])
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -338,7 +335,7 @@ class RepostMaterialsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Reporte de movimiento de materiales'
+        context['title'] = 'Reporte de movimiento materiales'
         context['entity'] = 'Reportes'
         context['list_url'] = reverse_lazy('materials_report')
         context['form'] = ReportForm()
@@ -360,8 +357,6 @@ class RepostProductStockView(TemplateView):
                 start_date = request.POST.get('start_date', '')
                 end_date = request.POST.get('end_date', '')
                 search = Product.objects.all()
-                if len(start_date) and len(end_date):
-                    search = search.filter(date_joined__range=[start_date, end_date])
                 for s in search:
                     data.append([
                         s.id,
@@ -401,8 +396,6 @@ class RepostMaterialsStockView(TemplateView):
                 start_date = request.POST.get('start_date', '')
                 end_date = request.POST.get('end_date', '')
                 search = Materials.objects.all()
-                if len(start_date) and len(end_date):
-                    search = search.filter(date_create__range=[start_date, end_date])
                 for s in search:
                     data.append([
                         s.id,
@@ -411,7 +404,6 @@ class RepostMaterialsStockView(TemplateView):
                         s.cate.unity,
                         s.stock,
                         s.price,
-                        s.date_create,
                     ])
             else:
                 data['error'] = 'Ha ocurrido un error'
