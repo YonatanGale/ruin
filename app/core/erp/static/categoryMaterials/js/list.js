@@ -62,7 +62,7 @@ $(function () {
         $('input[name="action"]').val('edit');
         $('input[name="id"]').val(data.id);
         $('input[name="name"]').val(data.name);
-        $('select[name="unity"]').val(data.unity);
+        $('select[name="unity.id"]').val(data.unity);
         $('#myModalCategory').modal('show');
     })
     .on('click', 'a[rel="delete"]', function () {
