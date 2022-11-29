@@ -4,6 +4,12 @@
     <script src="{% static '/buy/js/list.js' %}"></script>
 {% endblock %}
 
+{% block span %}
+{% if status %}
+<span class="badge badge-warning">FALTAN PEDIDOS POR CONFIRMAR</span>
+{% endif %}
+{% endblock %}
+
 {% block columns %}
     <tr>
         <th scope="col">Nro</th>
@@ -41,6 +47,8 @@
                                 <th>Precio de compra</th>
                                 <th>Cantidad</th>
                                 <th>Subtotal</th>
+                                <th>estado</th>
+                                <th>confirmar entrega</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,4 +58,6 @@
             </div>
         </div>
     </div>
+
+
 {% endblock %}

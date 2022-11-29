@@ -47,6 +47,20 @@ class BuyListView(LoginRequiredMixin, ListView):
                 data = []  
                 for i in DetBuy.objects.filter(buy_id=request.POST['id']): 
                     data.append(i.toJSON())  
+            elif action == 'confirm_prov':
+                cli = DetBuy.objects.get(pk=request.POST['id'])
+                cli.status = 'e'
+                cli.save()
+                cli.prod.stock += (decimal.Decimal(cli.cant))
+                cli.prod.user_update = request.user.username
+                cli.prod.save()
+
+                rep = RecycleMaterials()
+                rep.prod_id = cli.prod_id
+                rep.cant = cli.cant
+                rep.type = 'Compra'
+                rep.user_create = request.user.username
+                rep.save()
             elif action == 'delete':
                 if request.user.is_superuser:
                     cli = Buy.objects.get(pk=request.POST['id'])
@@ -67,6 +81,7 @@ class BuyListView(LoginRequiredMixin, ListView):
         context['create_url'] = reverse_lazy('erp:buy_create')
         context['list_url'] = reverse_lazy('erp:buy_list')
         context['entity'] = 'Compras'
+        context['status'] = DetBuy.objects.filter(status='p').exists()
         return context
 
 
@@ -134,19 +149,11 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                             det.price = float(i['price'])
                             det.subtotal = float(i['subtotal'])
                             det.user_create = request.user.username
+                            det.status = 'p'
                             det.save()
                             
-                            det.prod.user_update = request.user.username
-                            det.prod.stock += (decimal.Decimal(det.cant))
-                            det.prod.save()
-
-                            rep = RecycleMaterials()
-                            rep.prod_id = det.prod_id
-                            rep.cant = det.cant
-                            rep.type = 'Compra'
-                            rep.user_create = request.user.username
-                            rep.save()
                         data = {'id': buy.id}
+
                         if buy.methodpay_id == '3':
                             data['error'] = 'Seleccione un metodo de pago valido'
                         else:

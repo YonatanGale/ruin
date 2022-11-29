@@ -2,7 +2,7 @@ from unicodedata import category
 from urllib import request
 from core.erp.forms import CategoryForm, MaterialsForm, ProductForm, RecycleMaterialsForm
 from django.shortcuts import render
-from core.erp.models import Category, Product, Materials, RecycleMaterials
+from core.erp.models import Category, DetBuy, Product, Materials, RecycleMaterials
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -77,4 +77,5 @@ class materialsListView(LoginRequiredMixin, TemplateView):
         context['entity'] = 'Materiales'
         context['form'] = MaterialsForm()
         context['form_re'] = RecycleMaterialsForm()
+        context['status'] = DetBuy.objects.filter(status='p').exists()
         return context

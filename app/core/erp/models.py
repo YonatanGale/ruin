@@ -351,6 +351,7 @@ class DetBuy(models.Model):
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     cant = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name="Cantidad")
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    status = models.CharField(max_length=150)
     user_create = models.CharField(max_length=150, null=True)
     date_create = models.DateTimeField(auto_now_add=True, null=True)
     user_update = models.CharField(max_length=150, null=True)

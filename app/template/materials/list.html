@@ -5,6 +5,11 @@
 
 <script src="{% static '/materials/js/list.js' %}"></script>
 {% endblock %}
+{% block span %}
+{% if status %}
+<span class="badge badge-warning">FALTAN PEDIDOS POR CONFIRMAR</span>
+{% endif %}
+{% endblock %}
 
 {% block columns %}
 <tr>
