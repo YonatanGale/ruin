@@ -315,6 +315,7 @@ class Buy(models.Model):
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     iva = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    estado = models.IntegerField(default=0)
     user_create = models.CharField(max_length=150, null=True)
     date_create = models.DateTimeField(auto_now_add=True, null=True)
     user_update = models.CharField(max_length=150, null=True)

@@ -22,12 +22,13 @@ $(function () {
             {"data": "iva"},
             {"data": "total"},
             {"data": "methodpay.pay"},
+            {"data": "estado"},
             {"data": "id"},
         ],
         order: [[0, 'desc']],
         columnDefs: [
             {
-                targets: [-5, -3, -4],
+                targets: [-6, -4, -5],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
@@ -43,6 +44,16 @@ $(function () {
                     buttons += '<a rel="details" class="btn btn-success btn-xs btn-flat"><i class="fas fa-search"></i></a> ';
                     buttons += '<a href="/erp/buy/invoice/pdf/'+row.id+'/" target="_blank" class="btn btn-info btn-xs btn-flat"><i class="fas fa-file-pdf"></i></a> ';
                     return buttons;
+                }
+            },
+            {
+                targets: [-2],
+                class: 'text-center',
+                render: function (data, type, row) {
+                    if (row.estado < 0){
+                        return '<span class="badge badge-danger">POR CONFIRMAR</span>'
+                    }
+                    return '<span class="badge badge-success">ENTRAGA CONFIRMADA</span>'
                 }
             },
         ],

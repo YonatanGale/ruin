@@ -55,6 +55,9 @@ class BuyListView(LoginRequiredMixin, ListView):
                 cli.prod.user_update = request.user.username
                 cli.prod.save()
 
+                cli.buy.estado += int(1)
+                cli.buy.save()
+
                 rep = RecycleMaterials()
                 rep.prod_id = cli.prod_id
                 rep.cant = cli.cant
@@ -125,7 +128,8 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                     data.append(item)
             elif action == 'add':
                 if auxi:
-                    with transaction.atomic(): 
+                    with transaction.atomic():
+                        ax = 0 
                         comp = json.loads(request.POST['comp']) 
                         buy = Buy()
                         buy.date_joined = comp['date_joined']
@@ -151,9 +155,11 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                             det.user_create = request.user.username
                             det.status = 'p'
                             det.save()
-                            
+                            ax -= 1
                         data = {'id': buy.id}
 
+                        buy.estado += int(ax)
+                        buy.save()
                         if buy.methodpay_id == '3':
                             data['error'] = 'Seleccione un metodo de pago valido'
                         else:
