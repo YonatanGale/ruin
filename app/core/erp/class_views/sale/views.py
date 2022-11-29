@@ -165,7 +165,7 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                         data['error'] = 'La caja esta cerrada'
             
             elif action == 'search_methodpay':
-                data = []
+                data = [{ 'id': '', 'text': '--------'}]
                 for i in typeFunds.objects.filter(methodpay_id=request.POST['id']):
                     data.append({'id': i.id, 'text': i.name})
             elif action == 'search_clients':
