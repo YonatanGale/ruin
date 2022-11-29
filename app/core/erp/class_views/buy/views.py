@@ -147,16 +147,18 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                             rep.user_create = request.user.username
                             rep.save()
                         data = {'id': buy.id}
-
-                        fun = Fund()
-                        fun.typeF_id = comp['typfund']
-                        fun.buy_id = buy.id
-                        fun.methodpay_id = comp['methodpay']
-                        fun.typeMove = 'Compra'
-                        fun.amount = float(comp['total'])
-                        fun.date_joined = comp['date_joined']
-                        fun.user_create = request.user.username
-                        fun.save()
+                        if buy.methodpay_id == '3':
+                            data['error'] = 'Seleccione un metodo de pago valido'
+                        else:
+                            fun = Fund()
+                            fun.typeF_id = comp['typfund']
+                            fun.buy_id = buy.id
+                            fun.methodpay_id = comp['methodpay']
+                            fun.typeMove = 'Compra'
+                            fun.amount = float(comp['total'])
+                            fun.date_joined = comp['date_joined']
+                            fun.user_create = request.user.username
+                            fun.save()
                 else:
                         data['error'] = 'La caja esta cerrada'
             elif action == 'search_methodpay':

@@ -37,6 +37,17 @@
                 }
             },
             {
+                targets: [3],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    if(row.typeF.name == '------'){
+                        return 'Caja/Banco';
+                    }
+                    return data;
+                }
+            },
+            {
                 targets: [-1],
                 class: 'text-center',
                 orderable: false,
@@ -76,8 +87,8 @@
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
-                        if(row.impo == 0){
-                            return '';
+                        if(row.impo < 0){
+                            return '-----';
                         }
                         return 'Gs.' + parseFloat(data).toLocaleString("es-AR");
                     }
@@ -87,9 +98,6 @@
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
-                        if(row.name == 'Caja/Banco'){
-                            return '';
-                        }
                         return data;
                     }
                 },
