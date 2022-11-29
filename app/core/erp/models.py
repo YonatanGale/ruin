@@ -58,7 +58,6 @@ class CategoryMaterials(models.Model):
 
     def toJSON(self):
         item = model_to_dict(self)
-        item['unity'] = {'id': self.unity, 'name': self.get_unity_display()}
         return item
 
     class Meta:
