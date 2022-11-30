@@ -121,11 +121,9 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                         sale.total = float(vents['total'])
                         sale.user_create = request.user.username
                         sale.save()
-                        if sale.methodpay_id == '3':
-                            data['error'] = 'Seleccione un metodo de pago valido'
-                        else:
-                            sale.typfund.impo += (decimal.Decimal(sale.total))
-                            sale.typfund.save()
+
+                        sale.typfund.impo += (decimal.Decimal(sale.total))
+                        sale.typfund.save()
                         
 
                         for i in vents['products']:
@@ -149,18 +147,15 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                             rep.user_create = request.user.username
                             rep.save()
                         data = {'id': sale.id}
-                        if sale.methodpay_id == '3':
-                            data['error'] = 'Seleccione un metodo de pago valido'
-                        else:
-                            fun = Fund()
-                            fun.typeF_id = vents['typfund']
-                            fun.sale_id = sale.id
-                            fun.methodpay_id = vents['methodpay']
-                            fun.typeMove = 'Venta'
-                            fun.amount = float(vents['total'])
-                            fun.date_joined = vents['date_joined']
-                            fun.user_create = request.user.username
-                            fun.save()
+                        fun = Fund()
+                        fun.typeF_id = vents['typfund']
+                        fun.sale_id = sale.id
+                        fun.methodpay_id = vents['methodpay']
+                        fun.typeMove = 'Venta'
+                        fun.amount = float(vents['total'])
+                        fun.date_joined = vents['date_joined']
+                        fun.user_create = request.user.username
+                        fun.save()
                 else:
                         data['error'] = 'La caja esta cerrada'
             

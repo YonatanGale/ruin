@@ -37,17 +37,6 @@
                 }
             },
             {
-                targets: [3],
-                class: 'text-center',
-                orderable: false,
-                render: function (data, type, row) {
-                    if(row.typeF.name == '------'){
-                        return 'Caja/Banco';
-                    }
-                    return data;
-                }
-            },
-            {
                 targets: [-1],
                 class: 'text-center',
                 orderable: false,

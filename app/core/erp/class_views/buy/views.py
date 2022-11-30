@@ -134,19 +134,16 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                         buy = Buy()
                         buy.date_joined = comp['date_joined']
                         buy.prov_id = comp['prov']
-                        if buy.methodpay_id == '3':
-                            data['error'] = 'Seleccione un metodo de pago valido'
-                        else:
-                            buy.methodpay_id = comp['methodpay']
-                            buy.typfund_id = comp['typfund']
-                            buy.subtotal = float(comp['subtotal'])
-                            buy.iva = float(comp['iva'])
-                            buy.total = float(comp['total'])
-                            buy.user_create = request.user.username
-                            buy.save()
+                        buy.methodpay_id = comp['methodpay']
+                        buy.typfund_id = comp['typfund']
+                        buy.subtotal = float(comp['subtotal'])
+                        buy.iva = float(comp['iva'])
+                        buy.total = float(comp['total'])
+                        buy.user_create = request.user.username
+                        buy.save()
 
-                            buy.typfund.impo -= (decimal.Decimal(buy.total))
-                            buy.typfund.save()
+                        buy.typfund.impo -= (decimal.Decimal(buy.total))
+                        buy.typfund.save()
 
                         for i in comp['products']:
                             det = DetBuy()
@@ -163,9 +160,7 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
 
                         buy.estado += int(ax)
                         buy.save()
-                        if buy.methodpay_id == '3':
-                            data['error'] = 'Seleccione un metodo de pago valido'
-                        elif buy.methodpay_id == '1':
+                        if buy.methodpay_id == '1':
                             fun = Fund()
                             fun.typeF_id = comp['typfund']
                             fun.buy_id = buy.id
@@ -205,6 +200,7 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
             elif action == 'create_supplier':
                 with transaction.atomic():
                     frmSupplier = SupplierForm(request.POST)
+                    frmSupplier.user_create = request.user.username
                     data = frmSupplier.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
