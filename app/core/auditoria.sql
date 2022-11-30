@@ -271,8 +271,8 @@ BEGIN
         'erp_client', 
         'I', 
         NULL, 
-        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.ci, '') || ',' || IFNULL(NEW.Birthday, '') || ',' || IFNULL(NEW.addres, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_creation_id, '')|| ',' || IFNULL(NEW.user_update_id, '')  ),  
-        NEW.user_creation_id, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.ci, '') || ',' || IFNULL(NEW.Birthday, '') || ',' || IFNULL(NEW.addres, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_create, '')  ),  
+        NEW.user_create, 
         date('now'));
 END;
 
@@ -292,9 +292,9 @@ BEGIN
     VALUES 
     ('erp_client', 
     'U', 
-    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.names, '') || ',' || IFNULL(OLD.surnames, '') || ',' || IFNULL(OLD.Birthday, '') || ',' || IFNULL(OLD.addres, '') || ',' || IFNULL(OLD.date_joined, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_creation_id, '')|| ',' || IFNULL(OLD.user_update_id, '')),
-    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.Birthday, '') || ',' || IFNULL(NEW.addres, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_creation_id, '')|| ',' || IFNULL(NEW.user_update_id, '')),
-    NEW.user_update_id, 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.names, '') || ',' || IFNULL(OLD.surnames, '') || ',' || IFNULL(OLD.Birthday, '') || ',' || IFNULL(OLD.addres, '') || ',' || IFNULL(OLD.date_joined, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_create, '')),
+    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.Birthday, '') || ',' || IFNULL(NEW.addres, '') || ',' || IFNULL(NEW.date_joined, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_create, '')),
+    NEW.user_create, 
     date('now')
     );
 END;
@@ -315,9 +315,9 @@ BEGIN
     VALUES 
     ('erp_client', 
     'D', 
-    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.names, '') || ',' || IFNULL(OLD.surnames, '') || ',' || IFNULL(OLD.ci, '') || ',' || IFNULL(OLD.Birthday, '') || ',' || IFNULL(OLD.addres, '') || ',' || IFNULL(OLD.date_joined, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_creation_id, '')|| ',' || IFNULL(OLD.user_update_id, '')),
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.names, '') || ',' || IFNULL(OLD.surnames, '') || ',' || IFNULL(OLD.ci, '') || ',' || IFNULL(OLD.Birthday, '') || ',' || IFNULL(OLD.addres, '') || ',' || IFNULL(OLD.date_joined, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_create, '')),
     NULL,
-    OLD.user_update_id, 
+    OLD.user_create, 
     date('now')
     );
 END;
@@ -726,8 +726,8 @@ BEGIN
         'erp_supplier', 
         'I', 
         NULL, 
-        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.phone, '') || ',' || IFNULL(NEW.address, '') || ',' || IFNULL(NEW.ci, '') || ',' || IFNULL(NEW.email, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || NEW.user_creation1_id|| ',' || IFNULL(NEW.user_update1_id, '') ),  
-        NEW.user_creation1_id, 
+        (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.phone, '') || ',' || IFNULL(NEW.address, '') || ',' || IFNULL(NEW.ci, '') || ',' || IFNULL(NEW.email, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_update, '') ),  
+        NEW.user_create, 
         date('now'));
 END;
 
@@ -747,9 +747,9 @@ BEGIN
     VALUES 
     ('erp_supplier', 
     'U', 
-    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.names, '') || ',' || IFNULL(OLD.surnames, '') || ',' || IFNULL(OLD.phone, '') || ',' || IFNULL(OLD.address, '') || ',' || IFNULL(OLD.ci, '') || ',' || IFNULL(OLD.email, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_creation1_id, '')|| ',' || IFNULL(OLD.user_update1_id, '')),
-    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.phone, '') || ',' || IFNULL(NEW.address, '') || ',' || IFNULL(NEW.ci, '') || ',' || IFNULL(NEW.email, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_creation1_id, '')|| ',' || IFNULL(NEW.user_update1_id, '')),
-    NEW.user_update1_id, 
+    (IFNULL(OLD.id, '') || ',' || IFNULL(OLD.names, '') || ',' || IFNULL(OLD.surnames, '') || ',' || IFNULL(OLD.phone, '') || ',' || IFNULL(OLD.address, '') || ',' || IFNULL(OLD.ci, '') || ',' || IFNULL(OLD.email, '') || ',' || IFNULL(OLD.date_create, '') || ',' || IFNULL(OLD.date_update, '') || ',' || IFNULL(OLD.user_create, '')|| ',' || IFNULL(OLD.user_update, '')),
+    (IFNULL(NEW.id, '') || ',' || IFNULL(NEW.names, '') || ',' || IFNULL(NEW.surnames, '') || ',' || IFNULL(NEW.phone, '') || ',' || IFNULL(NEW.address, '') || ',' || IFNULL(NEW.ci, '') || ',' || IFNULL(NEW.email, '') || ',' || IFNULL(NEW.date_create, '') || ',' || IFNULL(NEW.date_update, '') || ',' || IFNULL(NEW.user_create, '')|| ',' || IFNULL(NEW.user_update, '')),
+    NEW.user_update, 
     date('now')
     );
 END;

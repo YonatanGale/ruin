@@ -1,4 +1,5 @@
 import decimal
+from urllib import request
 from django.db import models
 from datetime import datetime
 from core.models import BaseModel, BaseModel2
@@ -161,7 +162,7 @@ class Product(models.Model):
         verbose_name_plural = 'Productos'
         ordering = ['id']
 
-class Client(BaseModel):
+class Client(models.Model):
     names = models.CharField(max_length=150, verbose_name='Nombres')
     surnames = models.CharField(max_length=150, verbose_name='Apellidos')
     ci = models.CharField(max_length=10, unique=True, verbose_name='Ci')
@@ -170,19 +171,12 @@ class Client(BaseModel):
     date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
     date_create = models.DateTimeField(auto_now_add=True, null=True)
     date_update = models.DateTimeField(auto_now=True, null=True)
+    user_create = models.CharField(max_length=150, null=True)
+    user_update = models.CharField(max_length=150, null=True)
 
 
     def __str__(self):
         return self.get_full_name
-
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        user = get_current_user()
-        if user is not None:
-            if not self.pk: 
-                self.user_creation1 = user
-            else:
-                self.user_update1 = user
-        super(Client, self).save()
 
     def get_full_name(self):
         return '{} {} / {}'.format(self.names, self.surnames, self.ci)
@@ -289,7 +283,7 @@ class Materials(models.Model):
         verbose_name_plural = 'Productos'
         ordering = ['id']
 
-class Supplier(BaseModel2):
+class Supplier(models.Model):
     names = models.CharField(max_length=150, verbose_name='Nombres')
     surnames = models.CharField(max_length=150, verbose_name='Apellidos')
     ci = models.CharField(max_length=10, unique=True, verbose_name='RUC')
@@ -297,11 +291,12 @@ class Supplier(BaseModel2):
     phone = models.CharField(max_length=10, unique=True, verbose_name='Telefono')
     address = models.CharField(max_length=150, null=True, blank=True, verbose_name='Dirección')
     date_create = models.DateTimeField(auto_now_add=True, null=True)
+    user_create = models.CharField(max_length=150, null=True)
+    user_update = models.CharField(max_length=150, null=True)
     date_update = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.get_full_name
-
 
 
     def get_full_name(self):

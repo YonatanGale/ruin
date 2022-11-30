@@ -284,9 +284,21 @@ class clientForm(ModelForm):
                     'value': datetime.now().strftime('%Y-%m-%d'),
                 }
             ),
+            'user_create': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'user_update': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
 
         }
-        exclude = ['user_creation', 'user_update']
+        exclude = ['user_create', 'user_update']
 
     def save(self, commit=True):
         data = {}
@@ -337,16 +349,16 @@ class SupplierForm(ModelForm):
                 }
             ),
 
+
         }
-        exclude = ['user_creation1', 'user_update1']
+        exclude = ['user_update', 'user_create']
 
     def save(self, commit=True):
         data = {}
         form = super()
         try:
             if form.is_valid():
-                instance = form.save()
-                data = instance.toJSON()
+               form.save()
             else:
                 data['error'] = form.errors
         except Exception as e:
