@@ -101,25 +101,28 @@ class typeFunds(models.Model):
         ordering = ['id']
 
 class CierreCaja(models.Model):
-    typeF = models.ForeignKey(typeFunds, on_delete=models.CASCADE)
-    tot = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     estado = models.CharField(max_length=1)
-    date_joined = models.DateField(default=datetime.now, verbose_name='Fecha de creación')
+    aperbank_impor = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    apercaja_impor = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    closebank_impor = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    closecaja_impor = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     user_create = models.CharField(max_length=150, null=True)
     date_create = models.DateTimeField(auto_now_add=True, null=True)
     user_update = models.CharField(max_length=150, null=True)
     date_update = models.DateTimeField(auto_now=True, null=True)
+    fecha = models.DateField(auto_now=True)
 
     def __str__(self):
-        return self.typeF.name
+        return self.estado
     
 
     def toJSON(self):
         item = model_to_dict(self)
-        item['impor'] = format(self.impor, '.2f')
-        item['typeF'] = self.typeF.toJSON()
-        item['tot'] = format(self.tot, '.2f')
-        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
+        item['aperbank_impor'] = format(self.aperbank_impor, '.2f')
+        item['apercaja_impor'] = format(self.apercaja_impor, '.2f')
+        item['closebank_impor'] = format(self.closebank_impor, '.2f')
+        item['closecaja_impor'] = format(self.closecaja_impor, '.2f')
+        item['fecha'] = self.fecha.strftime('%Y-%m-%d')
         return item
 
     class Meta:

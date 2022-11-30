@@ -542,7 +542,25 @@ class CierreCajaForm(ModelForm):
         fields = '__all__'
 
         widgets = {
-         'tot': TextInput(
+         'aperbank_impor': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'apercaja_impor': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'closebank_impor': TextInput(
+                attrs={
+                'type': 'hidden',
+                'readonly': True,
+                }
+            ),
+            'closecaja_impor': TextInput(
                 attrs={
                 'type': 'hidden',
                 'readonly': True,
@@ -554,12 +572,6 @@ class CierreCajaForm(ModelForm):
                 'readonly': True,
                 }
             ),      
-            'typeF': TextInput(
-                attrs={
-                'type': 'hidden',
-                'readonly': True,
-                }
-            ),
             'user_create': TextInput(
                 attrs={
                 'type': 'hidden',
@@ -571,13 +583,7 @@ class CierreCajaForm(ModelForm):
                 'type': 'hidden',
                 'readonly': True,
                 }
-            ),
-            'date_joined': DateInput(format='%Y-%m-%d',
-                attrs={
-                    'readonly': True,
-                    'value': datetime.now().strftime('%Y-%m-%d'),
-                }
-            ),     
+            ),   
 
         }
     

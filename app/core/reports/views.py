@@ -418,3 +418,49 @@ class RepostMaterialsStockView(TemplateView):
         context['list_url'] = reverse_lazy('materialsTock_report')
         context['form'] = ReportForm()
         return context
+
+class RepostCierrecajaView(TemplateView):
+    template_name = 'core/reports/templates/cierrecaja/report.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *arg, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_report':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = CierreCaja.objects.all()
+                if len(start_date) and len(end_date):
+                    search = search.filter(fecha__range=[start_date, end_date])
+                for s in search:
+                    data.append([
+                        s.id,
+                        s.estado,
+                        s.apercaja_impor,
+                        s.aperbank_impor,
+                        s.user_create,
+                        s.date_create,
+                        s.closecaja_impor,
+                        s.closebank_impor,
+                        s.user_update,
+                        s.closecaja_impor,
+                        s.date_update
+                    ])
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reporte de Cierre y apertura'
+        context['entity'] = 'Reportes'
+        context['list_url'] = reverse_lazy('cierrecaja_report')
+        context['form'] = ReportForm()
+        return context

@@ -15,5 +15,6 @@ urlpatterns = [
     path('materialsStock/', RepostMaterialsStockView.as_view(), name='materialsTock_report'),
     path('client/', RepostClientView.as_view(), name='client_report'),
     path('fund/', RepostFundView.as_view(), name='fund_report'),
+    path('cierrecaja/', RepostCierrecajaView.as_view(), name='cierrecaja_report'),
 
 ]

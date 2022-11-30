@@ -134,23 +134,21 @@ $(function () {
     });
 
     $('.btnCierre').on('click', function () {
-        $('input[name="action"]').val('addcierre');
-        modal_title.find('span').html('Cierre de caja');
-        console.log(modal_title.find('i'));
-        modal_title.find('i').removeClass().addClass('fas fa-plus');
-        $('form')[0].reset();
-        $('#myModalcierre').modal('show');
+        var parameters = new FormData();
+        parameters.append('action', 'addcierre');
+        submit_with_ajax(window.location.pathname, parameters, function () {
+            location.href = '/erp/funds/list/';
+        });
         
     });
 
     $('.btnAper').on('click', function () {
-        $('input[name="action"]').val('addapertura');
-        modal_title.find('span').html('Apertura de caja');
-        console.log(modal_title.find('i'));
-        modal_title.find('i').removeClass().addClass('fas fa-plus');
-        $('form')[0].reset();
-        $('#myModalcierre').modal('show');
-    });
+            var parameters = new FormData();
+            parameters.append('action', 'addapertura');
+            submit_with_ajax(window.location.pathname, parameters, function () {
+                location.href = '/erp/funds/list/';
+            });
+        });
 
 
     // $('.btnCierre').on('click', function () {

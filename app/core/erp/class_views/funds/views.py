@@ -104,27 +104,16 @@ class FundListView(LoginRequiredMixin, ListView):
                             aux = CierreCaja.objects.raw('select * from erp_cierrecaja where id = (select max(id) from erp_cierrecaja where estado = \'a\')')
                             for i in aux:
                                 det = CierreCaja.objects.get(id = i.id)
-                            tyb = typeFunds.objects.get(pk=1)
-                            tyc = typeFunds.objects.get(pk=2)
-                            bank = tyc.impo
-                            caj = tyb.impo
-                            det.typeF_id = 3
-                            det.tot =  (bank+caj)
-                            det.date_joined = request.POST['date_joined']
-                            det.estado = 'c'
-                            det.user_update = request.user.username
-                            det.save()
-                            
-                            fun = Fund()
-                            fun.typeF_id = 3
-                            fun.typeMove = 'Cierre caja'
-                            fun.amount = det.tot
-                            fun.payNro = '-------'
-                            fun.payowner = '-------'
-                            fun.methodpay_id = 3
-                            fun.user_create = request.user.username
-                            fun.date_joined = det.date_joined
-                            fun.save()
+                            if det.user_create == request.user.username:
+                                tyb = typeFunds.objects.get(pk=1)
+                                tyc = typeFunds.objects.get(pk=2)
+                                det.closebank_impor = tyb.impo
+                                det.closecaja_impor = tyc.impo
+                                det.estado = 'c'
+                                det.user_update = request.user.username
+                                det.save()
+                            else:
+                                data['error'] = 'La caja no pertenece al usuario'
                         else:
                             data['error'] = 'La caja esta cerrada'
 
@@ -135,25 +124,11 @@ class FundListView(LoginRequiredMixin, ListView):
                         det = CierreCaja()
                         tyb = typeFunds.objects.get(pk=1)
                         tyc = typeFunds.objects.get(pk=2)
-                        bank = tyc.impo
-                        caj = tyb.impo
-                        det.typeF_id = 3
-                        det.tot =  (bank+caj)
-                        det.date_joined = request.POST['date_joined']
+                        det.aperbank_impor = tyc.impo
+                        det.apercaja_impor = tyb.impo
                         det.estado = 'a'
                         det.user_create = request.user.username
                         det.save()
-                        
-                        fun = Fund()
-                        fun.typeF_id = 3
-                        fun.typeMove = 'Apertura caja'
-                        fun.amount = det.tot
-                        fun.payNro = '-------'
-                        fun.payowner = '-------'
-                        fun.methodpay_id = 3
-                        fun.user_create = request.user.username
-                        fun.date_joined = det.date_joined
-                        fun.save()
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
