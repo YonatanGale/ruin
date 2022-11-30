@@ -9,3 +9,12 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+class BaseModel2(models.Model):
+    user_creation1 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='user_creation1')
+    date_creation = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user_update1 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='user_update1')
+    date_update = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+    class Meta:
+        abstract = True

@@ -267,18 +267,7 @@ class clientForm(ModelForm):
                     'placeholder' : 'Ingrese nombre del cliente'
                 }
             ),
-            'user_create': TextInput(
-                attrs={
-                'type': 'hidden',
-                'readonly': True,
-                }
-            ),
-            'user_update': TextInput(
-                attrs={
-                'type': 'hidden',
-                'readonly': True,
-                }
-            ),
+        
             'surnames': TextInput(
                 attrs={
                     'placeholder' : 'Ingrese apellido del cliente'
@@ -297,6 +286,7 @@ class clientForm(ModelForm):
             ),
 
         }
+        exclude = ['user_creation', 'user_update']
 
     def save(self, commit=True):
         data = {}
@@ -348,6 +338,7 @@ class SupplierForm(ModelForm):
             ),
 
         }
+        exclude = ['user_creation1', 'user_update1']
 
     def save(self, commit=True):
         data = {}
