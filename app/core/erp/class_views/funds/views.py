@@ -67,7 +67,10 @@ class FundListView(LoginRequiredMixin, ListView):
                             fun.amount = det.cant
                             fun.payNro = '-------'
                             fun.payowner = '-------'
-                            fun.methodpay_id = 3
+                            if fun.typeF_id == '1':
+                                fun.methodpay_id = 1
+                            else:
+                                fun.methodpay_id = 2
                             fun.user_create = request.user.username
                             fun.date_joined = det.date_joined
                             fun.save()
@@ -92,7 +95,10 @@ class FundListView(LoginRequiredMixin, ListView):
                             fun.amount = det.cant
                             fun.payNro = '-------'
                             fun.payowner = '-------'
-                            fun.methodpay_id = 3
+                            if fun.typeF_id == '1':
+                                fun.methodpay_id = 1
+                            else:
+                                fun.methodpay_id = 2
                             fun.user_create = request.user.username
                             fun.date_joined = det.date_joined
                             fun.save()
