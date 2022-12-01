@@ -448,7 +448,6 @@ class RepostCierrecajaView(TemplateView):
                         s.closecaja_impor,
                         s.closebank_impor,
                         s.user_update,
-                        s.closecaja_impor,
                         s.date_update
                     ])
             else:
