@@ -42,13 +42,11 @@ class categoryListView(LoginRequiredMixin, TemplateView):
                 cat.user_update = request.user.username
                 cat.save()
             elif action == 'delete':
-                if request.user.is_superuser:
-                    cat = Category.objects.get(pk=request.POST['id'])
-                    cat.user_update = request.user.username
-                    cat.save()
-                    cat.delete()
-                else:
-                    data['error'] = 'No tiene permiso para ingresar a este modulo'
+                cat = Category.objects.get(pk=request.POST['id'])
+                cat.user_update = request.user.username
+                cat.save()
+                cat.delete()
+
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:

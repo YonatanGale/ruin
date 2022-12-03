@@ -44,16 +44,14 @@ class ProductionListView(LoginRequiredMixin, ListView):
                 for i in DetProduction.objects.filter(crea_id=request.POST['id']):  
                     data.append(i.toJSON())  
             elif action == 'delete':
-                if request.user.is_superuser:
-                    cli = Production.objects.get(pk=request.POST['id'])
-                    cli.user_update = request.user.username
-                    pro = Product.objects.get(id = cli.produc_id)
-                    pro.stock -= (cli.total)
-                    pro.save()
-                    cli.save()
-                    cli.delete()
-                else:
-                    data['error'] = 'No tiene permiso para ingresar a este modulo'
+                cli = Production.objects.get(pk=request.POST['id'])
+                cli.user_update = request.user.username
+                pro = Product.objects.get(id = cli.produc_id)
+                pro.stock -= (cli.total)
+                pro.save()
+                cli.save()
+                cli.delete()
+
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:

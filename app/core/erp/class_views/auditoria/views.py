@@ -7,7 +7,7 @@ from urllib import request
 from core.erp.forms import CategoryForm, CierreCajaForm, FundForm, SaleForm, WithdrawForm, clientForm
 from django.shortcuts import render
 from core.erp.models import  Auditoria, CierreCaja, Client, DetSale, Fund, Product, Sale, Withdraw, typeFunds
-from core.erp.mixins import IsSuperuserMixin
+from core.erp.mixins import IsSuperuserMixin, ValidatePermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
@@ -21,9 +21,10 @@ from django.db.models import Q
 
 
 
-class AuditoriaListView(LoginRequiredMixin, IsSuperuserMixin, ListView):
+class AuditoriaListView(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView):
     model = Auditoria
     template_name = 'template/audi/list.html'
+    permission_required = 'view_auditoria'
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):

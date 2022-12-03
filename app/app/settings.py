@@ -140,5 +140,9 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = '/erp/dashboard/'
 
 LOGIN_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/login/'
+
 
 AUTH_USER_MODEL = 'user.User'
+
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

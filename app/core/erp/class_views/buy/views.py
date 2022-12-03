@@ -65,13 +65,10 @@ class BuyListView(LoginRequiredMixin, ListView):
                 rep.user_create = request.user.username
                 rep.save()
             elif action == 'delete':
-                if request.user.is_superuser:
-                    cli = Buy.objects.get(pk=request.POST['id'])
-                    cli.user_update = request.user.username
-                    cli.save()
-                    cli.delete()
-                else:
-                    data['error'] = 'No tiene permiso para ingresar a este modulo'
+                cli = Buy.objects.get(pk=request.POST['id'])
+                cli.user_update = request.user.username
+                cli.save()
+                cli.delete()
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:

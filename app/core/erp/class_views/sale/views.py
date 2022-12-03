@@ -17,6 +17,8 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q
+from django.contrib.auth.models import Group
+
 
 
 import os
@@ -35,9 +37,14 @@ class SaleListView(LoginRequiredMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
+        request.user.get_group_session()
+        return super().get(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         data = {}
         try:
+            aux= request.session['group']
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
@@ -48,18 +55,20 @@ class SaleListView(LoginRequiredMixin, ListView):
                 for i in DetSale.objects.filter(sale_id=request.POST['id']):
                     data.append(i.toJSON())
             elif action == 'delete':
-                if request.user.is_superuser:
+                if aux == 'administrador':
                     cli = Sale.objects.get(pk=request.POST['id'])
                     cli.user_update = request.user.username
                     cli.save()
                     cli.delete()
                 else:
-                    data['error'] = 'No tiene permiso para ingresar a este modulo'
+                    print(aux)
+                    data['error'] = 'No puedes acceder a este modulo'
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

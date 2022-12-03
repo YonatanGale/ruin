@@ -14,11 +14,11 @@ $(function (){
         },
         columns: [
             { "data": "id"},
-            { "data": "first_name"},
-            { "data": "last_name"},
+            { "data": "full_name"},
             { "data": "ci"},
             { "data": "username"},
             { "data": "date_joined"},
+            { "data": "groups"},
             { "data": "id"},
         ],
         columnDefs: [
@@ -30,6 +30,18 @@ $(function (){
                     var buttons = '<a href="/user/edit/'+row.id+'/" class="btn btn-warning btn-xs"><i class="far fa-edit"></i></a> ';
                     buttons += '<a href="/user/delete/'+row.id+'/" type="button" class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></a>';
                     return buttons
+                }
+            },
+            {
+                targets: [-2],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                   var html = '';
+                   $.each(row.groups, function (key, value) {
+                    html+='<span class="badge badge-success">'+value.name+'</span> ';
+                   });
+                   return html;
                 }
             },
         ],

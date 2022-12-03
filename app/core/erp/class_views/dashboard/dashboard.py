@@ -42,13 +42,17 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data, safe=False) 
+        return JsonResponse(data, safe=False)
+
+    def get(self, request, *args, **kwargs):
+        request.user.get_group_session()
+        return super().get(request, *args, **kwargs)
 
     def get_graph_sales_month(self):
         data = []
         try:
             year = datetime.now().year
-            for m in range(1, 12):
+            for m in range(1, 13):
                 total = Sale.objects.filter(date_joined__year=year, date_joined__month=m).aggregate(r=Coalesce(Sum('total'), 0, output_field=DecimalField())).get('r') 
                 data.append(float(total))
         except:

@@ -1,5 +1,10 @@
 {% extends 'template/body.html' %}
 {% load widget_tweaks %}
+{% block head %}
+    {% block head_form %}
+
+    {% endblock %}
+{% endblock %}
 {% block content %}
     <form method="post" action=".">
         <div class="card card-default">
