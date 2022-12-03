@@ -36,6 +36,16 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
+
 
     def toJSON(self):
         item = model_to_dict(self)
@@ -60,6 +70,16 @@ class CategoryMaterials(models.Model):
     def toJSON(self):
         item = model_to_dict(self)
         return item
+
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
 
     class Meta:
         verbose_name = 'Categoria'
@@ -157,6 +177,16 @@ class Product(models.Model):
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
 
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
+
     class Meta:
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
@@ -187,6 +217,16 @@ class Client(models.Model):
         item['full_name'] = self.get_full_name()
         item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         return item
+
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
 
     class Meta:
         verbose_name = 'Cliente'
@@ -288,6 +328,16 @@ class Materials(models.Model):
         item['cate'] = self.cate.toJSON()
         return item
 
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
+
     class Meta:
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
@@ -316,6 +366,16 @@ class Supplier(models.Model):
         item = model_to_dict(self)
         item['full_name'] = self.get_full_name()
         return item
+
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
 
     class Meta:
         verbose_name = 'Proveedor'
@@ -356,6 +416,16 @@ class Buy(models.Model):
             det.prod.save()
         super(Buy, self).delete()
 
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
+
     class Meta:
         verbose_name = 'Compra'
         verbose_name_plural = 'Compras'
@@ -384,6 +454,16 @@ class DetBuy(models.Model):
         item['price'] = format(self.price, '.2f')
         item['subtotal'] = format(self.subtotal, '.2f')
         return item
+
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
 
     class Meta:
         verbose_name = 'Detalle de Compra'
@@ -414,6 +494,16 @@ class Production(models.Model):
             det.prod.save()
         super(Production, self).delete()
 
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
+
     class Meta:
         verbose_name = 'Pruduccion'
         verbose_name_plural = 'Producciones'
@@ -438,6 +528,16 @@ class DetProduction(models.Model):
         item['prod'] = self.prod.toJSON()
         return item
 
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
+
     class Meta:
         verbose_name = 'Detalle de produccion'
         verbose_name_plural = 'Detalle de producciones'
@@ -458,6 +558,16 @@ class Recycle(models.Model):
         item['cant'] = format(self.cant, '.2f')
         item['prod'] = self.prod.toJSON()
         return item
+
+    def get_group_session(self):
+        try:
+            request = get_current_request()
+            groups = self.groups.all()
+            if groups.exists():
+                if 'group' not in request.session:
+                    request.session['group'] = groups[0]
+        except:
+            pass
 
     class Meta:
         verbose_name = 'Reciclar'

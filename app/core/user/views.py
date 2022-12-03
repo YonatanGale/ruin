@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 
 from core.user.models import user
 from django.shortcuts import render
-from core.erp.mixins import IsSuperuserMixin
+from core.erp.mixins import IsSuperuserMixin, ValidatePermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
@@ -16,9 +16,10 @@ from django.http import JsonResponse, HttpResponseRedirect
 
 
 
-class UserListView(LoginRequiredMixin, ListView):
+class UserListView(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView):
     model = user
     template_name = 'core/user/template/user/list.html'
+    permission_required = 'view_user'
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -46,11 +47,13 @@ class UserListView(LoginRequiredMixin, ListView):
         context['entity'] = 'Usuarios'
         return context
 
-class UserCreateView(LoginRequiredMixin, CreateView):
+class UserCreateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
     model = user
     form_class = UserForm
     template_name = 'core/user/template/user/create.html'
     success_url = reverse_lazy('user:user_list')
+    permission_required = 'add_user'
+
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -77,12 +80,14 @@ class UserCreateView(LoginRequiredMixin, CreateView):
         context['list_url'] = self.success_url
         return context
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class UserUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMixin, UpdateView):
     model = user
     form_class = UserForm
     template_name = 'core/user/template/user/create.html'
     success_url = reverse_lazy('login')
     url_redirect = success_url
+    permission_required = 'change_user'
+
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -109,11 +114,13 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         context['action'] = 'edit'
         return context
 
-class UserDeleteView(LoginRequiredMixin, DeleteView):
+class UserDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, DeleteView):
     model = user
     template_name = 'core/user/template/user/delete.html'
     success_url = reverse_lazy('user:user_list')
     url_redirect = success_url
+    permission_required = 'delete_user'
+
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()

@@ -11,6 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
+from django.contrib.auth.models import Group
+
 
 
 
@@ -49,19 +51,24 @@ class materialsListView(LoginRequiredMixin, TemplateView):
                     det.prod.stock -= int(det.cant)
                     det.prod.save()
             elif action == 'edit':
-                cli = Materials.objects.get(pk=request.POST['id'])
-                cli.name = request.POST['name']
-                cli.cate_id = request.POST['cate']
-                cli.price = request.POST['price']
-                cli.stock = request.POST['stock']
-                cli.user_update = request.user.username
-                cli.save()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Materials.objects.get(pk=request.POST['id'])
+                    cli.name = request.POST['name']
+                    cli.cate_id = request.POST['cate']
+                    cli.price = request.POST['price']
+                    cli.stock = request.POST['stock']
+                    cli.user_update = request.user.username
+                    cli.save()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             elif action == 'delete':
-                cli = Materials.objects.get(pk=request.POST['id'])
-                cli.user_update = request.user.username
-                cli.save()
-                cli.delete()
-
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Materials.objects.get(pk=request.POST['id'])
+                    cli.user_update = request.user.username
+                    cli.save()
+                    cli.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:

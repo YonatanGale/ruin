@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import Group
+
 
 from core.erp.forms import BuyForm, SupplierForm
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView
@@ -65,10 +67,13 @@ class BuyListView(LoginRequiredMixin, ListView):
                 rep.user_create = request.user.username
                 rep.save()
             elif action == 'delete':
-                cli = Buy.objects.get(pk=request.POST['id'])
-                cli.user_update = request.user.username
-                cli.save()
-                cli.delete()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Buy.objects.get(pk=request.POST['id'])
+                    cli.user_update = request.user.username
+                    cli.save()
+                    cli.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:

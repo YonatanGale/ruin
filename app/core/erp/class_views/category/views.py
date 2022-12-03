@@ -12,6 +12,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.generic import TemplateView
+from django.contrib.auth.models import Group
+
 
 
 
@@ -37,15 +39,21 @@ class categoryListView(LoginRequiredMixin, TemplateView):
                 cat.user_create = request.user.username
                 cat.save()
             elif action == 'edit':
-                cat = Category.objects.get(pk=request.POST['id'])
-                cat.name = request.POST['name']
-                cat.user_update = request.user.username
-                cat.save()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cat = Category.objects.get(pk=request.POST['id'])
+                    cat.name = request.POST['name']
+                    cat.user_update = request.user.username
+                    cat.save()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             elif action == 'delete':
-                cat = Category.objects.get(pk=request.POST['id'])
-                cat.user_update = request.user.username
-                cat.save()
-                cat.delete()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cat = Category.objects.get(pk=request.POST['id'])
+                    cat.user_update = request.user.username
+                    cat.save()
+                    cat.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
 
             else:
                 data['error'] = 'Ha ocurrido un error'

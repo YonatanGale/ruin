@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.models import Group
+
 
 from core.erp.forms import SupplierForm
 from core.erp.models import Supplier
@@ -38,20 +40,26 @@ class SupplierListView(LoginRequiredMixin, ListView):
                 cli.user_create = request.user.username
                 cli.save()
             elif action == 'edit':
-                cli = Supplier.objects.get(pk=request.POST['id'])
-                cli.names = request.POST['names']
-                cli.surnames = request.POST['surnames']
-                cli.ci = request.POST['ci']
-                cli.email = request.POST['email']
-                cli.phone = request.POST['phone']
-                cli.address = request.POST['address']
-                cli.user_update = request.user.username
-                cli.save()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Supplier.objects.get(pk=request.POST['id'])
+                    cli.names = request.POST['names']
+                    cli.surnames = request.POST['surnames']
+                    cli.ci = request.POST['ci']
+                    cli.email = request.POST['email']
+                    cli.phone = request.POST['phone']
+                    cli.address = request.POST['address']
+                    cli.user_update = request.user.username
+                    cli.save()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             elif action == 'delete':
-                cli = Supplier.objects.get(pk=request.POST['id'])
-                cli.user_update = request.user.username
-                cli.save()
-                cli.delete()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Supplier.objects.get(pk=request.POST['id'])
+                    cli.user_update = request.user.username
+                    cli.save()
+                    cli.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
 
             else:
                 data['error'] = 'Ha ocurrido un error'

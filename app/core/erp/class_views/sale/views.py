@@ -37,14 +37,10 @@ class SaleListView(LoginRequiredMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        request.user.get_group_session()
-        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            aux= request.session['group']
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
@@ -55,14 +51,13 @@ class SaleListView(LoginRequiredMixin, ListView):
                 for i in DetSale.objects.filter(sale_id=request.POST['id']):
                     data.append(i.toJSON())
             elif action == 'delete':
-                if aux == 'administrador':
+                if request.session['group'] == Group.objects.get(pk=1):
                     cli = Sale.objects.get(pk=request.POST['id'])
                     cli.user_update = request.user.username
                     cli.save()
                     cli.delete()
                 else:
-                    print(aux)
-                    data['error'] = 'No puedes acceder a este modulo'
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
