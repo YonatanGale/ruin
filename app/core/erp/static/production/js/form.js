@@ -251,7 +251,7 @@ $(function () {
                     }
                 },
                 {
-                    targets: [-3],
+                    targets: [-2],
                     class: 'text-center',
                     render: function (data, type, row) {
                         return '<span class="badge badge-secondary">'+data+'</span>'
