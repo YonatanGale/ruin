@@ -200,9 +200,7 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                     item['text'] = i.get_full_name()
                     data.append(item)
             elif action == 'create_supplier':
-                with transaction.atomic():
                     frmSupplier = SupplierForm(request.POST)
-                    frmSupplier.user_create = request.user.username
                     data = frmSupplier.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
