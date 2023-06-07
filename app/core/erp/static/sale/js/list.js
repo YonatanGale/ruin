@@ -20,11 +20,13 @@ $(function () {
             {"data": "subtotal"},
             {"data": "iva"},
             {"data": "total"},
+            {"data": "methodpay.pay"},
             {"data": "id"},
         ],
+        order: [[0, 'desc']],
         columnDefs: [
             {
-                targets: [-2, -3, -4],
+                targets: [-5, -3, -4],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {

@@ -9,8 +9,7 @@ recycle_choices = (
 )
 pay_choices = (
     ('Efectivo','Efectivo'),
-    ('Cheque','Cheque'),
-    ('Tarjeta','Tarjeta'),
+    ('Cheque o tarjeta','Cheque o tarjeta'),
 )
 caja_choices = (
     ('Apertura','Apertura'),

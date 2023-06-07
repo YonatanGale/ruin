@@ -1,10 +1,11 @@
+import decimal
 import json
 from django.db import transaction
 from unicodedata import category
 from urllib import request
 from core.erp.forms import CategoryForm, SaleForm, clientForm
 from django.shortcuts import render
-from core.erp.models import  Client, DetSale, Product, Sale
+from core.erp.models import  CierreCaja, Client, DetSale, Fund, MethodPay, Product, Recycle, Sale, typeFunds
 from core.erp.mixins import IsSuperuserMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -16,6 +17,8 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q
+from django.contrib.auth.models import Group
+
 
 
 import os
@@ -34,6 +37,7 @@ class SaleListView(LoginRequiredMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -47,13 +51,19 @@ class SaleListView(LoginRequiredMixin, ListView):
                 for i in DetSale.objects.filter(sale_id=request.POST['id']):
                     data.append(i.toJSON())
             elif action == 'delete':
-                cli = Sale.objects.get(pk=request.POST['id'])
-                cli.delete()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Sale.objects.get(pk=request.POST['id'])
+                    cli.user_update = request.user.username
+                    cli.save()
+                    cli.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -77,6 +87,7 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         data = {}
         try:
+            auxi = CierreCaja.objects.filter(estado='a').exists()
             action = request.POST['action']
             if action == 'search_products':
                 data = []
@@ -101,27 +112,61 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
                     item['text'] = i.name
                     data.append(item)
             elif action == 'add':
-                with transaction.atomic():
-                    vents = json.loads(request.POST['vents'])
-                    sale = Sale()
-                    sale.date_joined = vents['date_joined']
-                    sale.cli_id = vents['cli']
-                    sale.subtotal = float(vents['subtotal'])
-                    sale.iva = float(vents['iva'])
-                    sale.total = float(vents['total'])
-                    sale.save()
+                if auxi:
+                    with transaction.atomic():
+                        vents = json.loads(request.POST['vents'])
+                        sale = Sale()
+                        sale.date_joined = vents['date_joined']
+                        sale.cli_id = vents['cli']
+                        sale.methodpay_id = vents['methodpay']
+                        sale.typfund_id = vents['typfund']
+                        sale.subtotal = float(vents['subtotal'])
+                        sale.iva = float(vents['iva'])
+                        sale.total = float(vents['total'])
+                        sale.user_create = request.user.username
+                        sale.save()
 
-                    for i in vents['products']:
-                        det = DetSale()
-                        det.sale_id = sale.id
-                        det.prod_id = i['id']
-                        det.cant = int(i['cant'])
-                        det.price = float(i['price'])
-                        det.subtotal = float(i['subtotal'])
-                        det.save()
-                        det.prod.stock -= (det.cant)
-                        det.prod.save()
-                    data = {'id': sale.id}
+                        sale.typfund.impo += (decimal.Decimal(sale.total))
+                        sale.typfund.save()
+                        
+
+                        for i in vents['products']:
+                            det = DetSale()
+                            det.sale_id = sale.id
+                            det.prod_id = i['id']
+                            det.cant = int(i['cant'])
+                            det.price = float(i['price'])
+                            det.subtotal = float(i['subtotal'])
+                            det.user_create = request.user.username
+                            det.save()
+
+                            det.prod.user_update = request.user.username
+                            det.prod.stock -= (det.cant)
+                            det.prod.save()
+
+                            rep = Recycle()
+                            rep.prod_id = det.prod_id
+                            rep.cant = det.cant
+                            rep.type = 'Venta'
+                            rep.user_create = request.user.username
+                            rep.save()
+                        data = {'id': sale.id}
+                        fun = Fund()
+                        fun.typeF_id = vents['typfund']
+                        fun.sale_id = sale.id
+                        fun.methodpay_id = vents['methodpay']
+                        fun.typeMove = 'Venta'
+                        fun.amount = float(vents['total'])
+                        fun.date_joined = vents['date_joined']
+                        fun.user_create = request.user.username
+                        fun.save()
+                else:
+                        data['error'] = 'La caja esta cerrada'
+            
+            elif action == 'search_methodpay':
+                data = [{ 'id': '', 'text': '--------'}]
+                for i in typeFunds.objects.filter(methodpay_id=request.POST['id']):
+                    data.append({'id': i.id, 'text': i.name})
             elif action == 'search_clients':
                 data = []
                 term = request.POST['term']
@@ -147,6 +192,7 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
         context['list_url'] = reverse_lazy('erp:category_list')
         context['det'] = []
         context['formClient'] = clientForm()
+        context['estado'] =  CierreCaja.objects.filter(estado='a').exists()
         return context
 
 

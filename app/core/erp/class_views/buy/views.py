@@ -8,11 +8,13 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import Group
+
 
 from core.erp.forms import BuyForm, SupplierForm
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 
-from core.erp.models import Buy, Materials, Product, DetBuy, Supplier
+from core.erp.models import Buy, CierreCaja, Fund, Materials, Product, DetBuy, RecycleMaterials, Supplier, typeFunds
 
 # librerias xhtml2
 import os
@@ -47,9 +49,31 @@ class BuyListView(LoginRequiredMixin, ListView):
                 data = []  
                 for i in DetBuy.objects.filter(buy_id=request.POST['id']): 
                     data.append(i.toJSON())  
+            elif action == 'confirm_prov':
+                cli = DetBuy.objects.get(pk=request.POST['id'])
+                cli.status = 'e'
+                cli.save()
+                cli.prod.stock += (decimal.Decimal(cli.cant))
+                cli.prod.user_update = request.user.username
+                cli.prod.save()
+
+                cli.buy.estado += int(1)
+                cli.buy.save()
+
+                rep = RecycleMaterials()
+                rep.prod_id = cli.prod_id
+                rep.cant = cli.cant
+                rep.type = 'Compra'
+                rep.user_create = request.user.username
+                rep.save()
             elif action == 'delete':
-                cli = Buy.objects.get(pk=request.POST['id'])
-                cli.delete()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Buy.objects.get(pk=request.POST['id'])
+                    cli.user_update = request.user.username
+                    cli.save()
+                    cli.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -62,6 +86,7 @@ class BuyListView(LoginRequiredMixin, ListView):
         context['create_url'] = reverse_lazy('erp:buy_create')
         context['list_url'] = reverse_lazy('erp:buy_list')
         context['entity'] = 'Compras'
+        context['status'] = DetBuy.objects.filter(status='p').exists()
         return context
 
 
@@ -79,6 +104,7 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         data = {}
         try:
+            auxi = CierreCaja.objects.filter(estado='a').exists()
             action = request.POST['action']
             if action == 'search_products':
                 data = []
@@ -97,34 +123,73 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                 ids_exclude = json.loads(request.POST['ids'])
                 term = request.POST['term'].strip()
                 data.append({'id': term, 'text':term})
-                products = Materials.objects.filter(name__icontains=term, stock__gt=0)
+                products = Materials.objects.filter(name__icontains=term)
                 for i in products.exclude(id__in=ids_exclude)[0:10]:
                     item = i.toJSON()
                     item['text'] = i.name
                     data.append(item)
             elif action == 'add':
-                with transaction.atomic(): 
-                    comp = json.loads(request.POST['comp']) 
-                    buy = Buy()
-                    buy.date_joined = comp['date_joined']
-                    buy.prov_id = comp['prov']
-                    buy.subtotal = float(comp['subtotal'])
-                    buy.iva = float(comp['iva'])
-                    buy.total = float(comp['total'])
-                    buy.save()
-                    for i in comp['products']:
-                        det = DetBuy()
-                        det.buy_id = buy.id 
-                        det.prod_id = i['id'] 
-                        det.cant = float(i['cant']) 
-                        det.price = float(i['price'])
-                        det.subtotal = float(i['subtotal'])
-                        det.save()
+                if auxi:
+                    with transaction.atomic():
+                        ax = 0 
+                        comp = json.loads(request.POST['comp']) 
+                        buy = Buy()
+                        buy.date_joined = comp['date_joined']
+                        buy.prov_id = comp['prov']
+                        buy.methodpay_id = comp['methodpay']
+                        buy.typfund_id = comp['typfund']
+                        buy.subtotal = float(comp['subtotal'])
+                        buy.iva = float(comp['iva'])
+                        buy.total = float(comp['total'])
+                        buy.user_create = request.user.username
+                        buy.save()
 
-                        det.prod.stock += (decimal.Decimal(det.cant))
-                        det.prod.save()
-                    data = {'id': buy.id}
+                        buy.typfund.impo -= (decimal.Decimal(buy.total))
+                        buy.typfund.save()
 
+                        for i in comp['products']:
+                            det = DetBuy()
+                            det.buy_id = buy.id 
+                            det.prod_id = i['id'] 
+                            det.cant = float(i['cant']) 
+                            det.price = float(i['price'])
+                            det.subtotal = float(i['subtotal'])
+                            det.user_create = request.user.username
+                            det.status = 'p'
+                            det.save()
+                            ax -= 1
+                        data = {'id': buy.id}
+
+                        buy.estado += int(ax)
+                        buy.save()
+                        if buy.methodpay_id == '1':
+                            fun = Fund()
+                            fun.typeF_id = comp['typfund']
+                            fun.buy_id = buy.id
+                            fun.methodpay_id = comp['methodpay']
+                            fun.typeMove = 'Compra'
+                            fun.payNro = '------'
+                            fun.payowner = '------'
+                            fun.amount = float(comp['total'])
+                            fun.date_joined = comp['date_joined']
+                            fun.user_create = request.user.username
+                            fun.save()
+                        else:
+                            fun = Fund()
+                            fun.typeF_id = comp['typfund']
+                            fun.buy_id = buy.id
+                            fun.methodpay_id = comp['methodpay']
+                            fun.typeMove = 'Compra'
+                            fun.amount = float(comp['total'])
+                            fun.date_joined = comp['date_joined']
+                            fun.user_create = request.user.username
+                            fun.save()
+                else:
+                        data['error'] = 'La caja esta cerrada'
+            elif action == 'search_methodpay':
+                data = [{ 'id': '', 'text': '--------'}]
+                for i in typeFunds.objects.filter(methodpay_id=request.POST['id']):
+                    data.append({'id': i.id, 'text': i.name})
             elif action == 'search_supplier':
                 data = []
                 term = request.POST['term']
@@ -134,9 +199,7 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
                     item = i.toJSON()
                     item['text'] = i.get_full_name()
                     data.append(item)
-
             elif action == 'create_supplier':
-                with transaction.atomic():
                     frmSupplier = SupplierForm(request.POST)
                     data = frmSupplier.save()
             else:
@@ -153,6 +216,7 @@ class BuyCreateView(LoginRequiredMixin, CreateView):
         context['action'] = 'add'
         context['det'] = []
         context['frmSupplier'] = SupplierForm()
+        context['estado'] =  CierreCaja.objects.filter(estado='a').exists()
         return context
 
 class BuyInvoicePdfView(View):

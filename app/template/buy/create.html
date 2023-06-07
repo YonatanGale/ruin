@@ -23,6 +23,11 @@
 {% endblock %}
 
 {% block content %}
+{% if estado %}
+<label class="badge badge-success">LA CAJA SE ENCUENTRA ABIERTA</label>
+{% else %}
+<label class="badge badge-danger">LA CAJA SE ENCUENTRA CERRADA </label>
+{% endif %}
     <form id="frmBuy" method="post">
         <div class="card card">
             <div class="card-header">
@@ -107,6 +112,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label>Metodo de pago:</label>
+                                    {{ form.methodpay }}
+                                </div>
+                                <div class="form-group">
+                                    <label>Tipo de fondo:</label>
+                                    {{ form.typfund }}
+                                </div>
+                                <div class="form-group">
                                     <label>Subtotal:</label>
                                     {{ form.subtotal }}
                                 </div>
@@ -138,7 +151,7 @@
         </div>
     </form>
 
-    <!-- Modal -->
+    <!-- Modal Proveedores -->
     <div class="modal fade" id="myModalSupplier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <form id="frmSupplier" enctype="multipart/form-data" method="post">
@@ -169,6 +182,8 @@
             </div>
         </form>
     </div>
+    <!-- Modal productos -->
+
     <div class="modal fade" id="myModalProduct" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">

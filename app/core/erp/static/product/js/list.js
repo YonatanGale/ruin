@@ -23,6 +23,7 @@ function getData(){
             { "data": "stock"},
             { "data": "stock"},
         ],
+        order: [[0, 'desc']],
         columnDefs: [
             {
                 targets: [-1],
@@ -79,6 +80,15 @@ $(function () {
         $('#myModalRecycle').modal('show');
     });
 
+    $('.btnRepos').on('click', function () {
+        $('input[name="action"]').val('repos');
+        modal_title.find('span').html('Reponer un producto');
+        console.log(modal_title.find('i'));
+        modal_title.find('i').removeClass().addClass('fas fa-recycle');
+        $('form')[0].reset();
+        $('#myModalRecycle').modal('show');
+    });
+
     $('.btnAdd').on('click', function () {
         $('input[name="action"]').val('add');
         modal_title.find('span').html('Creación de un producto');
@@ -97,10 +107,12 @@ $(function () {
         $('input[name="action"]').val('edit');
         $('input[name="id"]').val(data.id);
         $('input[name="name"]').val(data.name);
-        $('input[name="cate.id"]').val(data.cate);
+        $('input[name="cate.id"]').val(data.cate.id);
+        document.getElementById('id_cate').value = data.cate.id
         $('input[name="price"]').val(data.price);
         $('input[name="stock"]').val(data.stock);
         $('#myModalProduct').modal('show');
+
     })
     .on('click', 'a[rel="delete"]', function () {
         var tr = tblProduct.cell($(this).closest('td, li')).index();
@@ -130,8 +142,7 @@ $(function () {
         e.preventDefault();
         var parameters = $(this).serializeArray();
         alert_jqueryconfirm(window.location.pathname, parameters, function () {
-            $('#myModalRecycle').modal('hide');
-            tblProduct.ajax.reload();
+            location.href = '/erp/product/list/';
         });
     });
 });

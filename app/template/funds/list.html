@@ -5,7 +5,11 @@
     <script src="{% static '/fund/js/list.js' %}"></script>
 {% endblock %}
 {% block content %}
-
+{% if estado %}
+<label class="badge badge-success">LA CAJA SE ENCUENTRA ABIERTA</label>
+{% else %}
+<label class="badge badge-danger">LA CAJA SE ENCUENTRA CERRADA </label>
+{% endif %}
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -47,10 +51,12 @@
                                     <th scope="col">Nro</th>
                                     <th scope="col">Importe</th>
                                     <th scope="col">Tipo de movimiento</th>
+                                    <th scope="col">Tipo de fondo</th>
                                     <th scope="col">Metodo de cobro o pago</th>
                                     <th scope="col">Numero de tarjeta o cheque</th>
                                     <th scope="col">Titular de tarjeta o cheque</th>
                                     <th scope="col">Fecha de creación</th>
+                                    <th scope="col">Opciones</th>
                                   </tr>
                             </thead>
                             <tbody>
@@ -60,15 +66,22 @@
                     </div>
                     <div class="card-footer">
                         {% block buttons_list %}
-                        <a href="{{ list_url }}" class="btn btn-primary btn-flat">
-                            <i class="fas fa-cash-register"></i> Apertura de caja
-                        </a>
-                        <a href="{{ list_url }}" class="btn btn-danger btn-flat">
-                            <i class="fas fa-hand-holding-usd"></i> Retirar dinero
-                        </a>
-                        <a href="{{ list_url }}" class="btn btn-secondary btn-flat">
-                            <i class="fas fa-cash-register"></i> Cierre de caja
-                        </a>
+                
+
+                            <a class="btn btn-danger btn-flat btnwithdraw">
+                                <i class="fas fa-hand-holding-usd"></i> Retirar dinero
+                            </a>
+                            <a class="btn btn-success btn-flat addCargar">
+                                <i class="fas fa-hand-holding-usd"></i> Cargar dinero
+                            </a>
+                            <a class="btn btn-secondary btn-flat btnCierre">
+                                <i class="fas fa-cash-register"></i> Cierre de caja
+                            </a>
+                        
+                            <a class="btn btn-primary btn-flat btnAper">
+                                <i class="fas fa-cash-register"></i> Apertura de caja
+                            </a>
+                        
                         <a href="{{ list_url }}" class="btn btn-success btn-flat">
                             <i class="fas fa-sync"></i> Actualizar
                         </a>
@@ -82,4 +95,110 @@
 
 
 {% endblock %}
+{% block javascript %}
 
+
+
+
+<!-- Modal -->
+
+
+<div class="modal fade" id="myModalwithdraw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<form id="formwithdraw" method="post" action=".">
+   <div class="modal-dialog" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title">
+                   <b><i class="fas fa-search"></i> <span></span></b>
+               </h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+               </button>
+           </div>
+           <div class="modal-body">
+               <div class="container-fluid">
+                   <input name="action" type="hidden" value="addwithdraw">
+                   <input name="id" id="id" type="hidden" value="0">
+                   {% for field in formwithdraw.visible_fields %}
+                       <div class="form-group">
+                           <label for="email">{{ field.label }}:</label>
+                           {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                       </div>
+                   {% endfor %}
+               </div>
+           </div>
+           <div class="modal-footer">
+               <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-save"></i> Guardar</button>
+           </div>
+       </div>
+   </div>
+</form>
+</div>
+
+<div class="modal fade" id="myModalcierre" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<form id="frmCaja" method="post" action=".">
+   <div class="modal-dialog" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title">
+                   <b><i class="fas fa-search"></i> <span></span></b>
+               </h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+               </button>
+           </div>
+           <div class="modal-body">
+               <div class="container-fluid">
+                   <input name="action" type="hidden" value="addcierre">
+                   <input name="id" id="id" type="hidden" value="0">
+                   {% for field in frmCaja.visible_fields %}
+                       <div class="form-group">
+                           <label for="email">{{ field.label }}:</label>
+                           {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                       </div>
+                   {% endfor %}
+               </div>
+           </div>
+           <div class="modal-footer">
+               <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-save"></i> Guardar</button>
+           </div>
+       </div>
+   </div>
+</form>
+</div>
+
+<div class="modal fade" id="myModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<form id="formfund" method="post" action=".">
+   <div class="modal-dialog" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title">
+                   <b><i class="fas fa-search"></i> <span></span></b>
+               </h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+               </button>
+           </div>
+           <div class="modal-body">
+               <div class="container-fluid">
+                   <input name="action" type="hidden" value="edit">
+                   <input name="id" id="id" type="hidden" value="0">
+                   {% for field in formfund.visible_fields %}
+                       <div class="form-group">
+                           <label for="email">{{ field.label }}:</label>
+                           {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                       </div>
+                   {% endfor %}
+               </div>
+           </div>
+           <div class="modal-footer">
+               <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fas fa-save"></i> Guardar</button>
+           </div>
+       </div>
+   </div>
+</form>
+</div>
+{% endblock %}

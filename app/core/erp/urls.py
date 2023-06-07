@@ -1,3 +1,4 @@
+from core.erp.class_views.auditoria.views import AuditoriaListView
 from core.erp.class_views.funds.views import FundListView
 from core.erp.class_views.production.views import ProductionCreateView, ProductionListView
 from core.erp.class_views.categoryMaterials.views import categoryMaterialsListView
@@ -41,6 +42,9 @@ urlpatterns = [
     path('production/add/', ProductionCreateView.as_view(), name='production_create'),
     path('production/list/', ProductionListView.as_view(), name='production_list'),
     #Funds
-    #path('production/add/', ProductionCreateView.as_view(), name='production_create'),
     path('funds/list/', FundListView.as_view(), name='fund_list'),
+    #auditoria
+    path('audi/list/', AuditoriaListView.as_view(), name='auditoria_list'),
+
+
 ]

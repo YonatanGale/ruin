@@ -10,6 +10,8 @@ from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import TemplateView
+from django.contrib.auth.models import Group
+
 
 class ClientListView(LoginRequiredMixin, TemplateView):
     template_name = 'template/client/list.html'
@@ -33,18 +35,28 @@ class ClientListView(LoginRequiredMixin, TemplateView):
                 cli.ci = request.POST['ci']
                 cli.Birthday = request.POST['Birthday']
                 cli.addres = request.POST['addres']
+                cli.user_create = request.user.username
                 cli.save()
             elif action == 'edit':
-                cli = Client.objects.get(pk=request.POST['id'])
-                cli.names = request.POST['names']
-                cli.surnames = request.POST['surnames']
-                cli.ci = request.POST['ci']
-                cli.Birthday = request.POST['Birthday']
-                cli.addres = request.POST['addres']
-                cli.save()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Client.objects.get(pk=request.POST['id'])
+                    cli.names = request.POST['names']
+                    cli.surnames = request.POST['surnames']
+                    cli.ci = request.POST['ci']
+                    cli.Birthday = request.POST['Birthday']
+                    cli.addres = request.POST['addres']
+                    cli.user_update = request.user.username
+                    cli.save()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             elif action == 'delete':
-                cli = Client.objects.get(pk=request.POST['id'])
-                cli.delete()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Client.objects.get(pk=request.POST['id'])
+                    cli.user_update = request.user.username
+                    cli.save()
+                    cli.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:

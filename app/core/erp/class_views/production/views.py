@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import Group
+
 
 from core.erp.forms import BuyForm, ProductForm, ProductionForm, SupplierForm
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView
@@ -44,8 +46,17 @@ class ProductionListView(LoginRequiredMixin, ListView):
                 for i in DetProduction.objects.filter(crea_id=request.POST['id']):  
                     data.append(i.toJSON())  
             elif action == 'delete':
-                cli = Production.objects.get(pk=request.POST['id'])
-                cli.delete()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Production.objects.get(pk=request.POST['id'])
+                    cli.user_update = request.user.username
+                    pro = Product.objects.get(id = cli.produc_id)
+                    pro.stock -= (cli.total)
+                    pro.save()
+                    cli.save()
+                    cli.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
+
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -105,8 +116,10 @@ class ProductionCreateView(LoginRequiredMixin, CreateView):
                     buy.date_joined = comp['date_joined']
                     buy.produc_id = comp['produc']
                     buy.total = int(comp['total'])
+                    buy.user_create = request.user.username
                     buy.save()
 
+                    buy.produc.user_update = request.user.username
                     buy.produc.stock += (buy.total)
                     buy.produc.save()
 
@@ -115,8 +128,10 @@ class ProductionCreateView(LoginRequiredMixin, CreateView):
                         det.crea_id = buy.id
                         det.prod_id = i['id'] 
                         det.cant = float(i['cant']) 
+                        det.user_create = request.user.username
                         det.save()
 
+                        det.prod.user_update = request.user.username
                         det.prod.stock -= (decimal.Decimal(det.cant))
                         det.prod.save()
                     data = {'id': buy.id}

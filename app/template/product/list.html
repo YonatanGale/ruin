@@ -27,12 +27,18 @@
 <a class="btn btn-warning btn-flat btnRecycle">
     <i class="fas fa-recycle"></i>Reciclar
 </a>
+<a class="btn btn-secondary btn-flat btnRepos">
+    <i class="fas fa-redo-alt"></i>Reponer
+</a>
+<a href="{% url 'erp:category_list' %}" class="btn btn-primary btn-flat">
+    <i class="fas fa-box"></i> Categorias
+</a>
 <a href="{{ list_url }}" class="btn btn-success btn-flat">
     <i class="fas fa-sync"></i> Actualizar
 </a>
 {% endblock %}
 {% block javascript %}
-<!-- Modal -->
+<!-- MODAL PRODUCT -->
 <div class="modal fade" id="myModalProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
 <form id="formrproduct" method="post" action=".">
@@ -50,7 +56,7 @@ aria-hidden="true">
                <div class="container-fluid">
                    <input name="action" type="hidden" value="add">
                    <input name="id" id="id" type="hidden" value="0">
-                   {% for field in form.visible_fields %}
+                   {% for field in formproduct.visible_fields %}
                        <div class="form-group">
                            <label for="email">{{ field.label }}:</label>
                            {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
@@ -65,6 +71,7 @@ aria-hidden="true">
    </div>
 </form>
 </div>
+<!-- MODAL REPONER Y RETIRAR -->
 <div class="modal fade" id="myModalRecycle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
 <form id="formrecycle" method="post" action=".">
@@ -97,4 +104,5 @@ aria-hidden="true">
    </div>
 </form>
 </div>
+
 {% endblock %}

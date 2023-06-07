@@ -13,6 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
+from django.contrib.auth.models import Group
+
 
 
 
@@ -38,25 +40,47 @@ class productListView(LoginRequiredMixin, TemplateView):
                 cli.cate_id = request.POST['cate']
                 cli.price = request.POST['price']
                 cli.stock = request.POST['stock']
+                cli.user_create = request.user.username
                 cli.save()
             elif action == 'recycle':
                     det = Recycle()
                     det.prod_id = request.POST['prod']
-                    det.recy = request.POST['recy']
                     det.cant = request.POST['cant']
+                    det.type = 'Retiro de stock'
+                    det.user_create = request.user.username
                     det.save()
+                    det.prod.user_update = request.user.username
                     det.prod.stock -= int(det.cant)
                     det.prod.save()
+            elif action == 'repos':
+                    det = Recycle()
+                    det.prod_id = request.POST['prod']
+                    det.cant = request.POST['cant']
+                    det.type = 'Reponer stock'
+                    det.user_create = request.user.username
+                    det.save()
+                    det.prod.user_update = request.user.username
+                    det.prod.stock += int(det.cant)
+                    det.prod.save()
             elif action == 'edit':
-                cli = Product.objects.get(pk=request.POST['id'])
-                cli.name = request.POST['name']
-                cli.cate_id = request.POST['cate']
-                cli.price = request.POST['price']
-                cli.stock = request.POST['stock']
-                cli.save()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Product.objects.get(pk=request.POST['id'])
+                    cli.name = request.POST['name']
+                    cli.cate_id = request.POST['cate']
+                    cli.price = request.POST['price']
+                    cli.stock = request.POST['stock']
+                    cli.user_update = request.user.username
+                    cli.save()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             elif action == 'delete':
-                cli = Product.objects.get(pk=request.POST['id'])
-                cli.delete()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cli = Product.objects.get(pk=request.POST['id'])
+                    cli.user_update = request.user.username
+                    cli.save()
+                    cli.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -69,7 +93,7 @@ class productListView(LoginRequiredMixin, TemplateView):
         context['create_url'] = reverse_lazy('erp:product_create')
         context['list_url'] = reverse_lazy('erp:product_list')
         context['entity'] = 'Productos'
-        context['form'] = ProductForm()
+        context['formproduct'] = ProductForm()
         context['det'] = []
         context['form_re'] = RecycleForm()
         return context

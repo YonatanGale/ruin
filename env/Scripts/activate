@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Yoni\Documents\proyecto\ruin\env"
+VIRTUAL_ENV="E:\proyectos facultad tercero\ruin\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

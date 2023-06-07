@@ -21,11 +21,14 @@ $(function () {
             {"data": "subtotal"},
             {"data": "iva"},
             {"data": "total"},
+            {"data": "methodpay.pay"},
+            {"data": "estado"},
             {"data": "id"},
         ],
+        order: [[0, 'desc']],
         columnDefs: [
             {
-                targets: [-2, -3, -4],
+                targets: [-6, -4, -5],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
@@ -43,6 +46,16 @@ $(function () {
                     return buttons;
                 }
             },
+            {
+                targets: [-2],
+                class: 'text-center',
+                render: function (data, type, row) {
+                    if (row.estado < 0){
+                        return '<span class="badge badge-danger">POR CONFIRMAR</span>'
+                    }
+                    return '<span class="badge badge-success">ENTRAGA CONFIRMADA</span>'
+                }
+            },
         ],
         initComplete: function (settings, json) {
 
@@ -58,7 +71,7 @@ $(function () {
             var data = tblBuy.row(tr.row).data();
             console.log(data);
 
-            $('#tblDet').DataTable({
+           tbldet = $('#tblDet').DataTable({
                 responsive: true,
                 autoWidth: false,
                 destroy: true,
@@ -82,20 +95,45 @@ $(function () {
                     {"data": "price"},
                     {"data": "cant"},
                     {"data": "subtotal"},
+                    {"data": "status"},
+                    {"data": "status"},
                 ],
                 columnDefs: [
                     {
-                        targets: [-1, -3],
+                        targets: [-3, -5],
                         class: 'text-center',
                         render: function (data, type, row) {
                             return 'Gs.' + parseFloat(data).toFixed(2);
                         }
                     },
                     {
-                        targets: [-2],
+                        targets: [-4],
                         class: 'text-center',
                         render: function (data, type, row) {
                             return data;
+                        }
+                    },
+                    {
+                        targets: [-1],
+                        class: 'text-center',
+                        render: function (data, type, row) {
+                            if (row.status == 'p'){
+                                var buttons = '<a href="#" rel="confirm" class="btn btn-success btn-xs"><i class="fas fa-check-square"></i></a> ';
+                                return buttons
+                            }
+                            return 'YA FUE CONFIRMADA';
+
+                        }
+                    },
+                    {
+                        targets: [-2],
+                        class: 'text-center',
+                        render: function (data, type, row) {
+                            if (row.status == 'p'){
+                                return '<span class="badge badge-danger">POR CONFIRMAR</span>'
+                            }
+                            return '<span class="badge badge-success">ENTRAGA CONFIRMADA</span>'
+
                         }
                     },
                 ],
@@ -116,4 +154,17 @@ $(function () {
                     tblBuy.ajax.reload();
                 });
             });
+        
+    $('#tblDet tbody')
+    .on('click', 'a[rel="confirm"]', function () {
+        var tr = tbldet.cell($(this).closest('td, li')).index();
+        var data = tbldet.row(tr.row).data();
+            var parameters = new FormData();
+            parameters.append('action', 'confirm_prov');
+            parameters.append('id', data.id);
+            submit_with_ajax(window.location.pathname, parameters, function () {
+                location.href = '/erp/buy/list/';
+            });
+        });
+        
 });

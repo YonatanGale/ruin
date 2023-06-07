@@ -4,11 +4,14 @@ var tblSearchProducts;
 var vents = {
     items: {
         cli: '',
+        methodpay: '',
+        typfund: '',
         date_joined: '',
         subtotal: 0.00,
         iva: 0.00,
         total: 0.00,
-        products: []
+        products: [],
+        funds: []
     },    
     get_ids: function () { //para obtener el id y que el producto no se repita en el detalle de venta
         var ids = [];
@@ -207,6 +210,71 @@ $(function () {
         });
     });
 
+    
+    var select_typeFunds = $('select[name="typfund"]');
+
+    $('select[name="methodpay"]').on('change', function () {
+        var id = $(this).val();
+        var options = '<option value="">--------------</option>';
+        if (id == '') {
+            select_typeFunds.html(options);
+            return false;
+        }
+        $.ajax({
+            url: window.location.pathname, //window.location.pathname
+            type: 'POST',
+            data: {
+                'action': 'search_methodpay',
+                'id': id
+            },
+            dataType: 'json',
+        }).done(function (data) {
+            if (!data.hasOwnProperty('error')) {
+                select_typeFunds.html('').select2({
+                    theme: "bootstrap4",
+                    lenguaje: 'es',
+                    data: data
+                });
+                // $.each(data, function(key, value) {
+                //     options+='<option value="'+value.id+'">'+value.name+'</option>'
+                // });
+                return false;
+            }
+            message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+            //select_typeFunds.html(options);
+        });
+    });
+
+    select_typeFunds.on('change', function () {
+        var value = select_typeFunds.select2('data')[0];
+        console.log(value);
+    });
+    //     theme: "bootstrap4",
+    //     language: 'es',
+    //     allowClear: true,
+    //     ajax: {
+    //         delay: 250,
+    //         type: 'POST',
+    //         url: window.location.pathname,
+    //         data: function (params) {
+    //             var queryParameters = {
+    //                 term: params.term,
+    //                 action: 'search_methodpay'
+    //             }
+    //             return queryParameters;
+    //         },
+    //         processResults: function (data) {
+    //             return {
+    //                 results: data
+    //             };
+    //         },
+    //     },
+    //     placeholder: 'Ingrese una descripción',
+    //     minimumInputLength: 1,
+    // });
     //buscador de productos
     // $('input[name="search"]').autocomplete({
     //     source: function (request, response) {
@@ -339,6 +407,8 @@ $(function () {
 
         vents.items.date_joined = $('input[name="date_joined"]').val();
         vents.items.cli = $('select[name="cli"]').val();
+        vents.items.methodpay = $('select[name="methodpay"]').val();
+        vents.items.typfund = $('select[name="typfund"]').val();
         var parameters = new FormData();
         parameters.append('action', $('input[name="action"]').val());
         parameters.append('vents', JSON.stringify(vents.items));

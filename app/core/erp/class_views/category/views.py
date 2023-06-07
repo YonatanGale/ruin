@@ -12,10 +12,12 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.generic import TemplateView
+from django.contrib.auth.models import Group
 
 
 
-class categoryListView(LoginRequiredMixin, IsSuperuserMixin, TemplateView):
+
+class categoryListView(LoginRequiredMixin, TemplateView):
     model = Category
     template_name = 'template/category/list.html'
 
@@ -34,14 +36,25 @@ class categoryListView(LoginRequiredMixin, IsSuperuserMixin, TemplateView):
             elif action == 'add':
                 cat = Category()
                 cat.name = request.POST['name']
+                cat.user_create = request.user.username
                 cat.save()
             elif action == 'edit':
-                cat = Category.objects.get(pk=request.POST['id'])
-                cat.name = request.POST['name']
-                cat.save()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cat = Category.objects.get(pk=request.POST['id'])
+                    cat.name = request.POST['name']
+                    cat.user_update = request.user.username
+                    cat.save()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
             elif action == 'delete':
-                cat = Category.objects.get(pk=request.POST['id'])
-                cat.delete()
+                if request.session['group'] == Group.objects.get(pk=1):
+                    cat = Category.objects.get(pk=request.POST['id'])
+                    cat.user_update = request.user.username
+                    cat.save()
+                    cat.delete()
+                else:
+                    data['error'] = 'No tiene permiso para ingresar a este módulo'
+
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:

@@ -20,7 +20,7 @@ function getData(){
             { "data": "name"},
             { "data": "stock"},
             { "data": "cate.name"},
-            { "data": "cate.unity.name"},
+            { "data": "cate.unity"},
             { "data": "price"},
             { "data": "stock"},
         ],
@@ -80,6 +80,15 @@ $(function () {
         $('#myModalProduct').modal('show');
     });
 
+    $('.btnRecycle').on('click', function () {
+        $('input[name="action"]').val('recycle');
+        modal_title.find('span').html('Retirar un producto');
+        console.log(modal_title.find('i'));
+        modal_title.find('i').removeClass().addClass('fas fa-recycle');
+        $('form')[0].reset();
+        $('#myModalRecycle').modal('show');
+    });
+
 
     $('#data tbody')
     .on('click', 'a[rel="edit"]', function () {
@@ -90,7 +99,8 @@ $(function () {
         $('input[name="action"]').val('edit');
         $('input[name="id"]').val(data.id);
         $('input[name="name"]').val(data.name);
-        $('input[name="uni.name"]').val(data.uni.name);
+        $('input[name="cate.id"]').val(data.cate.id);
+        document.getElementById('id_cate').value = data.cate.id
         $('input[name="price"]').val(data.price);
         $('input[name="stock"]').val(data.stock);
         $('#myModalProduct').modal('show');
@@ -111,11 +121,20 @@ $(function () {
         // $('form')[0].reset();
     });
 
-    $('form').on('submit', function (e) {
+    $('#formproduct').on('submit', function (e) {
         e.preventDefault();
         var parameters = $(this).serializeArray();
         alert_jqueryconfirm(window.location.pathname, parameters, function () {
             $('#myModalProduct').modal('hide');
+            tblProduct.ajax.reload();
+        });
+    });
+
+    $('#formrecycle').on('submit', function (e) {
+        e.preventDefault();
+        var parameters = $(this).serializeArray();
+        alert_jqueryconfirm(window.location.pathname, parameters, function () {
+            $('#myModalRecycle').modal('hide');
             tblProduct.ajax.reload();
         });
     });
