@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--$&jk9*mvrir5qt#c+b6aok)stuj9na&zwsynotq@w6#%3wu$v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -126,16 +126,16 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
 
 LOGIN_REDIRECT_URL = '/erp/dashboard/'
 
@@ -146,3 +146,15 @@ LOGOUT_REDIRECT_URL = '/login/'
 AUTH_USER_MODEL = 'user.User'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+if DEBUG is True:
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS = [
+        Path(BASE_DIR, "/static/")
+    ]
+else:
+    STATIC_ROOT = '/var/www/static/'
+    STATICFILES_DIRS = [
+        Path(BASE_DIR, '/var/www/static/')
+    ]
+    

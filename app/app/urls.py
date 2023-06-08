@@ -17,10 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from core.login.views import loginformView
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('erp/', include('core.erp.urls')),
-    path('', include('core.login.urls')),
-    path('reports/', include('core.reports.urls')),
-    path('user/', include('core.user.urls')),
-]
+    path('api/', include('core.erp.urls')),
+    path('api/', include('core.login.urls')),
+    path('api/', include('core.reports.urls')),
+    path('api/', include('core.user.urls')),
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
