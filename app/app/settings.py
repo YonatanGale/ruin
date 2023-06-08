@@ -149,12 +149,11 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 if DEBUG is True:
     STATIC_URL = 'static/'
+    STATIC_ROOT = 'static/'
     STATICFILES_DIRS = [
-        Path(BASE_DIR, "/static/")
+        Path(BASE_DIR, "static")
     ]
 else:
-    STATIC_ROOT = '/var/www/static/'
-    STATICFILES_DIRS = [
-        Path(BASE_DIR, '/var/www/static/')
-    ]
+    STATIC_URL = 'static/'
+    STATIC_ROOT = '/var/www/env/ruin/app/static/'
     
